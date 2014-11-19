@@ -1,7 +1,6 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,16 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.cube.storm.UiSettings;
-import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.controller.adapter.StormListAdapter;
 import com.cube.storm.ui.lib.helper.RecycledViewPoolHelper;
-import com.cube.storm.ui.quiz.model.page.QuizPage;
+import com.cube.storm.ui.quiz.activity.StormQuizActivity;
+import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+
+import java.util.Arrays;
 
 import lombok.Getter;
 
 /**
- * // TODO: Add class description
+ * Storm quiz fragment used for displaying individual quiz questions. Use this class to display each
+ * quiz question as a separate fragment in a view pager in conjunction to {@link com.cube.storm.ui.quiz.activity.StormQuizActivity}.
+ * <p/>
+ * To display a quiz page in a single list, use {@link com.cube.storm.ui.fragment.StormFragment} with {@link com.cube.storm.ui.activity.StormActivity}.
  *
  * @author Callum Taylor
  * @project LightningQuiz
@@ -29,7 +32,7 @@ public class StormQuizFragment extends Fragment
 {
 	@Getter private RecyclerView listView;
 	@Getter private StormListAdapter adapter;
-	@Getter private QuizPage page;
+	@Getter private QuizItem question;
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -49,14 +52,9 @@ public class StormQuizFragment extends Fragment
 
 		adapter = new StormListAdapter(getActivity());
 
-		if (getArguments().containsKey(StormActivity.EXTRA_PAGE))
+		if (getArguments().containsKey(StormQuizActivity.EXTRA_QUESTION))
 		{
-			page = (QuizPage)getArguments().get(StormActivity.EXTRA_PAGE);
-		}
-		else if (getArguments().containsKey(StormActivity.EXTRA_URI))
-		{
-			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
-			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+			question = (QuizItem)getArguments().get(StormQuizActivity.EXTRA_QUESTION);
 		}
 		else
 		{
@@ -65,9 +63,9 @@ public class StormQuizFragment extends Fragment
 			return;
 		}
 
-		if (page != null)
+		if (question != null)
 		{
-			adapter.setItems(page.getChildren());
+			adapter.setItems(Arrays.asList(question));
 		}
 
 		listView.setAdapter(adapter);
