@@ -2,7 +2,9 @@ package com.cube.storm.ui;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.factory.IntentFactory;
-import com.cube.storm.ui.quiz.lib.QuizIntentFactory;
+import com.cube.storm.ui.lib.factory.ViewFactory;
+import com.cube.storm.ui.quiz.lib.factory.QuizIntentFactory;
+import com.cube.storm.ui.quiz.lib.factory.QuizViewFactory;
 
 /**
  * Settings class for the quiz module.
@@ -74,14 +76,13 @@ public class QuizSettings
 		public Builder(UiSettings uiSettings)
 		{
 //			uiSettings.getViewProcessors().put(QuizQuestion.class, )
+			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
 			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}
 
 		/**
-		 * Sets the internal intent factory for the module.
-		 * <p/>
-		 * The module does not replace the intent factory defined in the {@link com.cube.storm.UiSettings} builder, but instead
-		 * creates a new intent factory and delegates the result if it was not handled by this module, back up the chain.
+		 * Replaces the intent factory set in {@link com.cube.storm.UiSettings}. You should not use this
+		 * method, but instead set your custom intent factory in {@link com.cube.storm.UiSettings.Builder#intentFactory}
 		 *
 		 * @param intentFactory The intent factory used to catch Quiz models
 		 *
@@ -90,6 +91,21 @@ public class QuizSettings
 		public Builder intentFactory(IntentFactory intentFactory)
 		{
 			uiSettings.setIntentFactory(intentFactory);
+
+			return this;
+		}
+
+		/**
+		 * Replaces the view factory set in {@link com.cube.storm.UiSettings}. You should not use this
+		 * method, but instead set your custom view factory in {@link com.cube.storm.UiSettings.Builder#viewFactory}
+		 *
+		 * @param viewFactory The view factory used to catch Quiz models
+		 *
+		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
+		 */
+		public Builder viewFactory(ViewFactory viewFactory)
+		{
+			uiSettings.setViewFactory(viewFactory);
 
 			return this;
 		}

@@ -1,0 +1,44 @@
+package com.cube.storm.ui.quiz.view;
+
+import com.cube.storm.ui.model.Model;
+import com.cube.storm.ui.view.holder.ViewHolderController;
+
+/**
+ * This is the enum class with the list of all supported view types, their model classes and their
+ * corresponding view holder class. This list should not be modified or overridden
+ *
+ * @author Callum Taylor
+ * @project LightningQuiz
+ */
+public enum Quiz
+{
+	/**
+	 * Quiz questions
+	 */
+	ItemSelectionQuestion(null, null);
+
+	private Class<? extends Model> model;
+	private Class<? extends ViewHolderController> holder;
+
+	private Quiz(Class<? extends Model> model, Class<? extends ViewHolderController> holder)
+	{
+		this.model = model;
+		this.holder = holder;
+	}
+
+	/**
+	 * @return Gets the holder class of the view
+	 */
+	public Class<? extends ViewHolderController> getHolderClass()
+	{
+		return holder;
+	}
+
+	/**
+	 * @return Gets the model class of the view
+	 */
+	public Class<? extends Model> getModelClass()
+	{
+		return model;
+	}
+}
