@@ -2,7 +2,7 @@ package com.cube.storm.ui;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.factory.IntentFactory;
-import com.cube.storm.ui.quiz.lib.QuizIntentFactory;
+import com.cube.storm.ui.quiz.lib.factory.QuizIntentFactory;
 
 /**
  * Settings class for the quiz module.

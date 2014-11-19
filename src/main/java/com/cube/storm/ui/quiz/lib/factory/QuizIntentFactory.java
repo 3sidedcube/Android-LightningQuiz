@@ -1,4 +1,4 @@
-package com.cube.storm.ui.quiz.lib;
+package com.cube.storm.ui.quiz.lib.factory;
 
 import android.content.Context;
 import android.content.Intent;
