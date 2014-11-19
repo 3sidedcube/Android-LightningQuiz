@@ -77,6 +77,16 @@ public class QuizSettings
 			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}
 
+		/**
+		 * Sets the internal intent factory for the module.
+		 * <p/>
+		 * The module does not replace the intent factory defined in the {@link com.cube.storm.UiSettings} builder, but instead
+		 * creates a new intent factory and delegates the result if it was not handled by this module, back up the chain.
+		 *
+		 * @param intentFactory The intent factory used to catch Quiz models
+		 *
+		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
+		 */
 		public Builder intentFactory(IntentFactory intentFactory)
 		{
 			uiSettings.setIntentFactory(intentFactory);
