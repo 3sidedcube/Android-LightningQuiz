@@ -2,12 +2,17 @@ package com.cube.storm.ui.quiz.lib;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.cube.storm.UiSettings;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.lib.factory.IntentFactory;
+import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
+import com.cube.storm.ui.quiz.activity.StormQuizActivity;
+import com.cube.storm.ui.quiz.model.page.QuizPage;
 
 /**
  * Delegate intent factory used to inject quiz functionality into ui settings module.
@@ -54,18 +59,17 @@ public class QuizIntentFactory extends IntentFactory
 	@Nullable @Override public Intent getIntentForPageDescriptor(@NonNull Context context, @NonNull PageDescriptor pageDescriptor)
 	{
 		Intent ret = super.getIntentForPageDescriptor(context, pageDescriptor);
+		Class<? extends Model> pageType = UiSettings.getInstance().getViewFactory().getModelForView(pageDescriptor.getType());
 
-//		Class<? extends Model> pageType = UiSettings.getInstance().getViewFactory().getModelForView(pageDescriptor.getType());
-//
-//		if (pageType != null)
-//		{
-//			if (Quiz.class.isAssignableFrom(pageType))
-//			{
-//				Bundle extras = ret.getExtras();
-//				ret = new Intent(context, StormQuizActivity.class);
-//				ret.putExtras(extras);
-//			}
-//		}
+		if (pageType != null)
+		{
+			if (QuizPage.class.isAssignableFrom(pageType))
+			{
+				Bundle extras = ret.getExtras();
+				ret = new Intent(context, StormQuizActivity.class);
+				ret.putExtras(extras);
+			}
+		}
 
 		return ret;
 	}
