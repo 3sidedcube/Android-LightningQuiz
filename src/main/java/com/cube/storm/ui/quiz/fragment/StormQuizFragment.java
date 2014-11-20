@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cube.storm.ui.controller.adapter.StormListAdapter;
 import com.cube.storm.ui.lib.helper.RecycledViewPoolHelper;
+import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.activity.StormQuizActivity;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
@@ -36,9 +37,9 @@ public class StormQuizFragment extends Fragment
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v = inflater.inflate(com.cube.storm.ui.R.layout.list_page_fragment_view, container, false);
+		View v = inflater.inflate(R.layout.list_page_fragment_view, container, false);
 
-		listView = (RecyclerView)v.findViewById(com.cube.storm.ui.R.id.recyclerview);
+		listView = (RecyclerView)v.findViewById(R.id.recyclerview);
 		listView.setRecycledViewPool(RecycledViewPoolHelper.getInstance().getRecycledViewPool());
 		listView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		listView.setItemAnimator(new DefaultItemAnimator());
