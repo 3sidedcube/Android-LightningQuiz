@@ -46,9 +46,8 @@ public class TextQuizItemHolder extends ViewHolderController
 		{
 			options.removeAllViewsInLayout();
 
-			while (model.getOptions().iterator().hasNext())
+			for (TextProperty option : model.getOptions())
 			{
-				TextProperty option = model.getOptions().iterator().next();
 				View row = LayoutInflater.from(options.getContext()).inflate(R.layout.text_quiz_item_item, options, false);
 
 				if (option.getContent() != null)
