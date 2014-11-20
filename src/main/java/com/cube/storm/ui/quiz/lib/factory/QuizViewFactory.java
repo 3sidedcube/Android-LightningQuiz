@@ -38,9 +38,9 @@ public class QuizViewFactory extends ViewFactory
 		{
 			return Quiz.valueOf(viewName).getHolderClass();
 		}
-		catch (IllegalArgumentException e)
+		catch (IllegalArgumentException ignore)
 		{
-			e.printStackTrace();
+			// ignore
 		}
 
 		return superFactory.getHolderForView(viewName);
@@ -60,9 +60,9 @@ public class QuizViewFactory extends ViewFactory
 		{
 			return Quiz.valueOf(viewName).getModelClass();
 		}
-		catch (IllegalArgumentException e)
+		catch (IllegalArgumentException ignore)
 		{
-			e.printStackTrace();
+			// ignore
 		}
 
 		return superFactory.getModelForView(viewName);

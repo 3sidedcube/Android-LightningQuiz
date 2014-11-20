@@ -13,9 +13,19 @@ import com.cube.storm.ui.view.holder.ViewHolderController;
 public enum Quiz
 {
 	/**
+	 * Badge properties
+	 */
+	Badge(com.cube.storm.ui.quiz.model.property.BadgeProperty.class, null),
+
+	/**
 	 * Quiz questions
 	 */
-	ItemSelectionQuestion(null, null);
+	ItemSelectionQuestion(null, null),
+
+	/**
+	 * Quiz page
+	 */
+	QuizPage(com.cube.storm.ui.quiz.model.page.QuizPage.class, null);
 
 	private Class<? extends Model> model;
 	private Class<? extends ViewHolderController> holder;

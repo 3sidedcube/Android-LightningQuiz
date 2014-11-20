@@ -1,5 +1,7 @@
 package com.cube.storm.ui;
 
+import android.support.annotation.NonNull;
+
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.factory.IntentFactory;
 import com.cube.storm.ui.lib.factory.ViewFactory;
@@ -73,8 +75,10 @@ public class QuizSettings
 		 *
 		 * @param uiSettings The settings object to use to enable quiz module
 		 */
-		public Builder(UiSettings uiSettings)
+		public Builder(@NonNull UiSettings uiSettings)
 		{
+			this.uiSettings = uiSettings;
+			
 //			uiSettings.getViewProcessors().put(QuizQuestion.class, )
 			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
 			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
@@ -88,7 +92,7 @@ public class QuizSettings
 		 *
 		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
 		 */
-		public Builder intentFactory(IntentFactory intentFactory)
+		public Builder intentFactory(@NonNull IntentFactory intentFactory)
 		{
 			uiSettings.setIntentFactory(intentFactory);
 
@@ -103,7 +107,7 @@ public class QuizSettings
 		 *
 		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
 		 */
-		public Builder viewFactory(ViewFactory viewFactory)
+		public Builder viewFactory(@NonNull ViewFactory viewFactory)
 		{
 			uiSettings.setViewFactory(viewFactory);
 
