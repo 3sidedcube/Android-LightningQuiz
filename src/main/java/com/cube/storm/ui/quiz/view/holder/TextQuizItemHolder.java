@@ -32,6 +32,7 @@ public class TextQuizItemHolder extends ViewHolderController
 	private class TextQuizItemViewHolder extends ViewHolder<TextQuizItem>
 	{
 		protected TextView title;
+		protected TextView hint;
 		protected ViewGroup options;
 
 		public TextQuizItemViewHolder(View view)
@@ -39,11 +40,45 @@ public class TextQuizItemHolder extends ViewHolderController
 			super(view);
 
 			title = (TextView)view.findViewById(R.id.title);
+			hint = (TextView)view.findViewById(R.id.hint);
 			options = (ViewGroup)view.findViewById(R.id.options_container);
 		}
 
 		@Override public void populateView(TextQuizItem model)
 		{
+			title.setVisibility(View.GONE);
+			hint.setVisibility(View.GONE);
+
+			if (model.getTitle() != null)
+			{
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getTitle().getContent());
+
+				if (!TextUtils.isEmpty(content))
+				{
+					title.setText(content);
+					title.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					title.setVisibility(View.GONE);
+				}
+			}
+
+			if (model.getHint() != null)
+			{
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getHint().getContent());
+
+				if (!TextUtils.isEmpty(content))
+				{
+					hint.setText(content);
+					hint.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					hint.setVisibility(View.GONE);
+				}
+			}
+
 			options.removeAllViewsInLayout();
 
 			for (TextProperty option : model.getOptions())

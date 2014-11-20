@@ -5,16 +5,27 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
+	android:padding="16dp"
 >
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/question_title"
+		android:id="@+id/title"
+		android:singleLine="false"
+		android:textColor="#dd000000"
+		android:textSize="16sp"
+		android:fontFamily="sans-serif-regular"
+		android:layout_gravity="center_horizontal"
 	/>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/question_hint"
+		android:id="@+id/hint"
+		android:textColor="#89000000"
+		android:textSize="14sp"
+		android:fontFamily="sans-serif-regular"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="4dp"
 	/>
 </LinearLayout>
