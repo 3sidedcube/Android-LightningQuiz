@@ -1,6 +1,7 @@
 package com.cube.storm.ui.quiz.view;
 
 import com.cube.storm.ui.model.Model;
+import com.cube.storm.ui.quiz.view.holder.TextQuizItemHolder;
 import com.cube.storm.ui.view.holder.ViewHolderController;
 
 /**
@@ -20,7 +21,7 @@ public enum Quiz
 	/**
 	 * Quiz questions
 	 */
-	ItemSelectionQuestion(null, null),
+	TextQuizItem(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemHolder.class),
 
 	/**
 	 * Quiz page
