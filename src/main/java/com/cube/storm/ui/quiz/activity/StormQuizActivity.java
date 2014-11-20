@@ -20,7 +20,10 @@ import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+
+import lombok.Getter;
 
 /**
  * Storm quiz fragment used for displaying individual quiz questions. Use this class to display each
@@ -41,6 +44,8 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	private StormPageAdapter pageAdapter;
 	private QuizPage page;
 	private ViewPager viewPager;
+
+	@Getter private boolean[] correctAnswers;
 
 	@Override protected void onCreate(Bundle savedInstanceState)
 	{
@@ -119,6 +124,9 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		viewPager.setOnPageChangeListener(this);
 		viewPager.setCurrentItem(0);
 		pageAdapter.setIndex(0);
+
+		correctAnswers = new boolean[pageAdapter.getCount()];
+		Arrays.fill(correctAnswers, false);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -126,9 +134,17 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 	}
 
-	@Override public void onPageSelected(int i)
+	@Override public void onPageSelected(int pageIndex)
 	{
+		if (pageIndex - 1 > -1)
+		{
+			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
+		}
 
+		if (pageIndex + 1 < pageAdapter.getCount() - 1)
+		{
+			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
+		}
 	}
 
 	@Override public void onPageScrollStateChanged(int i)
