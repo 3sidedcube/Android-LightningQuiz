@@ -48,6 +48,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		setContentView(R.layout.quiz_view);
 
+		pageAdapter = new StormPageAdapter(this, getFragmentManager());
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 
 		if (getIntent().getExtras() == null)
@@ -108,7 +109,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 				intent.setFragment(StormQuizFragment.class); // TODO: Use UiSettings#intentFactory to resolve this instead
 				intent.setArguments(args);
 
-				FragmentPackage fragmentPackage = new FragmentPackage(intent, UiSettings.getInstance().getApp().findPageDescriptor(page));
+				FragmentPackage fragmentPackage = new FragmentPackage(intent, null);//UiSettings.getInstance().getApp().findPageDescriptor(page));
 				fragmentPages.add(fragmentPackage);
 			}
 		}
