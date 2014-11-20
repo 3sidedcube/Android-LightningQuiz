@@ -12,7 +12,7 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public abstract class TextQuizItem extends ItemQuizItem
+public class TextQuizItem extends ItemQuizItem
 {
 	@Getter protected Collection<TextProperty> options;
 }

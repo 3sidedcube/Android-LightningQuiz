@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.factory.IntentFactory;
 import com.cube.storm.ui.lib.factory.ViewFactory;
+import com.cube.storm.ui.lib.parser.ViewProcessor;
+import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.quiz.lib.factory.QuizIntentFactory;
 import com.cube.storm.ui.quiz.lib.factory.QuizViewFactory;
+import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 /**
  * Settings class for the quiz module.
@@ -78,8 +81,17 @@ public class QuizSettings
 		public Builder(@NonNull UiSettings uiSettings)
 		{
 			this.uiSettings = uiSettings;
-			
-//			uiSettings.getViewProcessors().put(QuizQuestion.class, )
+
+			ViewProcessor<? extends Model> baseProcessor = new ViewProcessor<Model>()
+			{
+				@Override public Class<? extends Model> getClassFromName(String name)
+				{
+					return UiSettings.getInstance().getViewFactory().getModelForView(name);
+				}
+			};
+
+			this.uiSettings.getViewProcessors().put(QuizItem.class, baseProcessor);
+
 			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
 			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}

@@ -71,4 +71,10 @@ public class StormQuizFragment extends Fragment
 
 		listView.setAdapter(adapter);
 	}
+
+	public boolean isCorrectAnswer()
+	{
+		// get the view from the adapter - THIS MAY CHANGE
+		return ((QuizItem)adapter.getItem(adapter.getItemCount() - 1)).isCorrect();
+	}
 }
