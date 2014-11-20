@@ -82,9 +82,6 @@ public class QuizSettings
 		{
 			this.uiSettings = uiSettings;
 
-			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
-			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
-
 			ViewProcessor<? extends Model> baseProcessor = new ViewProcessor<Model>()
 			{
 				@Override public Class<? extends Model> getClassFromName(String name)
@@ -94,6 +91,9 @@ public class QuizSettings
 			};
 
 			this.uiSettings.getViewProcessors().put(QuizItem.class, baseProcessor);
+
+			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
+			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}
 
 		/**
