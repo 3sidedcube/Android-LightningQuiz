@@ -3,7 +3,9 @@ package com.cube.storm.ui.quiz.view.holder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.cube.storm.UiSettings;
@@ -95,7 +97,60 @@ public class TextQuizItemHolder extends ViewHolderController
 					}
 				}
 
+				row.setOnClickListener(new ModelClickListener(model));
 				options.addView(row);
+			}
+		}
+
+		private class ModelClickListener implements OnClickListener
+		{
+			private TextQuizItem model;
+
+			private ModelClickListener(TextQuizItem model)
+			{
+				this.model = model;
+			}
+
+			@Override public void onClick(View v)
+			{
+				int index = options.indexOfChild(v);
+				CheckBox checker = ((CheckBox)v.findViewById(R.id.checkbox));
+
+				if (!checker.isChecked())
+				{
+					checker.setChecked(true);
+					model.getSelectHistory().add(index);
+				}
+				else
+				{
+					checker.setChecked(false);
+					model.getSelectHistory().remove((Integer)index);
+				}
+
+				// disable select if checked > limit
+				if (model.getSelectHistory().size() > model.getLimit())
+				{
+					int remIndex = model.getSelectHistory().get(0);
+					model.getSelectHistory().remove(0);
+					((CheckBox)options.getChildAt(remIndex).findViewById(R.id.checkbox)).setChecked(false);
+				}
+
+				// check the answers in the history
+				if (model.getAnswer() != null && model.getAnswer().size() == model.getSelectHistory().size())
+				{
+					for (int answer : model.getAnswer())
+					{
+						if (model.getSelectHistory().contains(answer))
+						{
+							model.setCorrect(true);
+						}
+						else
+						{
+							model.setCorrect(false);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

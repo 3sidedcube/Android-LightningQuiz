@@ -6,6 +6,7 @@ import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.property.TextProperty;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Base model for quiz question models
@@ -19,6 +20,8 @@ public class QuizItem extends Model
 	@Getter private TextProperty failure;
 	@Getter private TextProperty completion;
 	@Getter private TextProperty hint;
+
+	@Getter @Setter private boolean correct = false;
 
 	@Override public int describeContents()
 	{

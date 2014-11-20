@@ -17,5 +17,4 @@ public abstract class ItemQuizItem extends QuizItem
 	@Getter protected Collection<Integer> answer;
 
 	@Getter protected ArrayList<Integer> selectHistory = new ArrayList<Integer>();
-	@Getter protected boolean isCorrect = false;
 }
