@@ -16,7 +16,10 @@ import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
 import com.cube.storm.ui.model.page.Page;
 import com.cube.storm.ui.quiz.activity.StormQuizActivity;
+import com.cube.storm.ui.quiz.activity.StormQuizResultsActivity;
 import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
+import com.cube.storm.ui.quiz.fragment.StormQuizLoseFragment;
+import com.cube.storm.ui.quiz.fragment.StormQuizWinFragment;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 
 /**
@@ -36,6 +39,47 @@ public class QuizIntentFactory extends IntentFactory
 	public QuizIntentFactory(IntentFactory superFactory)
 	{
 		this.superFactory = superFactory;
+	}
+
+	@Nullable @Override public FragmentIntent getFragmentIntentForPageUri(@NonNull Uri pageUri)
+	{
+		FragmentIntent ret = superFactory.getFragmentIntentForPageUri(pageUri);
+
+		if (pageUri.equals(Uri.parse(StormQuizResultsActivity.URI_QUIZ_WIN)))
+		{
+			if (ret != null)
+			{
+				ret.setFragment(StormQuizWinFragment.class);
+			}
+			else
+			{
+				Bundle args = new Bundle();
+				args.putString(StormActivity.EXTRA_URI, pageUri.toString());
+
+				ret = new FragmentIntent(StormQuizWinFragment.class, null, args);
+			}
+		}
+		else if (pageUri.equals(Uri.parse(StormQuizResultsActivity.URI_QUIZ_LOSE)))
+		{
+			if (ret != null)
+			{
+				ret.setFragment(StormQuizLoseFragment.class);
+			}
+			else
+			{
+				Bundle args = new Bundle();
+				args.putString(StormActivity.EXTRA_URI, pageUri.toString());
+
+				ret = new FragmentIntent(StormQuizLoseFragment.class, null, args);
+			}
+		}
+
+		return ret;
+	}
+
+	@Nullable @Override public Intent geIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
+	{
+		return super.geIntentForPageUri(context, pageUri);
 	}
 
 	@Nullable @Override public FragmentIntent getFragmentIntentForPageDescriptor(@NonNull PageDescriptor pageDescriptor)
