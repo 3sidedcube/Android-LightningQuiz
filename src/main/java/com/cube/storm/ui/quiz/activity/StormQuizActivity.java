@@ -7,7 +7,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
@@ -35,7 +36,7 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener
+public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener, OnClickListener
 {
 	public static final String EXTRA_PAGE = "stormui.page";
 	public static final String EXTRA_URI = "stormui.uri";
@@ -44,6 +45,8 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	private StormPageAdapter pageAdapter;
 	private QuizPage page;
 	private ViewPager viewPager;
+	private Button previous;
+	private Button next;
 
 	@Getter private boolean[] correctAnswers;
 
@@ -55,6 +58,10 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		pageAdapter = new StormPageAdapter(this, getSupportFragmentManager());
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
+		previous = (Button)findViewById(R.id.previous);
+		next = (Button)findViewById(R.id.next);
+		previous.setOnClickListener(this);
+		next.setOnClickListener(this);
 
 		if (getIntent().getExtras() == null)
 		{
@@ -96,10 +103,6 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 				setTitle(title);
 			}
 		}
-
-		((ViewGroup)findViewById(R.id.finish_container)).removeAllViews();
-		((ViewGroup)findViewById(R.id.finish_container)).setVisibility(View.GONE);
-		((ViewGroup)findViewById(R.id.quiz_container)).setVisibility(View.VISIBLE);
 
 		Collection<FragmentPackage> fragmentPages = new ArrayList<FragmentPackage>();
 
@@ -145,10 +148,52 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		{
 			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
 		}
+
+		if (pageIndex == pageAdapter.getCount() - 1)
+		{
+			next.setText("Finish");
+		}
+		else
+		{
+			next.setText("Next");
+		}
+
+		if (pageIndex == 0)
+		{
+			previous.setEnabled(false);
+		}
+		else
+		{
+			previous.setEnabled(true);
+		}
 	}
 
 	@Override public void onPageScrollStateChanged(int i)
 	{
 
+	}
+
+	@Override public void onClick(View view)
+	{
+		if (view == next)
+		{
+			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
+			{
+				finishQuiz();
+			}
+			else
+			{
+				viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+			}
+		}
+		else if (view == previous)
+		{
+			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+		}
+	}
+
+	public void finishQuiz()
+	{
+		Toast.makeText(this, "Finished quiz!", Toast.LENGTH_LONG).show();
 	}
 }
