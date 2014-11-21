@@ -214,6 +214,9 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 	public void finishQuiz()
 	{
-		Toast.makeText(this, "Finished quiz!", Toast.LENGTH_LONG).show();
+		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
+		finishIntent.putExtra(StormActivity.EXTRA_PAGE, page);
+		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
+		startActivity(finishIntent);
 	}
 }
