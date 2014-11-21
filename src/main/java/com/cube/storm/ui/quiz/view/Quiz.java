@@ -2,6 +2,8 @@ package com.cube.storm.ui.quiz.view;
 
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.quiz.view.holder.TextQuizItemHolder;
+import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemHolder;
+import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemHolder;
 import com.cube.storm.ui.view.holder.ViewHolderController;
 
 /**
@@ -22,6 +24,8 @@ public enum Quiz
 	 * Quiz questions
 	 */
 	TextQuizItem(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemHolder.class),
+	QuizGridItem(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemHolder.class),
+	QuizCollectionItem(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemHolder.class),
 
 	/**
 	 * Quiz page
