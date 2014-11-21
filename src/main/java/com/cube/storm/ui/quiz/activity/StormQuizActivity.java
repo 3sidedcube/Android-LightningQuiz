@@ -139,15 +139,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 	@Override public void onPageSelected(int pageIndex)
 	{
-		if (pageIndex - 1 > -1)
-		{
-			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
-		}
-
-		if (pageIndex + 1 < pageAdapter.getCount() - 1)
-		{
-			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
-		}
+		checkAnswers();
 
 		if (pageIndex == pageAdapter.getCount() - 1)
 		{
@@ -168,6 +160,29 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		}
 	}
 
+	public void checkAnswers()
+	{
+		int pageIndex = viewPager.getCurrentItem();
+
+		if (pageIndex - 1 > -1)
+		{
+			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
+		}
+
+		boolean test1 = pageIndex > -1;
+		boolean test2 = pageIndex < pageAdapter.getCount();
+
+		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
+		{
+			correctAnswers[pageIndex] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex)).isCorrectAnswer();
+		}
+
+		if (pageIndex + 1 < pageAdapter.getCount())
+		{
+			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
+		}
+	}
+
 	@Override public void onPageScrollStateChanged(int i)
 	{
 
@@ -177,9 +192,12 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	{
 		if (view == next)
 		{
+			checkAnswers();
+
 			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
 			{
 				finishQuiz();
+				finish();
 			}
 			else
 			{
@@ -188,6 +206,8 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		}
 		else if (view == previous)
 		{
+			checkAnswers();
+
 			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
 		}
 	}
