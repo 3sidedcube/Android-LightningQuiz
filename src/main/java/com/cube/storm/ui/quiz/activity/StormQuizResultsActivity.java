@@ -104,6 +104,7 @@ public class StormQuizResultsActivity extends ActionBarActivity
 			}
 
 			fragmentIntent.getArguments().putAll(getIntent().getExtras());
+			fragmentIntent.getArguments().putBooleanArray(EXTRA_RESULTS, results);
 
 			Fragment fragment = Fragment.instantiate(this, fragmentIntent.getFragment().getName(), fragmentIntent.getArguments());
 			getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
