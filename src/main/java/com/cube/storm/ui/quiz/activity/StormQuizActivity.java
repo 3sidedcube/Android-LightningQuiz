@@ -128,7 +128,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		viewPager.setCurrentItem(0);
 		pageAdapter.setIndex(0);
 
-		correctAnswers = new boolean[pageAdapter.getCount()];
+		correctAnswers = new boolean[page.getChildren().size()];
 		Arrays.fill(correctAnswers, false);
 	}
 
