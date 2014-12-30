@@ -53,7 +53,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		setContentView(R.layout.quiz_view);
 
-		pageAdapter = new StormPageAdapter(this, getFragmentManager());
+		pageAdapter = new StormPageAdapter(this, getSupportFragmentManager());
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 
 		if (getIntent().getExtras() == null)
