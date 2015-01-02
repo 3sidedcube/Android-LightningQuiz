@@ -1,7 +1,9 @@
 package com.cube.storm.ui.quiz.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
+import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.data.FragmentPackage;
 import com.cube.storm.ui.lib.adapter.StormPageAdapter;
@@ -166,7 +169,12 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		if (pageIndex - 1 > -1)
 		{
-			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1));
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
 		}
 
 		boolean test1 = pageIndex > -1;
@@ -174,12 +182,22 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
 		{
-			correctAnswers[pageIndex] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex)).isCorrectAnswer();
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex);
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
 		}
 
 		if (pageIndex + 1 < pageAdapter.getCount())
 		{
-			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1));
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex + 1] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
 		}
 	}
 
