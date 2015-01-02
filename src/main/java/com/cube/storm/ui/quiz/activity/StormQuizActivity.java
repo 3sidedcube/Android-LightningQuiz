@@ -138,12 +138,12 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	{
 		if (pageIndex - 1 > -1)
 		{
-			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
+			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
 		}
 
 		if (pageIndex + 1 < pageAdapter.getCount() - 1)
 		{
-			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
+			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
 		}
 	}
 
