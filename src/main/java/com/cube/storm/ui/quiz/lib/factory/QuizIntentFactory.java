@@ -44,6 +44,7 @@ public class QuizIntentFactory extends IntentFactory
 	@Nullable @Override public FragmentIntent getFragmentIntentForPageUri(@NonNull Uri pageUri)
 	{
 		FragmentIntent ret = superFactory.getFragmentIntentForPageUri(pageUri);
+		App app = UiSettings.getInstance().getApp();
 
 		if (pageUri.equals(Uri.parse(StormQuizResultsActivity.URI_QUIZ_WIN)))
 		{
@@ -73,13 +74,30 @@ public class QuizIntentFactory extends IntentFactory
 				ret = new FragmentIntent(StormQuizLoseFragment.class, null, args);
 			}
 		}
+		else
+		{
+			if (app != null)
+			{
+				for (PageDescriptor pageDescriptor : app.getMap())
+				{
+					if (pageUri.toString().equalsIgnoreCase(pageDescriptor.getSrc()))
+					{
+						return getFragmentIntentForPageDescriptor(pageDescriptor);
+					}
+				}
+			}
+			else
+			{
+				Page page = UiSettings.getInstance().getViewBuilder().buildPage(pageUri);
+
+				if (page != null)
+				{
+					return getFragmentIntentForPage(page);
+				}
+			}
+		}
 
 		return ret;
-	}
-
-	@Nullable @Override public Intent geIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
-	{
-		return super.geIntentForPageUri(context, pageUri);
 	}
 
 	@Nullable @Override public FragmentIntent getFragmentIntentForPageDescriptor(@NonNull PageDescriptor pageDescriptor)
@@ -140,34 +158,6 @@ public class QuizIntentFactory extends IntentFactory
 	@Nullable @Override public Intent getIntentForPage(@NonNull Context context, @NonNull Page pageData)
 	{
 		return superFactory.getIntentForPage(context, pageData);
-	}
-
-	@Nullable @Override public FragmentIntent getFragmentIntentForPageUri(@NonNull Uri pageUri)
-	{
-		FragmentIntent ret = superFactory.getFragmentIntentForPageUri(pageUri);
-		App app = UiSettings.getInstance().getApp();
-
-		if (app != null)
-		{
-			for (PageDescriptor pageDescriptor : app.getMap())
-			{
-				if (pageUri.toString().equalsIgnoreCase(pageDescriptor.getSrc()))
-				{
-					return getFragmentIntentForPageDescriptor(pageDescriptor);
-				}
-			}
-		}
-		else
-		{
-			Page page = UiSettings.getInstance().getViewBuilder().buildPage(pageUri);
-
-			if (page != null)
-			{
-				return getFragmentIntentForPage(page);
-			}
-		}
-
-		return ret;
 	}
 
 	@Nullable @Override public Intent getIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
