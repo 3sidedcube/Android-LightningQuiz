@@ -1,16 +1,22 @@
 package com.cube.storm.ui.quiz.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
+import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.data.FragmentPackage;
 import com.cube.storm.ui.lib.adapter.StormPageAdapter;
@@ -35,7 +41,7 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener
+public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener, OnClickListener
 {
 	public static final String EXTRA_PAGE = "stormui.page";
 	public static final String EXTRA_URI = "stormui.uri";
@@ -44,6 +50,10 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	private StormPageAdapter pageAdapter;
 	private QuizPage page;
 	private ViewPager viewPager;
+	private Button previous;
+	private Button next;
+	private View progressFill;
+	private View progressEmpty;
 
 	@Getter private boolean[] correctAnswers;
 
@@ -54,7 +64,14 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		setContentView(R.layout.quiz_view);
 
 		pageAdapter = new StormPageAdapter(this, getSupportFragmentManager());
+
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
+		progressFill = findViewById(R.id.progress_fill);
+		progressEmpty = findViewById(R.id.progress_empty);
+		previous = (Button)findViewById(R.id.previous);
+		next = (Button)findViewById(R.id.next);
+		previous.setOnClickListener(this);
+		next.setOnClickListener(this);
 
 		if (getIntent().getExtras() == null)
 		{
@@ -97,10 +114,6 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 			}
 		}
 
-		((ViewGroup)findViewById(R.id.finish_container)).removeAllViews();
-		((ViewGroup)findViewById(R.id.finish_container)).setVisibility(View.GONE);
-		((ViewGroup)findViewById(R.id.quiz_container)).setVisibility(View.VISIBLE);
-
 		Collection<FragmentPackage> fragmentPages = new ArrayList<FragmentPackage>();
 
 		for (QuizItem question : page.getChildren())
@@ -124,9 +137,22 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		viewPager.setOnPageChangeListener(this);
 		viewPager.setCurrentItem(0);
 		pageAdapter.setIndex(0);
+		updateProgress((int)((1d / pageAdapter.getCount()) * 100));
 
-		correctAnswers = new boolean[pageAdapter.getCount()];
+		correctAnswers = new boolean[page.getChildren().size()];
 		Arrays.fill(correctAnswers, false);
+	}
+
+	protected void updateProgress(int progress)
+	{
+		LayoutParams fillParams = progressFill.getLayoutParams();
+		LayoutParams emptyParams = progressEmpty.getLayoutParams();
+
+		if (fillParams instanceof LinearLayout.LayoutParams && emptyParams instanceof LinearLayout.LayoutParams)
+		{
+			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
+			((LinearLayout.LayoutParams)emptyParams).weight = progress;
+		}
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -136,19 +162,97 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 	@Override public void onPageSelected(int pageIndex)
 	{
-		if (pageIndex - 1 > -1)
+		checkAnswers();
+		updateProgress((int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100));
+
+		if (pageIndex == pageAdapter.getCount() - 1)
 		{
-			correctAnswers[pageIndex - 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1))).isCorrectAnswer();
+			next.setText("Finish");
+		}
+		else
+		{
+			next.setText("Next");
 		}
 
-		if (pageIndex + 1 < pageAdapter.getCount() - 1)
+		if (pageIndex == 0)
 		{
-			correctAnswers[pageIndex + 1] = ((StormQuizFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1))).isCorrectAnswer();
+			previous.setEnabled(false);
+		}
+		else
+		{
+			previous.setEnabled(true);
+		}
+	}
+
+	public void checkAnswers()
+	{
+		int pageIndex = viewPager.getCurrentItem();
+
+		if (pageIndex - 1 > -1)
+		{
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1));
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
+		}
+
+		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
+		{
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex);
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
+		}
+
+		if (pageIndex + 1 < pageAdapter.getCount())
+		{
+			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1));
+
+			if (question instanceof StormQuizFragment)
+			{
+				correctAnswers[pageIndex + 1] = ((StormQuizFragment)question).isCorrectAnswer();
+			}
 		}
 	}
 
 	@Override public void onPageScrollStateChanged(int i)
 	{
 
+	}
+
+	@Override public void onClick(View view)
+	{
+		if (view == next)
+		{
+			checkAnswers();
+
+			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
+			{
+				finishQuiz();
+				finish();
+			}
+			else
+			{
+				viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+			}
+		}
+		else if (view == previous)
+		{
+			checkAnswers();
+
+			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+		}
+	}
+
+	public void finishQuiz()
+	{
+		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
+		finishIntent.putExtra(StormActivity.EXTRA_PAGE, page);
+		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
+		startActivity(finishIntent);
 	}
 }
