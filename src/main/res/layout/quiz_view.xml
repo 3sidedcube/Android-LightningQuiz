@@ -77,6 +77,7 @@
 				<View
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
+					android:id="@+id/progress_fill"
 					android:background="?colorPrimary"
 					android:layout_weight="100"
 				/>
@@ -84,7 +85,8 @@
 				<View
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:background="?colorPrimaryDark"
+					android:id="@+id/progress_empty"
+					android:background="#ffcccccc"
 					android:layout_weight="0"
 				/>
 			</LinearLayout>

@@ -10,7 +10,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
@@ -50,6 +52,8 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	private ViewPager viewPager;
 	private Button previous;
 	private Button next;
+	private View progressFill;
+	private View progressEmpty;
 
 	@Getter private boolean[] correctAnswers;
 
@@ -60,7 +64,10 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		setContentView(R.layout.quiz_view);
 
 		pageAdapter = new StormPageAdapter(this, getSupportFragmentManager());
+
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
+		progressFill = findViewById(R.id.progress_fill);
+		progressEmpty = findViewById(R.id.progress_empty);
 		previous = (Button)findViewById(R.id.previous);
 		next = (Button)findViewById(R.id.next);
 		previous.setOnClickListener(this);
@@ -130,9 +137,22 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		viewPager.setOnPageChangeListener(this);
 		viewPager.setCurrentItem(0);
 		pageAdapter.setIndex(0);
+		updateProgress((int)((1d / pageAdapter.getCount()) * 100));
 
 		correctAnswers = new boolean[page.getChildren().size()];
 		Arrays.fill(correctAnswers, false);
+	}
+
+	protected void updateProgress(int progress)
+	{
+		LayoutParams fillParams = progressFill.getLayoutParams();
+		LayoutParams emptyParams = progressEmpty.getLayoutParams();
+
+		if (fillParams instanceof LinearLayout.LayoutParams && emptyParams instanceof LinearLayout.LayoutParams)
+		{
+			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
+			((LinearLayout.LayoutParams)emptyParams).weight = progress;
+		}
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -143,6 +163,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	@Override public void onPageSelected(int pageIndex)
 	{
 		checkAnswers();
+		updateProgress((int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100));
 
 		if (pageIndex == pageAdapter.getCount() - 1)
 		{
@@ -176,9 +197,6 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 				correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
 			}
 		}
-
-		boolean test1 = pageIndex > -1;
-		boolean test2 = pageIndex < pageAdapter.getCount();
 
 		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
 		{
