@@ -11,6 +11,7 @@ import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.lib.factory.IntentFactory;
+import com.cube.storm.ui.model.App;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
 import com.cube.storm.ui.model.page.Page;
@@ -72,7 +73,13 @@ public class QuizIntentFactory extends IntentFactory
 		{
 			if (QuizPage.class.isAssignableFrom(pageType))
 			{
-				Bundle extras = ret.getExtras();
+				Bundle extras = new Bundle();
+
+				if (ret != null)
+				{
+					extras = ret.getExtras();
+				}
+
 				ret = new Intent(context, StormQuizActivity.class);
 				ret.putExtras(extras);
 			}
@@ -93,11 +100,57 @@ public class QuizIntentFactory extends IntentFactory
 
 	@Nullable @Override public FragmentIntent getFragmentIntentForPageUri(@NonNull Uri pageUri)
 	{
-		return superFactory.getFragmentIntentForPageUri(pageUri);
+		FragmentIntent ret = superFactory.getFragmentIntentForPageUri(pageUri);
+		App app = UiSettings.getInstance().getApp();
+
+		if (app != null)
+		{
+			for (PageDescriptor pageDescriptor : app.getMap())
+			{
+				if (pageUri.toString().equalsIgnoreCase(pageDescriptor.getSrc()))
+				{
+					return getFragmentIntentForPageDescriptor(pageDescriptor);
+				}
+			}
+		}
+		else
+		{
+			Page page = UiSettings.getInstance().getViewBuilder().buildPage(pageUri);
+
+			if (page != null)
+			{
+				return getFragmentIntentForPage(page);
+			}
+		}
+
+		return ret;
 	}
 
-	@Nullable @Override public Intent geIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
+	@Nullable @Override public Intent getIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
 	{
-		return superFactory.geIntentForPageUri(context, pageUri);
+		Intent ret = superFactory.getIntentForPageUri(context, pageUri);
+		App app = UiSettings.getInstance().getApp();
+
+		if (app != null)
+		{
+			for (PageDescriptor pageDescriptor : app.getMap())
+			{
+				if (pageUri.toString().equalsIgnoreCase(pageDescriptor.getSrc()))
+				{
+					return getIntentForPageDescriptor(context, pageDescriptor);
+				}
+			}
+		}
+		else
+		{
+			Page page = UiSettings.getInstance().getViewBuilder().buildPage(pageUri);
+
+			if (page != null)
+			{
+				return getIntentForPage(context, page);
+			}
+		}
+
+		return ret;
 	}
 }
