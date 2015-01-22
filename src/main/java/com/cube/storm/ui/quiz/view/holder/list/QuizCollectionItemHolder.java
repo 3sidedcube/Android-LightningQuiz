@@ -83,7 +83,17 @@ public class QuizCollectionItemHolder extends ViewHolderController
 
 			if (model.getTitle() != null && !TextUtils.isEmpty(model.getTitle().getContent()))
 			{
-				title.setText(model.getTitle().getContent());
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getTitle().getContent());
+
+				if (!TextUtils.isEmpty(content))
+				{
+					title.setText(content);
+					title.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					title.setVisibility(View.GONE);
+				}
 			}
 		}
 
