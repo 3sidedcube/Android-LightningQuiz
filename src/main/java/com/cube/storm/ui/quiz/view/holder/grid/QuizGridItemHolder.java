@@ -37,7 +37,7 @@ public class QuizGridItemHolder extends ViewHolderController
 		return mViewHolder;
 	}
 
-	private class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements OnClickListener
+	protected class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements OnClickListener
 	{
 		protected ImageView image;
 		protected TextView title;
