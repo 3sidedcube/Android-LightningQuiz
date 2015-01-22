@@ -37,7 +37,7 @@ public class QuizGridItemHolder extends ViewHolderController
 		return mViewHolder;
 	}
 
-	private class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements OnClickListener
+	protected class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements OnClickListener
 	{
 		protected ImageView image;
 		protected TextView title;
@@ -96,7 +96,17 @@ public class QuizGridItemHolder extends ViewHolderController
 
 			if (model.getTitle() != null && !TextUtils.isEmpty(model.getTitle().getContent()))
 			{
-				title.setText(model.getTitle().getContent());
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getTitle().getContent());
+
+				if (!TextUtils.isEmpty(content))
+				{
+					title.setText(content);
+					title.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					title.setVisibility(View.GONE);
+				}
 			}
 		}
 
