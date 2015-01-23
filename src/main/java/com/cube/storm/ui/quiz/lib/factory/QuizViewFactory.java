@@ -34,16 +34,21 @@ public class QuizViewFactory extends ViewFactory
 	@Override @Nullable
 	public Class<? extends ViewHolderController> getHolderForView(String viewName)
 	{
-		try
+		Class<? extends ViewHolderController> superClass = superFactory.getHolderForView(viewName);
+
+		if (superClass == null)
 		{
-			return Quiz.valueOf(viewName).getHolderClass();
-		}
-		catch (IllegalArgumentException ignore)
-		{
-			// ignore
+			try
+			{
+				return Quiz.valueOf(viewName).getHolderClass();
+			}
+			catch (IllegalArgumentException ignore)
+			{
+				// ignore
+			}
 		}
 
-		return superFactory.getHolderForView(viewName);
+		return superClass;
 	}
 
 	/**
@@ -56,15 +61,20 @@ public class QuizViewFactory extends ViewFactory
 	@Override @Nullable
 	public Class<? extends Model> getModelForView(@NonNull String viewName)
 	{
-		try
+		Class<? extends Model> superClass = superFactory.getModelForView(viewName);
+
+		if (superClass == null)
 		{
-			return Quiz.valueOf(viewName).getModelClass();
-		}
-		catch (IllegalArgumentException ignore)
-		{
-			// ignore
+			try
+			{
+				return Quiz.valueOf(viewName).getModelClass();
+			}
+			catch (IllegalArgumentException ignore)
+			{
+				// ignore
+			}
 		}
 
-		return superFactory.getModelForView(viewName);
+		return superClass;
 	}
 }
