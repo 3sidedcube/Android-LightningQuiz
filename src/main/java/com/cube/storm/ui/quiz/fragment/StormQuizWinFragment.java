@@ -64,10 +64,12 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
 			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
 		}
-		else
+
+		if (page == null)
 		{
 			Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
+
 			return;
 		}
 

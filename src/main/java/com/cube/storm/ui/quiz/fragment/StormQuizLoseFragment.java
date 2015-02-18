@@ -1,6 +1,7 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.model.descriptor.PageDescriptor;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.activity.StormQuizResultsActivity;
@@ -66,7 +68,8 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
 			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
 		}
-		else
+
+		if (page == null)
 		{
 			Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
@@ -151,7 +154,18 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 		}
 		else if (v == retake)
 		{
+			PageDescriptor quiz = UiSettings.getInstance().getApp().findPageDescriptor(getPage());
 
+			if (quiz != null)
+			{
+				Intent quizIntent = UiSettings.getInstance().getIntentFactory().getIntentForPageDescriptor(getActivity(), quiz);
+
+				if (quizIntent != null)
+				{
+					getActivity().startActivity(quizIntent);
+					getActivity().finish();
+				}
+			}
 		}
 		else if (v.getId() == R.id.button)
 		{
