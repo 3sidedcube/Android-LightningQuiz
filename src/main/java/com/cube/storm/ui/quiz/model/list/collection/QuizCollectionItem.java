@@ -4,7 +4,6 @@ import android.os.Parcel;
 
 import com.cube.storm.ui.model.list.collection.CollectionItem;
 import com.cube.storm.ui.model.property.LinkProperty;
-import com.cube.storm.ui.model.property.TextProperty;
 
 import lombok.Getter;
 
@@ -16,8 +15,7 @@ import lombok.Getter;
  */
 public class QuizCollectionItem extends CollectionItem
 {
-	@Getter protected TextProperty title;
-	@Getter protected LinkProperty link;
+	@Getter protected LinkProperty quiz;
 	@Getter protected String badgeId;
 
 	@Override public int describeContents()
