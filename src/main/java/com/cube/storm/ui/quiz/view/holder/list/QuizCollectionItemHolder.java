@@ -54,45 +54,59 @@ public class QuizCollectionItemHolder extends ViewHolderController
 
 		@Override public void populateView(final QuizCollectionItem model)
 		{
-			link = model.getLink();
+			link = model.getQuiz();
+			final BadgeProperty badge = BadgeManager.getInstance().getBadgeById(model.getBadgeId());
 
-			final BadgeProperty badgeProperty = BadgeManager.getInstance().getBadgeById(model.getBadgeId());
-
-			UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getSrc(), image, new SimpleImageLoadingListener()
+			if (badge != null)
 			{
-				@Override public void onLoadingStarted(String imageUri, View view)
+				if (badge.getIcon() != null && !TextUtils.isEmpty(badge.getIcon().getSrc()))
 				{
-					image.setVisibility(View.INVISIBLE);
-				}
-
-				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
-				{
-					if (!imageUri.equalsIgnoreCase(badgeProperty.getIcon().getFallbackSrc()))
+					UiSettings.getInstance().getImageLoader().displayImage(badge.getIcon().getSrc(), image, new SimpleImageLoadingListener()
 					{
-						UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getFallbackSrc(), image, this);
-					}
+						@Override public void onLoadingStarted(String imageUri, View view)
+						{
+							image.setVisibility(View.INVISIBLE);
+						}
 
-					image.setVisibility(View.VISIBLE);
+						@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
+						{
+							if (!imageUri.equalsIgnoreCase(badge.getIcon().getFallbackSrc()))
+							{
+								UiSettings.getInstance().getImageLoader().displayImage(badge.getIcon().getFallbackSrc(), image, this);
+							}
+
+							image.setVisibility(View.VISIBLE);
+						}
+
+						@Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+						{
+							image.setVisibility(View.VISIBLE);
+						}
+					});
 				}
 
-				@Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+				if (badge.hasAchieved(image.getContext()))
 				{
-					image.setVisibility(View.VISIBLE);
-				}
-			});
-
-			if (model.getTitle() != null && !TextUtils.isEmpty(model.getTitle().getContent()))
-			{
-				String content = UiSettings.getInstance().getTextProcessor().process(model.getTitle().getContent());
-
-				if (!TextUtils.isEmpty(content))
-				{
-					title.setText(content);
-					title.setVisibility(View.VISIBLE);
+					image.setAlpha(255);
 				}
 				else
 				{
-					title.setVisibility(View.GONE);
+					image.setAlpha(100);
+				}
+
+				if (badge.getTitle() != null && !TextUtils.isEmpty(badge.getTitle().getContent()))
+				{
+					String content = UiSettings.getInstance().getTextProcessor().process(badge.getTitle().getContent());
+
+					if (!TextUtils.isEmpty(content))
+					{
+						title.setText(content);
+						title.setVisibility(View.VISIBLE);
+					}
+					else
+					{
+						title.setVisibility(View.GONE);
+					}
 				}
 			}
 		}
