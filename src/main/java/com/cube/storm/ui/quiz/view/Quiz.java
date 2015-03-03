@@ -2,6 +2,7 @@ package com.cube.storm.ui.quiz.view;
 
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.quiz.view.holder.ImageQuizItemHolder;
+import com.cube.storm.ui.quiz.view.holder.SliderQuizItemHolder;
 import com.cube.storm.ui.quiz.view.holder.TextQuizItemHolder;
 import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemHolder;
 import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemHolder;
@@ -28,6 +29,7 @@ public enum Quiz
 	QuizGridItem(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemHolder.class),
 	QuizCollectionItem(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemHolder.class),
 	ImageQuizItem(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemHolder.class),
+	SliderQuizItem(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemHolder.class),
 
 	/**
 	 * Quiz page
