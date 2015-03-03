@@ -12,12 +12,11 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class SliderQuizItem extends ItemQuizItem
+public class SliderQuizItem extends QuizItem
 {
 	@Getter protected ImageProperty image;
 	@Getter protected RangeProperty range;
 	@Getter protected TextProperty unit;
 	@Getter protected int answer;
 	@Getter protected int initialPosition;
-	@Getter protected boolean correct = false;
 }
