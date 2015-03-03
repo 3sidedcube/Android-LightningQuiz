@@ -190,31 +190,40 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		if (pageIndex - 1 > -1)
 		{
-			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex - 1));
-
-			if (question instanceof StormQuizFragment)
+			if (getSupportFragmentManager().getFragments() != null && pageIndex - 1 < getSupportFragmentManager().getFragments().size())
 			{
-				correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
+				Fragment question = getSupportFragmentManager().getFragments().get(pageIndex - 1);
+
+				if (question instanceof StormQuizFragment)
+				{
+					correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
+				}
 			}
 		}
 
 		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
 		{
-			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex);
-
-			if (question instanceof StormQuizFragment)
+			if (getSupportFragmentManager().getFragments() != null && pageIndex < getSupportFragmentManager().getFragments().size())
 			{
-				correctAnswers[pageIndex] = ((StormQuizFragment)question).isCorrectAnswer();
+				Fragment question = getSupportFragmentManager().getFragments().get(pageIndex);
+
+				if (question instanceof StormQuizFragment)
+				{
+					correctAnswers[pageIndex] = ((StormQuizFragment)question).isCorrectAnswer();
+				}
 			}
 		}
 
 		if (pageIndex + 1 < pageAdapter.getCount())
 		{
-			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1));
-
-			if (question instanceof StormQuizFragment)
+			if (getSupportFragmentManager().getFragments() != null && pageIndex + 1 < getSupportFragmentManager().getFragments().size())
 			{
-				correctAnswers[pageIndex + 1] = ((StormQuizFragment)question).isCorrectAnswer();
+				Fragment question = getSupportFragmentManager().getFragments().get(pageIndex + 1);
+
+				if (question instanceof StormQuizFragment)
+				{
+					correctAnswers[pageIndex + 1] = ((StormQuizFragment)question).isCorrectAnswer();
+				}
 			}
 		}
 	}
