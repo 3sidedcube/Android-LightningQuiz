@@ -1,12 +1,12 @@
 package com.cube.storm.ui.quiz.view;
 
 import com.cube.storm.ui.model.Model;
-import com.cube.storm.ui.quiz.view.holder.ImageQuizItemHolder;
-import com.cube.storm.ui.quiz.view.holder.SliderQuizItemHolder;
-import com.cube.storm.ui.quiz.view.holder.TextQuizItemHolder;
-import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemHolder;
-import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemHolder;
-import com.cube.storm.ui.view.holder.ViewHolderController;
+import com.cube.storm.ui.quiz.view.holder.ImageQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.SliderQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemViewHolder;
+import com.cube.storm.ui.view.holder.ViewHolderFactory;
 
 /**
  * This is the enum class with the list of all supported view types, their model classes and their
@@ -25,11 +25,11 @@ public enum Quiz
 	/**
 	 * Quiz questions
 	 */
-	TextQuizItem(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemHolder.class),
-	QuizGridItem(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemHolder.class),
-	QuizCollectionItem(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemHolder.class),
-	ImageQuizItem(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemHolder.class),
-	SliderQuizItem(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemHolder.class),
+	TextQuizItem(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemViewHolder.Factory.class),
+	QuizGridItem(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemViewHolder.Factory.class),
+	QuizCollectionItem(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemViewHolder.Factory.class),
+	ImageQuizItem(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemViewHolder.Factory.class),
+	SliderQuizItem(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemViewHolder.Factory.class),
 
 	/**
 	 * Quiz page
@@ -37,9 +37,9 @@ public enum Quiz
 	QuizPage(com.cube.storm.ui.quiz.model.page.QuizPage.class, null);
 
 	private Class<? extends Model> model;
-	private Class<? extends ViewHolderController> holder;
+	private Class<? extends ViewHolderFactory> holder;
 
-	private Quiz(Class<? extends Model> model, Class<? extends ViewHolderController> holder)
+	private Quiz(Class<? extends Model> model, Class<? extends ViewHolderFactory> holder)
 	{
 		this.model = model;
 		this.holder = holder;
@@ -48,7 +48,7 @@ public enum Quiz
 	/**
 	 * @return Gets the holder class of the view
 	 */
-	public Class<? extends ViewHolderController> getHolderClass()
+	public Class<? extends ViewHolderFactory> getHolderClass()
 	{
 		return holder;
 	}
