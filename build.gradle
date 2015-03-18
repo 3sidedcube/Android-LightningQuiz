@@ -40,5 +40,3 @@ dependencies {
 	compile project(':Libraries:LightningUi')
 //	compile 'com.3sidedcube.storm:ui:0.1a'
 }
-
-apply from: 'gradle/sonatype.gradle'

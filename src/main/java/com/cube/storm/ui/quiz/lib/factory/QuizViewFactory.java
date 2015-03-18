@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.cube.storm.ui.lib.factory.ViewFactory;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.quiz.view.Quiz;
-import com.cube.storm.ui.view.holder.ViewHolderController;
+import com.cube.storm.ui.view.holder.ViewHolderFactory;
 
 /**
  * This is the factory class which is used by Storm to help with getting the correct view holder/controller
@@ -32,9 +32,9 @@ public class QuizViewFactory extends ViewFactory
 	 * @return The view holder class or null if one was not found.
 	 */
 	@Override @Nullable
-	public Class<? extends ViewHolderController> getHolderForView(String viewName)
+	public Class<? extends ViewHolderFactory> getHolderForView(String viewName)
 	{
-		Class<? extends ViewHolderController> superClass = superFactory.getHolderForView(viewName);
+		Class<? extends ViewHolderFactory> superClass = superFactory.getHolderForView(viewName);
 
 		if (superClass == null)
 		{
