@@ -7,6 +7,8 @@ import com.cube.storm.ui.model.property.ImageProperty;
 import com.cube.storm.ui.model.property.Property;
 import com.cube.storm.ui.model.property.TextProperty;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 
 /**
@@ -21,7 +23,7 @@ public class BadgeProperty extends Property
 	@Getter private TextProperty completion;
 	@Getter private TextProperty how;
 	@Getter private TextProperty shareMessage;
-	@Getter private ImageProperty icon;
+	@Getter private ArrayList<ImageProperty> icon;
 
 	/**
 	 * Returns if the badge has been achieved or not

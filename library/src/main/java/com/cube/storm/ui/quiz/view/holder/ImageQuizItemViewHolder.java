@@ -55,7 +55,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 		options.removeAllViewsInLayout();
 
 		ArrayList<TextProperty> textOptions = model.getOptions();
-		ArrayList<ImageProperty> images = model.getImages();
+		ArrayList<ArrayList<ImageProperty>> images = model.getImages();
 		int optionLength = textOptions.size();
 		View currentRow = null;
 		View currentCell = null;

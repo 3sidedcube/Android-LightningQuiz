@@ -52,17 +52,21 @@ public class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements 
 	{
 		link = model.getLink();
 		final BadgeProperty badgeProperty = BadgeManager.getInstance().getBadgeById(model.getBadgeId());
-		image.populate(badgeProperty.getIcon(), progress);
-		title.populate(model.getTitle());
 
-		if (badgeProperty.hasAchieved(image.getContext()))
+		if (badgeProperty != null)
 		{
-			image.setAlpha(255);
-			image.setImageBitmap(null);
-		}
-		else
-		{
-			image.setAlpha(100);
+			image.populate(badgeProperty.getIcon(), progress);
+			title.populate(model.getTitle());
+
+			if (badgeProperty.hasAchieved(image.getContext()))
+			{
+				image.setAlpha(255);
+				image.setImageBitmap(null);
+			}
+			else
+			{
+				image.setAlpha(100);
+			}
 		}
 	}
 

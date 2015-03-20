@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.manager.BadgeManager;
@@ -203,29 +204,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		if (badgeProperty != null)
 		{
 			badgeProperty.setAchieved(getActivity(), true);
-
-			UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getSrc(), badge, new SimpleImageLoadingListener()
-			{
-				@Override public void onLoadingStarted(String imageUri, View view)
-				{
-					badge.setVisibility(View.INVISIBLE);
-				}
-
-				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
-				{
-					if (!imageUri.equalsIgnoreCase(badgeProperty.getIcon().getFallbackSrc()))
-					{
-						UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getFallbackSrc(), badge, this);
-					}
-
-					badge.setVisibility(View.VISIBLE);
-				}
-
-				@Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-				{
-					badge.setVisibility(View.VISIBLE);
-				}
-			});
+			ImageHelper.displayImage(badge, badgeProperty.getIcon());
 
 			if (badgeProperty.getTitle() != null && !TextUtils.isEmpty(badgeProperty.getTitle().getContent()))
 			{
