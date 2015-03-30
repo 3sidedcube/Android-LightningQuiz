@@ -10,13 +10,13 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 	>
-		<ImageView
+		<com.cube.storm.ui.view.ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:id="@+id/badge_icon"
 		/>
 
-		<TextView
+		<com.cube.storm.ui.view.TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@+id/title"

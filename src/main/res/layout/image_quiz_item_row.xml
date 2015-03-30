@@ -14,7 +14,7 @@
 		android:layout_marginRight="5dp"
 		android:id="@+id/layout1"
 	>
-		<ImageView
+		<com.cube.storm.ui.view.ImageView
 			android:layout_width="match_parent"
 			android:layout_height="192dp"
 			android:maxHeight="300dp"
@@ -36,7 +36,7 @@
 				android:clickable="false"
 			/>
 
-			<TextView
+			<com.cube.storm.ui.view.TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/label"
@@ -55,7 +55,7 @@
 		android:layout_marginLeft="5dp"
 		android:id="@+id/layout2"
 	>
-		<ImageView
+		<com.cube.storm.ui.view.ImageView
 			android:layout_width="match_parent"
 			android:layout_height="192dp"
 			android:id="@+id/image"
@@ -77,7 +77,7 @@
 				android:clickable="false"
 			/>
 
-			<TextView
+			<com.cube.storm.ui.view.TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/label"

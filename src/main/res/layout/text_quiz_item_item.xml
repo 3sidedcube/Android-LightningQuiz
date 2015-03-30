@@ -21,7 +21,7 @@
 			android:layout_alignParentRight="true"
 		/>
 
-		<TextView
+		<com.cube.storm.ui.view.TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/title"

@@ -74,7 +74,15 @@ public class StormQuizFragment extends Fragment
 
 	public boolean isCorrectAnswer()
 	{
-		// get the view from the adapter - THIS MAY CHANGE
-		return ((QuizItem)adapter.getItem(adapter.getItemCount() - 1)).isCorrect();
+		for (int itemIdx = 0; itemIdx < adapter.getItemCount(); ++itemIdx)
+		{
+			Object item = adapter.getItem(itemIdx);
+			if (item instanceof QuizItem)
+			{
+				return ((QuizItem)item).isCorrect();
+			}
+
+		}
+		return false;
 	}
 }

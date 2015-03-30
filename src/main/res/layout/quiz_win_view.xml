@@ -11,7 +11,7 @@
 		android:orientation="vertical"
 		android:padding="10dp"
 	>
-		<TextView
+		<com.cube.storm.ui.view.TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/win_title"
@@ -28,14 +28,14 @@
 			android:layout_gravity="center"
 		/>
 
-		<TextView
+		<com.cube.storm.ui.view.TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/win_description"
 			android:gravity="center"
 		/>
 
-		<Button
+		<com.cube.storm.ui.view.Button
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/home_button"

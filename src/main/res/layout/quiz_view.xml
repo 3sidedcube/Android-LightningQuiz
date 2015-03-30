@@ -23,7 +23,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 		>
-			<Button
+			<com.cube.storm.ui.view.Button
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:id="@+id/previous"
@@ -41,7 +41,7 @@
 				android:layout_marginBottom="12dp"
 			/>
 
-			<Button
+			<com.cube.storm.ui.view.Button
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:id="@+id/next"
