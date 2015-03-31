@@ -47,13 +47,13 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	public static final String EXTRA_URI = "stormui.uri";
 	public static final String EXTRA_QUESTION = "stormquiz.question";
 
-	private StormPageAdapter pageAdapter;
-	private QuizPage page;
-	private ViewPager viewPager;
-	private Button previous;
-	private Button next;
-	private View progressFill;
-	private View progressEmpty;
+	protected StormPageAdapter pageAdapter;
+	protected QuizPage page;
+	protected ViewPager viewPager;
+	protected Button previous;
+	protected Button next;
+	protected View progressFill;
+	protected View progressEmpty;
 
 	@Getter private boolean[] correctAnswers;
 
