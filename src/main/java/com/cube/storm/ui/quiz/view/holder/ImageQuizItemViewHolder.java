@@ -60,7 +60,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 		View currentRow = null;
 		View currentCell = null;
 
-		for(int index = 0;index < optionLength; index++)
+		for (int index = 0; index < optionLength; index++)
 		{
 			if(index % 2 == 0)
 			{
