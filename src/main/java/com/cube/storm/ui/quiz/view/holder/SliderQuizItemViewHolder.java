@@ -104,7 +104,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 					if (!TextUtils.isEmpty(content))
 					{
-						sliderText.setText("" + (pos + model.getRange().getStart()) + " " + content + " : " + model.isCorrect());
+						sliderText.setText("" + (pos + model.getRange().getStart()) + " " + content);
 					}
 				}
 			}
