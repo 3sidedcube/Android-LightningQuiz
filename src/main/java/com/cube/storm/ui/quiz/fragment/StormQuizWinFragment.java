@@ -119,6 +119,8 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 
 		if (badgeProperty != null)
 		{
+			badgeProperty.setAchieved(getActivity(), true);
+
 			UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getSrc(), badge, new SimpleImageLoadingListener()
 			{
 				@Override public void onLoadingStarted(String imageUri, View view)
