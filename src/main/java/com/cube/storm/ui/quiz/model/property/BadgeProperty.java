@@ -1,7 +1,6 @@
 package com.cube.storm.ui.quiz.model.property;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcel;
 
 import com.cube.storm.ui.model.property.ImageProperty;
@@ -33,23 +32,17 @@ public class BadgeProperty extends Property
 	 */
 	public boolean hasAchieved(Context context)
 	{
-		SharedPreferences prefs = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
-		String[] completedBadges = prefs.getAll().keySet().toArray(new String[prefs.getAll().keySet().size()]);
-
-		for (String completedBadge : completedBadges)
-		{
-			if (getId().equals(completedBadge))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return context.getSharedPreferences("badges", Context.MODE_PRIVATE).getBoolean(getId(), false);
 	}
 
 	@Override public int describeContents()
 	{
 		return 0;
+	}
+
+	public void setAchieved(Context context, boolean isAchieved)
+	{
+		context.getSharedPreferences("badges", Context.MODE_PRIVATE).edit().putBoolean(getId(), isAchieved);
 	}
 
 	@Override public void writeToParcel(Parcel dest, int flags)
