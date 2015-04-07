@@ -42,7 +42,7 @@ public class BadgeProperty extends Property
 
 	public void setAchieved(Context context, boolean isAchieved)
 	{
-		context.getSharedPreferences("badges", Context.MODE_PRIVATE).edit().putBoolean(getId(), isAchieved);
+		context.getSharedPreferences("badges", Context.MODE_PRIVATE).edit().putBoolean(getId(), isAchieved).apply();
 	}
 
 	@Override public void writeToParcel(Parcel dest, int flags)
