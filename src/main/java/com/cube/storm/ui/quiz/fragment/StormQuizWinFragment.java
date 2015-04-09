@@ -1,11 +1,18 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,6 +30,9 @@ import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.property.BadgeProperty;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import lombok.Getter;
 
@@ -49,6 +59,13 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		home.setOnClickListener(this);
 
 		return v;
+	}
+
+	@Override public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		setHasOptionsMenu(true);
 	}
 
 	@Override public void onActivityCreated(Bundle savedInstanceState)
@@ -111,6 +128,70 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 				}
 			}
 		}
+	}
+
+	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+
+		BadgeProperty badge = BadgeManager.getInstance().getBadgeById(getPage().getBadgeId());
+
+		if (badge != null)
+		{
+			String shareText = "";
+
+			if (badge.getShareMessage() != null && !TextUtils.isEmpty(badge.getShareMessage().getContent()))
+			{
+				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage().getContent());
+			}
+
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("*/*");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+			shareIntent.putExtra(Intent.EXTRA_STREAM, saveBadgeToTemp(badge));
+
+			inflater.inflate(R.menu.menu_badge_share, menu);
+			MenuItem shareAction = menu.findItem(R.id.menu_item_share);
+
+			ShareActionProvider actionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(shareAction);
+			actionProvider.setShareIntent(shareIntent);
+		}
+	}
+
+	private Uri saveBadgeToTemp(BadgeProperty badgeProperty)
+	{
+		Bitmap badgeBitmap = null;
+		byte[] data = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(badgeProperty.getIcon().getSrc()));
+
+		if (data != null)
+		{
+			BitmapFactory.Options opt = new BitmapFactory.Options();
+			opt.inScaled = false;
+			badgeBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+		}
+
+		// Write to file
+		File tmpFile = null;
+		try
+		{
+			tmpFile = new File(getActivity().getExternalCacheDir(), "badge." + ((Object)badgeProperty).hashCode() + ".png");
+			FileOutputStream out = new FileOutputStream(tmpFile);
+
+			if (badgeBitmap != null)
+			{
+				badgeBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+			}
+
+			out.close();
+
+			return Uri.fromFile(tmpFile);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public void loadBadge()
