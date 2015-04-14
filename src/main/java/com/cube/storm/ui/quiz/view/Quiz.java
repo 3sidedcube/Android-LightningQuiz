@@ -1,6 +1,7 @@
 package com.cube.storm.ui.quiz.view;
 
 import com.cube.storm.ui.model.Model;
+import com.cube.storm.ui.quiz.view.holder.AreaQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.ImageQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.SliderQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
@@ -30,6 +31,10 @@ public enum Quiz
 	QuizCollectionItem(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemViewHolder.Factory.class),
 	ImageQuizItem(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemViewHolder.Factory.class),
 	SliderQuizItem(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemViewHolder.Factory.class),
+	/**
+		Copied from old Storm, name will need to be changed
+	 */
+	AreaSelectionQuestion(com.cube.storm.ui.quiz.model.quiz.AreaQuizItem.class, AreaQuizItemViewHolder.Factory.class),
 
 	/**
 	 * Quiz page
