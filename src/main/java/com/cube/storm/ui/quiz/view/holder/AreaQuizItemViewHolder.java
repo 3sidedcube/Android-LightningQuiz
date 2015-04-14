@@ -17,6 +17,7 @@ import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
 import com.cube.storm.ui.view.ImageView;
+import com.cube.storm.ui.view.TextView;
 import com.cube.storm.ui.view.holder.ViewHolder;
 import com.cube.storm.ui.view.holder.ViewHolderFactory;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,12 +35,14 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 	private transient Bitmap overlay;
 	private ImageView image;
 	private ImageView canvas;
+	private TextView question;
 
 	public AreaQuizItemViewHolder(View itemView)
 	{
 		super(itemView);
 		image = (ImageView)itemView.findViewById(R.id.image_view);
 		canvas = (ImageView)itemView.findViewById(R.id.canvas);
+		question = (TextView)itemView.findViewById(R.id.question);
 
 		Drawable drawable = itemView.getResources().getDrawable(R.drawable.area_select);
 		if (drawable != null)
@@ -70,6 +73,10 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 	@Override public void populateView(final AreaQuizItem model)
 	{
+		if (model.getTitle() != null)
+		{
+			question.populate(model.getTitle());
+		}
 		if (model.getImage() != null)
 		{
 			ImageLoader.getInstance().displayImage(model.getImage().getSrc(), image, new ImageLoadingListener()
