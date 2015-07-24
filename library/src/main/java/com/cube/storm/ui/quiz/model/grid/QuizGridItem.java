@@ -6,7 +6,10 @@ import com.cube.storm.ui.model.grid.GridItem;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.model.property.TextProperty;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * // TODO: Add class description
@@ -14,11 +17,13 @@ import lombok.Getter;
  * @author Luke Reed
  * @project Storm
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class QuizGridItem extends GridItem
 {
-	@Getter private TextProperty title;
-	@Getter private LinkProperty link;
-	@Getter private String badgeId;
+	private TextProperty title;
+	private LinkProperty link;
+	private String badgeId;
 
 	@Override public int describeContents()
 	{

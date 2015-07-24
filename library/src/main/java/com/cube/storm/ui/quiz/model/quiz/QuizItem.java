@@ -5,8 +5,10 @@ import android.os.Parcel;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.property.TextProperty;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * Base model for quiz question models
@@ -14,14 +16,16 @@ import lombok.Setter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class QuizItem extends Model
 {
-	@Getter private TextProperty title;
-	@Getter private TextProperty failure;
-	@Getter private TextProperty completion;
-	@Getter private TextProperty hint;
+	private TextProperty title;
+	private TextProperty failure;
+	private TextProperty completion;
+	private TextProperty hint;
 
-	@Getter @Setter private boolean correct = false;
+	private boolean correct = false;
 
 	@Override public int describeContents()
 	{

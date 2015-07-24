@@ -5,7 +5,10 @@ import android.os.Parcel;
 import com.cube.storm.ui.model.list.collection.CollectionItem;
 import com.cube.storm.ui.model.property.LinkProperty;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * // TODO: Add class description
@@ -13,10 +16,12 @@ import lombok.Getter;
  * @author Alan Le Fournis
  * @project Storm
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+ @Accessors(chain = true) @Data
 public class QuizCollectionItem extends CollectionItem
 {
-	@Getter protected LinkProperty quiz;
-	@Getter protected String badgeId;
+	protected LinkProperty quiz;
+	protected String badgeId;
 
 	@Override public int describeContents()
 	{
