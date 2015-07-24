@@ -3,7 +3,10 @@ package com.cube.storm.ui.quiz.model.quiz;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * // TODO: Add class description
@@ -11,9 +14,11 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public abstract class ItemQuizItem extends QuizItem
 {
-	@Getter protected int limit;
-	@Getter protected Collection<Integer> answer;
-	@Getter protected ArrayList<Integer> selectHistory = new ArrayList<Integer>();
+	protected int limit;
+	protected Collection<Integer> answer;
+	protected ArrayList<Integer> selectHistory = new ArrayList<Integer>();
 }
