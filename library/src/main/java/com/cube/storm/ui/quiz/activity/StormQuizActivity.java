@@ -22,6 +22,7 @@ import com.cube.storm.ui.data.FragmentPackage;
 import com.cube.storm.ui.lib.adapter.StormPageAdapter;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
+import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
@@ -63,7 +64,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 
 		setContentView(R.layout.quiz_view);
 
-		pageAdapter = new StormPageAdapter(this, getSupportFragmentManager());
+		pageAdapter = new StormQuizPageAdapter(this, getSupportFragmentManager());
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressFill = findViewById(R.id.progress_fill);
