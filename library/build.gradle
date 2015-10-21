@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 21
-	buildToolsVersion "21.1.2"
+	compileSdkVersion 22
+	buildToolsVersion "22.0.1"
 
 	defaultConfig {
 		minSdkVersion 15
-		targetSdkVersion 21
+		targetSdkVersion 22
 	}
 
 	packagingOptions {
@@ -35,7 +35,7 @@ dependencies {
 	compile 'com.android.support:support-v13:22.2.0'
 	compile 'org.projectlombok:lombok:1.14.8'
 
-	compile 'com.3sidedcube.storm:ui:0.3.1-internal'
+	compile 'com.3sidedcube.storm:ui:0.3.5-streaming'
 }
 
 def srcJava = 'src/main/java'
