@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 22
-	buildToolsVersion "22.0.1"
+	compileSdkVersion 23
+	buildToolsVersion "23.0.2"
 
 	defaultConfig {
 		minSdkVersion 15
-		targetSdkVersion 22
+		targetSdkVersion 23
 	}
 
 	packagingOptions {
@@ -23,19 +23,17 @@ android {
 		exclude 'LICENSE.txt'
 	}
 
-	android {
-		lintOptions {
-			abortOnError false
-		}
+	lintOptions {
+		abortOnError false
 	}
 }
 
 dependencies {
-	compile 'com.android.support:support-annotations:22.2.0'
-	compile 'com.android.support:support-v13:22.2.0'
+	compile 'com.android.support:support-annotations:23.1.0'
+	compile 'com.android.support:support-v13:23.1.0'
 	compile 'org.projectlombok:lombok:1.14.8'
 
-	compile 'com.3sidedcube.storm:ui:0.3.5-streaming'
+	compile 'com.3sidedcube.storm:ui:0.4-internal'
 }
 
 def srcJava = 'src/main/java'

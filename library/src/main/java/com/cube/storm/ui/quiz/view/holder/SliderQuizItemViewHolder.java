@@ -70,7 +70,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 			if (model.getTitle() != null)
 			{
-				String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit().getContent());
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit());
 
 				if (!TextUtils.isEmpty(content))
 				{
@@ -100,7 +100,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 				if (model.getTitle() != null)
 				{
-					String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit().getContent());
+					String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit());
 
 					if (!TextUtils.isEmpty(content))
 					{

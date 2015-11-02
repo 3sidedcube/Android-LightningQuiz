@@ -3,6 +3,8 @@ package com.cube.storm.ui.quiz.model.quiz;
 import com.cube.storm.ui.model.property.ImageProperty;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true) @Data
 public class AreaQuizItem extends QuizItem
 {
-	public ImageProperty image;
+	public ArrayList<ImageProperty> image;
 	public ZoneProperty[] answer;
 }

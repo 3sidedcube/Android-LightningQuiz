@@ -77,9 +77,9 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 			return;
 		}
 
-		if (page.getLoseMessage() != null && !TextUtils.isEmpty(page.getLoseMessage().getContent()))
+		if (page.getLoseMessage() != null)
 		{
-			loseTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getLoseMessage().getContent()));
+			loseTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getLoseMessage()));
 		}
 		else
 		{
@@ -98,8 +98,8 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 					{
 						((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
 
-						((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle().getContent()));
-						((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(question.getFailure().getContent()));
+						((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
+						((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(question.getFailure()));
 						(row.findViewById(R.id.description)).setVisibility(View.VISIBLE);
 
 						remember.addView(row);
@@ -124,7 +124,7 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 				if (embeddedLinkView != null)
 				{
 					Button button = (Button)embeddedLinkView.findViewById(R.id.button);
-					button.setText(property.getTitle().getContent());
+					button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
 
 					button.setOnClickListener(new View.OnClickListener()
 					{

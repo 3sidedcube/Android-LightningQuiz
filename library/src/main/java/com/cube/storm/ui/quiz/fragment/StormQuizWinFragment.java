@@ -93,9 +93,9 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 			return;
 		}
 
-		if (page.getTitle() != null && !TextUtils.isEmpty(page.getTitle().getContent()))
+		if (page.getTitle() != null)
 		{
-			winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle().getContent()));
+			winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle()));
 		}
 		else
 		{
@@ -116,7 +116,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 				if (embeddedLinkView != null)
 				{
 					Button button = (Button)embeddedLinkView.findViewById(R.id.button);
-					button.setText(property.getTitle().getContent());
+					button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
 
 					button.setOnClickListener(new View.OnClickListener()
 					{
@@ -143,9 +143,9 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		{
 			String shareText = "";
 
-			if (badge.getShareMessage() != null && !TextUtils.isEmpty(badge.getShareMessage().getContent()))
+			if (badge.getShareMessage() != null)
 			{
-				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage().getContent());
+				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage());
 			}
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -164,7 +164,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 	private Uri saveBadgeToTemp(BadgeProperty badgeProperty)
 	{
 		Bitmap badgeBitmap = null;
-		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(badgeProperty.getIcon().getSrc()));
+		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(ImageHelper.getImageSrc(badgeProperty.getIcon())));
 
 		if (stream != null)
 		{
@@ -206,10 +206,10 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 			badgeProperty.setAchieved(getActivity(), true);
 			ImageHelper.displayImage(badge, badgeProperty.getIcon());
 
-			if (badgeProperty.getTitle() != null && !TextUtils.isEmpty(badgeProperty.getTitle().getContent()))
+			if (badgeProperty.getTitle() != null)
 			{
-				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion().getContent()));
-				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion().getContent()));
+				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
+				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
 			}
 		}
 	}
