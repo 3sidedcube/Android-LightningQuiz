@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -33,6 +34,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import lombok.Getter;
 
@@ -161,13 +163,13 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 	private Uri saveBadgeToTemp(BadgeProperty badgeProperty)
 	{
 		Bitmap badgeBitmap = null;
-		byte[] data = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(badgeProperty.getIcon().getSrc()));
+		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(badgeProperty.getIcon().getSrc()));
 
-		if (data != null)
+		if (stream != null)
 		{
 			BitmapFactory.Options opt = new BitmapFactory.Options();
 			opt.inScaled = false;
-			badgeBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+			badgeBitmap = BitmapFactory.decodeStream(stream, new Rect(0, 0, 0, 0), opt);
 		}
 
 		// Write to file

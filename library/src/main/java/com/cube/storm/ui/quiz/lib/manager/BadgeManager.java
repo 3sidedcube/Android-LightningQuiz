@@ -7,7 +7,7 @@ import com.cube.storm.UiSettings;
 import com.cube.storm.ui.quiz.model.property.BadgeProperty;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,18 +71,18 @@ public class BadgeManager
 	@Nullable
 	public ArrayList<BadgeProperty> loadBadgesFromPath(Uri path)
 	{
-		byte[] pageData = UiSettings.getInstance().getFileFactory().loadFromUri(path);
-
-		if (pageData != null)
+		try
 		{
-			try
+			InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(path);
+
+			if (stream != null)
 			{
-				return UiSettings.getInstance().getViewBuilder().build(new String(pageData, "UTF-8"), new TypeToken<ArrayList<BadgeProperty>>(){}.getType());
+				return UiSettings.getInstance().getViewBuilder().build(stream, new TypeToken<ArrayList<BadgeProperty>>(){}.getType());
 			}
-			catch (UnsupportedEncodingException e)
-			{
-				e.printStackTrace();
-			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		return null;
