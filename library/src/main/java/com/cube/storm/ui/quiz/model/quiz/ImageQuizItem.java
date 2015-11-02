@@ -21,5 +21,5 @@ import lombok.experimental.Accessors;
 public class ImageQuizItem extends ItemQuizItem
 {
 	protected ArrayList<TextProperty> options;
-	protected ArrayList<ImageProperty> images;
+	protected ArrayList<ArrayList<ImageProperty>> images;
 }

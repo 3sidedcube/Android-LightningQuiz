@@ -13,6 +13,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
@@ -79,11 +80,19 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 		}
 		if (model.getImage() != null)
 		{
-			ImageLoader.getInstance().displayImage(model.getImage().getSrc(), image, new ImageLoadingListener()
+			ImageHelper.displayImage(image, model.getImage(), new ImageLoadingListener()
 			{
-				@Override public void onLoadingStarted(String imageUri, View view){}
-				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason){}
-				@Override public void onLoadingCancelled(String imageUri, View view){}
+				@Override public void onLoadingStarted(String imageUri, View view)
+				{
+				}
+
+				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
+				{
+				}
+
+				@Override public void onLoadingCancelled(String imageUri, View view)
+				{
+				}
 
 				@Override public void onLoadingComplete(String imageUri, final View view, final Bitmap loadedImage)
 				{
@@ -95,6 +104,7 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 						}
 					});
 				}
+
 			});
 			canvas.setOnTouchListener(new OnTouchListener()
 			{

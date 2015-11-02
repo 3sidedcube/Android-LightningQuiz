@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.manager.BadgeManager;
@@ -92,9 +93,9 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 			return;
 		}
 
-		if (page.getTitle() != null && !TextUtils.isEmpty(page.getTitle().getContent()))
+		if (page.getTitle() != null)
 		{
-			winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle().getContent()));
+			winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle()));
 		}
 		else
 		{
@@ -115,7 +116,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 				if (embeddedLinkView != null)
 				{
 					Button button = (Button)embeddedLinkView.findViewById(R.id.button);
-					button.setText(property.getTitle().getContent());
+					button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
 
 					button.setOnClickListener(new View.OnClickListener()
 					{
@@ -142,9 +143,9 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		{
 			String shareText = "";
 
-			if (badge.getShareMessage() != null && !TextUtils.isEmpty(badge.getShareMessage().getContent()))
+			if (badge.getShareMessage() != null)
 			{
-				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage().getContent());
+				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage());
 			}
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -163,7 +164,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 	private Uri saveBadgeToTemp(BadgeProperty badgeProperty)
 	{
 		Bitmap badgeBitmap = null;
-		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(badgeProperty.getIcon().getSrc()));
+		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(ImageHelper.getImageSrc(badgeProperty.getIcon())));
 
 		if (stream != null)
 		{
@@ -203,34 +204,12 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		if (badgeProperty != null)
 		{
 			badgeProperty.setAchieved(getActivity(), true);
+			ImageHelper.displayImage(badge, badgeProperty.getIcon());
 
-			UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getSrc(), badge, new SimpleImageLoadingListener()
+			if (badgeProperty.getTitle() != null)
 			{
-				@Override public void onLoadingStarted(String imageUri, View view)
-				{
-					badge.setVisibility(View.INVISIBLE);
-				}
-
-				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
-				{
-					if (!imageUri.equalsIgnoreCase(badgeProperty.getIcon().getFallbackSrc()))
-					{
-						UiSettings.getInstance().getImageLoader().displayImage(badgeProperty.getIcon().getFallbackSrc(), badge, this);
-					}
-
-					badge.setVisibility(View.VISIBLE);
-				}
-
-				@Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-				{
-					badge.setVisibility(View.VISIBLE);
-				}
-			});
-
-			if (badgeProperty.getTitle() != null && !TextUtils.isEmpty(badgeProperty.getTitle().getContent()))
-			{
-				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion().getContent()));
-				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion().getContent()));
+				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
+				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
 			}
 		}
 	}

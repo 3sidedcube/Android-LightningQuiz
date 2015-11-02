@@ -107,7 +107,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	{
 		if (page.getTitle() != null)
 		{
-			String title = UiSettings.getInstance().getTextProcessor().process(page.getTitle().getContent());
+			String title = UiSettings.getInstance().getTextProcessor().process(page.getTitle());
 
 			if (!TextUtils.isEmpty(title))
 			{

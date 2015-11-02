@@ -1,15 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 22
-	buildToolsVersion "22.0.1"
+	compileSdkVersion 23
+	buildToolsVersion "23.0.2"
 
 	defaultConfig {
 		applicationId "com.cube.storm.ui.quiz.example"
 		minSdkVersion 15
-		targetSdkVersion 22
-		versionCode 1
-		versionName "1.0"
+		targetSdkVersion 23
 	}
 
 	packagingOptions {
@@ -26,15 +24,13 @@ android {
 		exclude 'LICENSE.txt'
 	}
 
-	android {
-		lintOptions {
-			abortOnError false
-		}
+	lintOptions {
+		abortOnError false
 	}
 }
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile 'com.android.support:appcompat-v7:22.2.0'
+	compile 'com.android.support:appcompat-v7:23.1.0'
 	compile project(':library')
 }
