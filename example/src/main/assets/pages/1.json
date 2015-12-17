@@ -97,6 +97,49 @@
 				"class": "Text",
 				"content": "Select an option"
 			}
+		},
+		{
+			"answer": 50,
+			"class": "SliderQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed #3"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is 50"
+			},
+			"image": [
+				{
+					"class": "Image",
+					"src": {
+						"class": "InternalLink",
+						"destination": "assets://content/item.jpg"
+					},
+					"dimensions": {
+						"width": 640,
+						"height": 640
+					}
+				}
+			],
+			"initialPosition": 15,
+			"range": {
+				"class": "Range",
+				"length": 100,
+				"start": 0
+			},
+			"title": {
+				"class": "Text",
+				"content": "Question 2"
+			},
+			"unit": {
+				"class": "Text",
+				"content": "units"
+			}
 		}
 	],
 	"loseMessage": {
