@@ -1,0 +1,119 @@
+{
+	"class": "QuizPage",
+	"id": 1,
+	"badgeId": 1,
+	"children": [
+		{
+			"class": "ImageQuizItem",
+			"answer": [
+				0
+			],
+			"completion": {
+				"class": "Text",
+				"content": "Completed 1"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 1"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is #1"
+			},
+			"images": [
+				[
+					{
+						"class": "Image",
+						"src": {
+							"class": "InternalLink",
+							"destination": "assets://content/item.jpg"
+						},
+						"dimensions": {
+							"width": 640,
+							"height": 640
+						}
+					}
+				],
+				[
+					{
+						"class": "Image",
+						"src": {
+							"class": "InternalLink",
+							"destination": "assets://content/item.jpg"
+						},
+						"dimensions": {
+							"width": 640,
+							"height": 640
+						}
+					}
+				],
+				[
+					{
+						"class": "Image",
+						"src": {
+							"class": "InternalLink",
+							"destination": "assets://content/item.jpg"
+						},
+						"dimensions": {
+							"width": 640,
+							"height": 640
+						}
+					}
+				],
+				[
+					{
+						"class": "Image",
+						"src": {
+							"class": "InternalLink",
+							"destination": "assets://content/item.jpg"
+						},
+						"dimensions": {
+							"width": 640,
+							"height": 640
+						}
+					}
+				]
+			],
+			"limit": 1,
+			"options": [
+				{
+					"class": "Text",
+					"content": "option 1"
+				},
+				{
+					"class": "Text",
+					"content": "option 2"
+				},
+				{
+					"class": "Text",
+					"content": "option 3"
+				},
+				{
+					"class": "Text",
+					"content": "option 4"
+				}
+			],
+			"title": {
+				"class": "Text",
+				"content": "Select an option"
+			}
+		}
+	],
+	"loseMessage": {
+		"class": "Text",
+		"content": "You lost"
+	},
+	"name": "",
+	"shareMessage": {
+		"class": "Text",
+		"content": "Shared test"
+	},
+	"title": {
+		"class": "Text",
+		"content": "Test title"
+	},
+	"winMessage": {
+		"class": "Text",
+		"content": "You won"
+	}
+}
