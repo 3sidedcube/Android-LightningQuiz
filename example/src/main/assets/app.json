@@ -1,0 +1,12 @@
+{
+    "class": "App",
+    "map": [
+        {
+            "class": "PageDescriptor",
+            "src": "assets://pages/1.json",
+            "type": "QuizPage"
+        }
+    ],
+    "vector": "assets://pages/1.json"
+}
+
