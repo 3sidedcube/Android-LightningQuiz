@@ -142,46 +142,109 @@
 			}
 		},
 		{
-            "answer": [
-                0
-            ],
-            "class": "TextQuizItem",
-            "completion": {
-                "class": "Text",
-                "content": "Completed"
-            },
-            "failure": {
-                "class": "Text",
-                "content": "Failed 3"
-            },
-            "hint": {
-                "class": "Text",
-                "content": "Answer is #1"
-            },
-            "limit": 1,
-            "options": [
-                {
-                    "class": "Text",
-                    "content": "Option 1"
-                },
-                {
-                    "class": "Text",
-                    "content": "Option 2"
-                },
-                {
-                    "class": "Text",
-                    "content": "Option 3"
-                },
-                {
-                    "class": "Text",
-                    "content": "Option 4"
-                }
-            ],
-            "title": {
-                "class": "Text",
-                "content": "Question 3"
-            }
-        }
+			"answer": [
+				0
+			],
+			"class": "TextQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 3"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is #1"
+			},
+			"limit": 1,
+			"options": [
+				{
+					"class": "Text",
+					"content": "Option 1"
+				},
+				{
+					"class": "Text",
+					"content": "Option 2"
+				},
+				{
+					"class": "Text",
+					"content": "Option 3"
+				},
+				{
+					"class": "Text",
+					"content": "Option 4"
+				}
+			],
+			"title": {
+				"class": "Text",
+				"content": "Question 3"
+			}
+		},
+		{
+			"answer": [
+				{
+					"class": "Zone",
+					"coordinates": [
+						{
+							"class": "Coordinate",
+							"x": 0.5,
+							"y": 0.5,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 1.0,
+							"y": 0.5,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 1.0,
+							"y": 1.0,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 0.5,
+							"y": 1,
+							"z": null
+						}
+					]
+				}
+			],
+			"class": "AreaQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 4"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is bottom right quadrant"
+			},
+			"image": [
+				{
+					"class": "Image",
+					"src": {
+						"class": "InternalLink",
+						"destination": "assets://content/item.jpg"
+					},
+					"dimensions": {
+						"width": 640,
+						"height": 640
+					}
+				}
+			],
+			"title": {
+				"class": "Text",
+				"content": "Question 4"
+			}
+		}
 	],
 	"loseMessage": {
 		"class": "Text",

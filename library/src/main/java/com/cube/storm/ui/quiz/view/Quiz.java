@@ -34,7 +34,7 @@ public enum Quiz
 	/**
 		Copied from old Storm, name will need to be changed
 	 */
-	AreaSelectionQuestion(com.cube.storm.ui.quiz.model.quiz.AreaQuizItem.class, AreaQuizItemViewHolder.Factory.class),
+	AreaQuizItem(com.cube.storm.ui.quiz.model.quiz.AreaQuizItem.class, AreaQuizItemViewHolder.Factory.class),
 
 	/**
 	 * Quiz page
