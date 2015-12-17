@@ -1,0 +1,238 @@
+{
+	"class": "QuizPage",
+	"id": 1,
+	"badgeId": 1,
+	"children": [
+		{
+			"class": "ImageQuizItem",
+			"answer": [
+				0
+			],
+			"completion": {
+				"class": "Text",
+				"content": "Completed 1"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 1"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is #1"
+			},
+			"images": [
+				{
+					"class": "Image",
+					"src": {
+						"class": "ImageDescriptor",
+						"x0.75": "assets://content/item.jpg",
+						"x1": "assets://content/item.jpg",
+						"x1.5": "assets://content/item.jpg",
+						"x2": "assets://content/item.jpg"
+					}
+				},
+				{
+					"class": "Image",
+					"src": {
+						"class": "ImageDescriptor",
+						"x0.75": "assets://content/item.jpg",
+						"x1": "assets://content/item.jpg",
+						"x1.5": "assets://content/item.jpg",
+						"x2": "assets://content/item.jpg"
+					}
+				},
+				{
+					"class": "Image",
+					"src": {
+						"class": "ImageDescriptor",
+						"x0.75": "assets://content/item.jpg",
+						"x1": "assets://content/item.jpg",
+						"x1.5": "assets://content/item.jpg",
+						"x2": "assets://content/item.jpg"
+					}
+				}
+			],
+			"limit": 1,
+			"options": [
+				{
+					"class": "Text",
+					"content": "option 1"
+				},
+				{
+					"class": "Text",
+					"content": "option 2"
+				},
+				{
+					"class": "Text",
+					"content": "option 3"
+				},
+				{
+					"class": "Text",
+					"content": "option 4"
+				}
+			],
+			"title": {
+				"class": "Text",
+				"content": "Select an option"
+			}
+		},
+		{
+			"answer": 50,
+			"class": "SliderQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 2"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is 50"
+			},
+			"image": {
+				"class": "Image",
+				"src": {
+					"class": "ImageDescriptor",
+					"x0.75": "assets://content/item.jpg",
+					"x1": "assets://content/item.jpg",
+					"x1.5": "assets://content/item.jpg",
+					"x2": "assets://content/item.jpg"
+				}
+			},
+			"initialPosition": 15,
+			"range": {
+				"class": "Range",
+				"length": 100,
+				"start": 0
+			},
+			"title": {
+				"class": "Text",
+				"content": "Question 2"
+			},
+			"unit": {
+				"class": "Text",
+				"content": "units"
+			}
+		},
+		{
+			"answer": [
+				0
+			],
+			"class": "TextQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 3"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is #1"
+			},
+			"limit": 1,
+			"options": [
+				{
+					"class": "Text",
+					"content": "Option 1"
+				},
+				{
+					"class": "Text",
+					"content": "Option 2"
+				},
+				{
+					"class": "Text",
+					"content": "Option 3"
+				},
+				{
+					"class": "Text",
+					"content": "Option 4"
+				}
+			],
+			"title": {
+				"class": "Text",
+				"content": "Question 3"
+			}
+		},
+		{
+			"answer": [
+				{
+					"class": "Zone",
+					"coordinates": [
+						{
+							"class": "Coordinate",
+							"x": 0.5,
+							"y": 0.5,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 1.0,
+							"y": 0.5,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 1.0,
+							"y": 1.0,
+							"z": null
+						},
+						{
+							"class": "Coordinate",
+							"x": 0.5,
+							"y": 1,
+							"z": null
+						}
+					]
+				}
+			],
+			"class": "AreaQuizItem",
+			"completion": {
+				"class": "Text",
+				"content": "Completed"
+			},
+			"failure": {
+				"class": "Text",
+				"content": "Failed 4"
+			},
+			"hint": {
+				"class": "Text",
+				"content": "Answer is bottom right quadrant"
+			},
+			"image": {
+				"class": "Image",
+				"src": {
+					"class": "ImageDescriptor",
+					"x0.75": "assets://content/item.jpg",
+					"x1": "assets://content/item.jpg",
+					"x1.5": "assets://content/item.jpg",
+					"x2": "assets://content/item.jpg"
+				}
+			},
+			"title": {
+				"class": "Text",
+				"content": "Question 4"
+			}
+		}
+	],
+	"loseMessage": {
+		"class": "Text",
+		"content": "You lost"
+	},
+	"name": "",
+	"shareMessage": {
+		"class": "Text",
+		"content": "Shared test"
+	},
+	"title": {
+		"class": "Text",
+		"content": "Test title"
+	},
+	"winMessage": {
+		"class": "Text",
+		"content": "You won"
+	}
+}
