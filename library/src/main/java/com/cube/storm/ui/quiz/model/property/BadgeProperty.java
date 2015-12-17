@@ -9,7 +9,10 @@ import com.cube.storm.ui.model.property.TextProperty;
 
 import java.util.ArrayList;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * // TODO: Add class description
@@ -17,13 +20,15 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class BadgeProperty extends Property
 {
-	@Getter private TextProperty title;
-	@Getter private TextProperty completion;
-	@Getter private TextProperty how;
-	@Getter private TextProperty shareMessage;
-	@Getter private ArrayList<ImageProperty> icon;
+	protected TextProperty title;
+	protected TextProperty completion;
+	protected TextProperty how;
+	protected TextProperty shareMessage;
+	protected ArrayList<ImageProperty> icon;
 
 	/**
 	 * Returns if the badge has been achieved or not

@@ -4,7 +4,10 @@ import android.os.Parcel;
 
 import com.cube.storm.ui.model.property.Property;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * // TODO: Add class description
@@ -12,10 +15,12 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class RangeProperty extends Property
 {
-	@Getter private int start;
-	@Getter private int length;
+	protected int start;
+	protected int length;
 
 	@Override public int describeContents()
 	{

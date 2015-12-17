@@ -9,7 +9,10 @@ import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 import java.util.Collection;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * Basic list page model which has an array of {@link com.cube.storm.ui.quiz.model.quiz.QuizItem} models
@@ -17,37 +20,39 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class QuizPage extends Page
 {
 	/**
 	 * The ID of the badge object that is awarded at the end of the quiz
 	 */
-	@Getter private String badgeId;
+	protected String badgeId;
 
 	/**
 	 * Collection of related links to display at the end of the quiz if the user passed the quiz
 	 */
-	@Getter private Collection<LinkProperty> winRelatedLinks;
+	protected Collection<LinkProperty> winRelatedLinks;
 
 	/**
 	 * Collection of related links to display at the end of the quiz if the user failed the quiz
 	 */
-	@Getter private Collection<LinkProperty> loseRelatedLinks;
+	protected Collection<LinkProperty> loseRelatedLinks;
 
 	/**
 	 * Message to display if the user passed the quiz
 	 */
-	@Getter private TextProperty winMessage;
+	protected TextProperty winMessage;
 
 	/**
 	 * Message to display if the user failed the quiz
 	 */
-	@Getter private TextProperty loseMessage;
+	protected TextProperty loseMessage;
 
 	/**
 	 * The array list of children {@link com.cube.storm.ui.quiz.model.quiz.QuizItem}
 	 */
-	@Getter protected Collection<QuizItem> children;
+	protected Collection<QuizItem> children;
 
 	@Override public int describeContents()
 	{
