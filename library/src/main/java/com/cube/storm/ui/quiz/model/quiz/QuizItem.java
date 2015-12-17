@@ -20,12 +20,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true) @Data
 public class QuizItem extends Model
 {
-	private TextProperty title;
-	private TextProperty failure;
-	private TextProperty completion;
-	private TextProperty hint;
+	protected TextProperty title;
+	protected TextProperty failure;
+	protected TextProperty completion;
+	protected TextProperty hint;
 
-	private boolean correct = false;
+	protected boolean correct = false;
 
 	@Override public int describeContents()
 	{

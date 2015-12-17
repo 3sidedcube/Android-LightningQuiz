@@ -21,9 +21,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true) @Data
 public class QuizGridItem extends GridItem
 {
-	private TextProperty title;
-	private LinkProperty link;
-	private String badgeId;
+	protected TextProperty title;
+	protected LinkProperty link;
+	protected String badgeId;
 
 	@Override public int describeContents()
 	{

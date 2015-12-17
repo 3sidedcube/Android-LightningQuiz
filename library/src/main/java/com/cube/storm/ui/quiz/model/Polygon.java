@@ -10,6 +10,7 @@ import java.util.List;
  * @documentation // TODO Reference flow doc
  * @project Hazards
  */
+
 public class Polygon
 {
 	private final BoundingBox _boundingBox;

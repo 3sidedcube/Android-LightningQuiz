@@ -13,11 +13,18 @@ import com.cube.storm.ui.model.property.Property;
 import com.cube.storm.ui.quiz.model.Point;
 import com.cube.storm.ui.quiz.model.Polygon;
 
-import lombok.Getter;
+import java.util.ArrayList;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@Accessors(chain = true) @Data
 public class ZoneProperty extends Property
 {
-	@Getter private CoordinateProperty[] coordinates;
+	protected ArrayList<CoordinateProperty> coordinates;
 
 	public boolean contains(float x, float y)
 	{
@@ -25,15 +32,14 @@ public class ZoneProperty extends Property
 
 		if (coordinates != null)
 		{
-			for (int index = 0; index < coordinates.length; index++)
+			for (int index = 0; index < coordinates.size(); index++)
 			{
-				CoordinateProperty point = coordinates[index];
+				CoordinateProperty point = coordinates.get(index);
 				polyBuilder.addVertex(new Point(point.getX(), point.getY()));
 			}
 		}
 
-		boolean ret = polyBuilder.build().contains(new Point(x, y));
-		return ret;
+		return polyBuilder.build().contains(new Point(x, y));
 	}
 
 	@Override public int describeContents()

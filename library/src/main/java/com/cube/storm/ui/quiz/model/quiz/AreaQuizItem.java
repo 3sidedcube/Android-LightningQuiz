@@ -20,6 +20,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true) @Data
 public class AreaQuizItem extends QuizItem
 {
-	public ArrayList<ImageProperty> image;
-	public ZoneProperty[] answer;
+	protected ArrayList<ImageProperty> image;
+	protected ArrayList<ZoneProperty> answer;
 }
