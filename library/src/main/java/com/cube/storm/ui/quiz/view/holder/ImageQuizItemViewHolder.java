@@ -62,7 +62,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 
 		for (int index = 0; index < optionLength; index++)
 		{
-			if(index % 2 == 0)
+			if (index % 2 == 0)
 			{
 				currentRow = LayoutInflater.from(options.getContext()).inflate(R.layout.image_quiz_item_row, options, false);
 				options.addView(currentRow);
@@ -75,13 +75,17 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 
 			((TextView)currentCell.findViewById(R.id.label)).populate(textOptions.get(index));
 
-			if(index < images.size())
+			if (index < images.size())
 			{
 				((ImageView)currentCell.findViewById(R.id.image)).populate(model.getImages().get(index));
+				currentCell.setTag(R.id.checkbox, index);
+				currentCell.setOnClickListener(new ModelClickListener(model));
+				currentCell.setVisibility(View.VISIBLE);
 			}
-
-			currentCell.setTag(R.id.checkbox, index);
-			currentCell.setOnClickListener(new ModelClickListener(model));
+			else if (index >= images.size())
+			{
+				currentCell.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 
@@ -116,7 +120,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 				int remIndex = model.getSelectHistory().get(0);
 				model.getSelectHistory().remove(0);
 
-				if(remIndex % 2 == 0)
+				if (remIndex % 2 == 0)
 				{
 					((CheckBox)options.getChildAt((int)Math.floor(remIndex / 2)).findViewById(R.id.layout1).findViewById(R.id.checkbox)).setChecked(false);
 				}
