@@ -4,12 +4,18 @@ import android.support.annotation.NonNull;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.factory.IntentFactory;
-import com.cube.storm.ui.lib.factory.ViewFactory;
 import com.cube.storm.ui.lib.parser.ViewProcessor;
+import com.cube.storm.ui.lib.resolver.DefaultViewResolver;
+import com.cube.storm.ui.lib.resolver.ViewResolver;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.quiz.lib.factory.QuizIntentFactory;
-import com.cube.storm.ui.quiz.lib.factory.QuizViewFactory;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+import com.cube.storm.ui.quiz.view.holder.AreaQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.ImageQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.SliderQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemViewHolder;
 
 /**
  * Settings class for the quiz module.
@@ -82,17 +88,33 @@ public class QuizSettings
 		{
 			this.uiSettings = uiSettings;
 
+			// Register quiz views into view resolver
+			this.uiSettings.getViewResolvers().put("Badge", new DefaultViewResolver(com.cube.storm.ui.quiz.model.property.BadgeProperty.class, null));
+			this.uiSettings.getViewResolvers().put("TextQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("QuizGridItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("QuizCollectionItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("ImageQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("SliderQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("AreaQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.AreaQuizItem.class, AreaQuizItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("QuizPage", new DefaultViewResolver(com.cube.storm.ui.quiz.model.page.QuizPage.class, null));
+
 			ViewProcessor<? extends Model> baseProcessor = new ViewProcessor<Model>()
 			{
 				@Override public Class<? extends Model> getClassFromName(String name)
 				{
-					return UiSettings.getInstance().getViewFactory().getModelForView(name);
+					ViewResolver resolver = UiSettings.getInstance().getViewResolvers().get(name);
+
+					if (resolver != null)
+					{
+						return resolver.resolveModel();
+					}
+
+					return null;
 				}
 			};
 
 			this.uiSettings.getViewProcessors().put(QuizItem.class, baseProcessor);
 
-			viewFactory(new QuizViewFactory(uiSettings.getViewFactory()));
 			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}
 
@@ -107,21 +129,6 @@ public class QuizSettings
 		public Builder intentFactory(@NonNull IntentFactory intentFactory)
 		{
 			uiSettings.setIntentFactory(intentFactory);
-
-			return this;
-		}
-
-		/**
-		 * Replaces the view factory set in {@link com.cube.storm.UiSettings}. You should not use this
-		 * method, but instead set your custom view factory in {@link com.cube.storm.UiSettings.Builder#viewFactory}
-		 *
-		 * @param viewFactory The view factory used to catch Quiz models
-		 *
-		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
-		 */
-		public Builder viewFactory(@NonNull ViewFactory viewFactory)
-		{
-			uiSettings.setViewFactory(viewFactory);
 
 			return this;
 		}
