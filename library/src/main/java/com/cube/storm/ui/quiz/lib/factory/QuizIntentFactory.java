@@ -11,6 +11,7 @@ import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.lib.factory.IntentFactory;
+import com.cube.storm.ui.lib.resolver.ViewResolver;
 import com.cube.storm.ui.model.App;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
@@ -78,59 +79,73 @@ public class QuizIntentFactory extends IntentFactory
 	@Nullable @Override public FragmentIntent getFragmentIntentForPageDescriptor(@NonNull PageDescriptor pageDescriptor)
 	{
 		Class<?> fragment = null;
-		Class<? extends Model> pageType = UiSettings.getInstance().getViewFactory().getModelForView(pageDescriptor.getType());
+		ViewResolver viewResolver = UiSettings.getInstance().getViewResolvers().get(pageDescriptor.getType());
 
-		if (pageType != null)
+		if (viewResolver != null)
 		{
-			if (QuizPage.class.isAssignableFrom(pageType))
+			Class<? extends Model> pageType = viewResolver.resolveModel();
+
+			if (pageType != null)
 			{
-				fragment = StormQuizFragment.class;
+				if (QuizPage.class.isAssignableFrom(pageType))
+				{
+					fragment = StormQuizFragment.class;
+				}
 			}
+
+			FragmentIntent ret = superFactory.getFragmentIntentForPageDescriptor(pageDescriptor);
+
+			// Override the fragment if we need to
+			if (fragment != null && (ret == null || ret.getFragment() == null))
+			{
+				if (ret == null)
+				{
+					Bundle args = new Bundle();
+					args.putString(StormActivity.EXTRA_URI, pageDescriptor.getSrc());
+
+					ret = new FragmentIntent(fragment, null, args);
+				}
+				else
+				{
+					ret.setFragment(fragment);
+				}
+			}
+
+			return ret;
 		}
 
-		FragmentIntent ret = superFactory.getFragmentIntentForPageDescriptor(pageDescriptor);
-
-		// Override the fragment if we need to
-		if (fragment != null && (ret == null || ret.getFragment() == null))
-		{
-			if (ret == null)
-			{
-				Bundle args = new Bundle();
-				args.putString(StormActivity.EXTRA_URI, pageDescriptor.getSrc());
-
-				ret = new FragmentIntent(fragment, null, args);
-			}
-			else
-			{
-				ret.setFragment(fragment);
-			}
-		}
-
-		return ret;
+		return null;
 	}
 
 	@Nullable @Override public Intent getIntentForPageDescriptor(@NonNull Context context, @NonNull PageDescriptor pageDescriptor)
 	{
 		Intent ret = superFactory.getIntentForPageDescriptor(context, pageDescriptor);
-		Class<? extends Model> pageType = UiSettings.getInstance().getViewFactory().getModelForView(pageDescriptor.getType());
+		ViewResolver viewResolver = UiSettings.getInstance().getViewResolvers().get(pageDescriptor.getType());
 
-		if (pageType != null)
+		if (viewResolver != null)
 		{
-			if (QuizPage.class.isAssignableFrom(pageType))
+			Class<? extends Model> pageType = viewResolver.resolveModel();
+
+			if (pageType != null)
 			{
-				Bundle extras = new Bundle();
-
-				if (ret != null)
+				if (QuizPage.class.isAssignableFrom(pageType))
 				{
-					extras = ret.getExtras();
-				}
+					Bundle extras = new Bundle();
 
-				ret = new Intent(context, StormQuizActivity.class);
-				ret.putExtras(extras);
+					if (ret != null)
+					{
+						extras = ret.getExtras();
+					}
+
+					ret = new Intent(context, StormQuizActivity.class);
+					ret.putExtras(extras);
+				}
 			}
+
+			return ret;
 		}
 
-		return ret;
+		return null;
 	}
 
 	@Nullable @Override public FragmentIntent getFragmentIntentForPage(@NonNull Page pageData)
