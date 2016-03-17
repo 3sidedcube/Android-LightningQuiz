@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/root_view"
+	android:orientation="vertical">
+
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/question"
+		android:gravity="center"
+		android:textSize="16sp"
+		android:padding="8dp"
+	/>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<com.cube.storm.ui.view.AspectRatioImageView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/image_view"
+			android:layout_gravity="center_horizontal"
+			/>
+
+		<com.cube.storm.ui.view.ImageView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/canvas"
+			android:layout_gravity="center_horizontal"
+			/>
+	</FrameLayout>
+</LinearLayout>

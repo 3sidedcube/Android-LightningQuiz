@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:descendantFocusability="blocksDescendants"
+>
+	<include layout="@layout/quiz_question_header" />
+
+	<com.cube.storm.ui.view.AspectRatioImageView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/image"
+		android:layout_gravity="center_horizontal"
+	/>
+
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/slider_text"
+		android:layout_marginTop="8dp"
+		android:layout_gravity="center_horizontal"
+		android:gravity="center"
+		android:textColor="#666666"
+	/>
+
+	<SeekBar
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/slider"
+		android:layout_margin="8dp"
+	/>
+</LinearLayout>
