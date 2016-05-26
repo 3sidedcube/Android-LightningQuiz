@@ -43,6 +43,8 @@ public class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements 
 	{
 		super(view);
 
+		view.setOnClickListener(this);
+
 		image = (ImageView)view.findViewById(R.id.image);
 		title = (TextView)view.findViewById(R.id.title);
 		progress = (ProgressBar)view.findViewById(R.id.progress);
