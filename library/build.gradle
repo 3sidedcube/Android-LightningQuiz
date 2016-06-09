@@ -19,7 +19,7 @@ dependencies {
 	compile 'com.android.support:support-v13:23.3.0'
 	compile 'org.projectlombok:lombok:1.16.8'
 
-	compile 'com.3sidedcube.storm:ui:0.5.2'
+	compile 'com.3sidedcube.storm:ui:0.5.3'
 }
 
 def srcJava = 'src/main/java'
