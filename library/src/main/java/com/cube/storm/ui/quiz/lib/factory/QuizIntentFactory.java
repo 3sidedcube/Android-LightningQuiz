@@ -137,6 +137,7 @@ public class QuizIntentFactory extends IntentFactory
 						extras = ret.getExtras();
 					}
 
+					extras.putString(StormActivity.EXTRA_URI, pageDescriptor.getSrc());
 					ret = new Intent(context, StormQuizActivity.class);
 					ret.putExtras(extras);
 				}
