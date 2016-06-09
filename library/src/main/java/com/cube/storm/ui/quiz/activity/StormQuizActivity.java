@@ -44,8 +44,6 @@ import lombok.Getter;
  */
 public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener, OnClickListener
 {
-	public static final String EXTRA_PAGE = "stormui.page";
-	public static final String EXTRA_URI = "stormui.uri";
 	public static final String EXTRA_QUESTION = "stormquiz.question";
 
 	protected StormPageAdapter pageAdapter;
@@ -82,13 +80,13 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 			return;
 		}
 
-		if (getIntent().getExtras().containsKey(EXTRA_PAGE))
+		if (getIntent().getExtras().containsKey(StormActivity.EXTRA_PAGE))
 		{
-			page = (QuizPage)getIntent().getExtras().get(EXTRA_PAGE);
+			page = (QuizPage)getIntent().getExtras().get(StormActivity.EXTRA_PAGE);
 		}
-		else if (getIntent().getExtras().containsKey(EXTRA_URI))
+		else if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
 		{
-			String pageUri = String.valueOf(getIntent().getExtras().get(EXTRA_URI));
+			String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
 			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
 		}
 
