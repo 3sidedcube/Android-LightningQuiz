@@ -3,16 +3,18 @@ package com.cube.storm.ui.quiz.activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
+
+import lombok.Getter;
 
 /**
  * Base storm activity that hosts a single fragment to host any {@link com.cube.storm.ui.model.page.Page} subclass.
@@ -20,7 +22,7 @@ import com.cube.storm.ui.quiz.model.page.QuizPage;
  * @author Callum Taylor
  * @project StormUI
  */
-public class StormQuizResultsActivity extends ActionBarActivity
+public class StormQuizResultsActivity extends AppCompatActivity implements StormInterface
 {
 	/**
 	 * Reserved URI for won quizes
@@ -38,47 +40,34 @@ public class StormQuizResultsActivity extends ActionBarActivity
 	 */
 	public static final String EXTRA_RESULTS = "storm_quiz.results";
 
-	protected QuizPage page;
-	protected boolean[] results;
+	@Getter protected QuizPage page;
+	@Getter protected boolean[] results;
 
 	@Override protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_view);
+		setContentView(getLayoutResource());
 
-		if (getIntent().getExtras() == null)
+		if (getIntent().getExtras() != null)
 		{
-			Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
-			finish();
+			if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
+			{
+				String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
+				loadPage(pageUri);
+			}
 
-			return;
-		}
+			if (getIntent().getExtras().containsKey(EXTRA_RESULTS))
+			{
+				results = getIntent().getExtras().getBooleanArray(EXTRA_RESULTS);
+			}
 
-		if (getIntent().getExtras().containsKey(EXTRA_RESULTS))
-		{
-			results = getIntent().getExtras().getBooleanArray(EXTRA_RESULTS);
+			loadResultsPage();
 		}
 		else
 		{
-			Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
-			Log.e("LightningQuiz", "No result set was provided for StormQuizResultsActivity");
-			finish();
-
-			return;
+			onLoadFail();
 		}
-
-		if (getIntent().getExtras().containsKey(StormActivity.EXTRA_PAGE))
-		{
-			page = (QuizPage)getIntent().getExtras().get(StormActivity.EXTRA_PAGE);
-		}
-		else if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
-		{
-			String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
-			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
-		}
-
-		loadResultsPage();
 	}
 
 	protected void loadResultsPage()
@@ -114,5 +103,21 @@ public class StormQuizResultsActivity extends ActionBarActivity
 				setTitle(fragmentIntent.getTitle());
 			}
 		}
+	}
+
+	@Override public int getLayoutResource()
+	{
+		return R.layout.activity_view;
+	}
+
+	@Override public void loadPage(String pageUri)
+	{
+		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+	}
+
+	@Override public void onLoadFail()
+	{
+		Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
+		finish();
 	}
 }
