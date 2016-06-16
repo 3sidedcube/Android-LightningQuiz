@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,14 +23,13 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.manager.BadgeManager;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.property.BadgeProperty;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,18 +37,18 @@ import java.io.InputStream;
 
 import lombok.Getter;
 
-public class StormQuizWinFragment extends Fragment implements OnClickListener
+public class StormQuizWinFragment extends Fragment implements OnClickListener, StormInterface
 {
-	@Getter private QuizPage page;
-	protected TextView winTitle;
-	protected TextView winDescription;
-	protected Button home;
-	protected ImageView badge;
-	protected ViewGroup embeddedLinksContainer;
+	@Getter protected QuizPage page;
+	@Getter protected TextView winTitle;
+	@Getter protected TextView winDescription;
+	@Getter protected Button home;
+	@Getter protected ImageView badge;
+	@Getter protected ViewGroup embeddedLinksContainer;
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v = inflater.inflate(R.layout.quiz_win_view, container, false);
+		View v = inflater.inflate(getLayoutResource(), container, false);
 
 		winTitle = (TextView)v.findViewById(R.id.win_title);
 		winDescription = (TextView)v.findViewById(R.id.win_description);
@@ -75,61 +73,10 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		if (getArguments().containsKey(StormActivity.EXTRA_PAGE))
-		{
-			page = (QuizPage)getArguments().get(StormActivity.EXTRA_PAGE);
-		}
-		else if (getArguments().containsKey(StormActivity.EXTRA_URI))
+		if (getArguments().containsKey(StormActivity.EXTRA_URI))
 		{
 			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
-			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
-		}
-
-		if (page == null)
-		{
-			Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
-			getActivity().finish();
-
-			return;
-		}
-
-		if (page.getTitle() != null)
-		{
-			winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle()));
-		}
-		else
-		{
-			winTitle.setVisibility(View.GONE);
-		}
-
-		loadBadge();
-
-		if (page.getWinRelatedLinks() != null)
-		{
-			embeddedLinksContainer.removeAllViews();
-
-			for (LinkProperty link : page.getWinRelatedLinks())
-			{
-				final LinkProperty property = link;
-
-				View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
-				if (embeddedLinkView != null)
-				{
-					Button button = (Button)embeddedLinkView.findViewById(R.id.button);
-					button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
-
-					button.setOnClickListener(new View.OnClickListener()
-					{
-						@Override public void onClick(View v)
-						{
-							UiSettings.getInstance().getLinkHandler().handleLink(v.getContext(), property);
-						}
-					});
-
-					embeddedLinksContainer.setVisibility(View.VISIBLE);
-					embeddedLinksContainer.addView(button);
-				}
-			}
+			loadPage(pageUri);
 		}
 	}
 
@@ -161,7 +108,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		}
 	}
 
-	private Uri saveBadgeToTemp(BadgeProperty badgeProperty)
+	protected Uri saveBadgeToTemp(BadgeProperty badgeProperty)
 	{
 		Bitmap badgeBitmap = null;
 		InputStream stream = UiSettings.getInstance().getFileFactory().loadFromUri(Uri.parse(ImageHelper.getImageSrc(badgeProperty.getIcon())));
@@ -220,5 +167,63 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener
 		{
 			getActivity().finish();
 		}
+	}
+
+	@Override public int getLayoutResource()
+	{
+		return R.layout.quiz_win_view;
+	}
+
+	@Override public void loadPage(String pageUri)
+	{
+		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		if (page != null)
+		{
+			if (page.getTitle() != null)
+			{
+				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getTitle()));
+			}
+			else
+			{
+				winTitle.setVisibility(View.GONE);
+			}
+
+			loadBadge();
+
+			if (page.getWinRelatedLinks() != null)
+			{
+				embeddedLinksContainer.removeAllViews();
+
+				for (LinkProperty link : page.getWinRelatedLinks())
+				{
+					final LinkProperty property = link;
+
+					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
+					if (embeddedLinkView != null)
+					{
+						Button button = (Button)embeddedLinkView.findViewById(R.id.button);
+						button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
+
+						button.setOnClickListener(new View.OnClickListener()
+						{
+							@Override public void onClick(View v)
+							{
+								UiSettings.getInstance().getLinkHandler().handleLink(v.getContext(), property);
+							}
+						});
+
+						embeddedLinksContainer.setVisibility(View.VISIBLE);
+						embeddedLinksContainer.addView(button);
+					}
+				}
+			}
+		}
+	}
+
+	@Override public void onLoadFail()
+	{
+		Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
+		getActivity().finish();
 	}
 }

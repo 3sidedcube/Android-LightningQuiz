@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.data.FragmentPackage;
 import com.cube.storm.ui.lib.adapter.StormPageAdapter;
@@ -42,17 +43,17 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizActivity extends ActionBarActivity implements OnPageChangeListener, OnClickListener
+public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, OnClickListener, StormInterface
 {
 	public static final String EXTRA_QUESTION = "stormquiz.question";
 
-	protected StormPageAdapter pageAdapter;
-	protected QuizPage page;
-	protected ViewPager viewPager;
-	protected Button previous;
-	protected Button next;
-	protected View progressFill;
-	protected View progressEmpty;
+	@Getter protected StormPageAdapter pageAdapter;
+	@Getter protected QuizPage page;
+	@Getter protected ViewPager viewPager;
+	@Getter protected Button previous;
+	@Getter protected Button next;
+	@Getter protected View progressFill;
+	@Getter protected View progressEmpty;
 
 	@Getter private boolean[] correctAnswers;
 
@@ -60,7 +61,7 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	{
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.quiz_view);
+		setContentView(getLayoutResource());
 
 		pageAdapter = new StormQuizPageAdapter(this, getSupportFragmentManager());
 
@@ -72,32 +73,17 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 		previous.setOnClickListener(this);
 		next.setOnClickListener(this);
 
-		if (getIntent().getExtras() == null)
+		if (savedInstanceState == null)
 		{
-			Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
-			finish();
-
-			return;
-		}
-
-		if (getIntent().getExtras().containsKey(StormActivity.EXTRA_PAGE))
-		{
-			page = (QuizPage)getIntent().getExtras().get(StormActivity.EXTRA_PAGE);
-		}
-		else if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
-		{
-			String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
-			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
-		}
-
-		if (page != null)
-		{
-			loadQuiz();
-		}
-		else
-		{
-			// TODO: Error
-			finish();
+			if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
+			{
+				String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
+				loadPage(pageUri);
+			}
+			else
+			{
+				onLoadFail();
+			}
 		}
 	}
 
@@ -250,8 +236,33 @@ public class StormQuizActivity extends ActionBarActivity implements OnPageChange
 	public void finishQuiz()
 	{
 		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
-		finishIntent.putExtra(StormActivity.EXTRA_PAGE, page);
+		finishIntent.putExtras(getIntent().getExtras());
 		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
 		startActivity(finishIntent);
+	}
+
+	@Override public int getLayoutResource()
+	{
+		return R.layout.quiz_view;
+	}
+
+	@Override public void loadPage(String pageUri)
+	{
+		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		if (page != null)
+		{
+			loadQuiz();
+		}
+		else
+		{
+			onLoadFail();
+		}
+	}
+
+	@Override public void onLoadFail()
+	{
+		Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
+		finish();
 	}
 }
