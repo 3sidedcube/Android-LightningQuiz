@@ -15,7 +15,6 @@ import com.cube.storm.ui.lib.resolver.ViewResolver;
 import com.cube.storm.ui.model.App;
 import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
-import com.cube.storm.ui.model.page.Page;
 import com.cube.storm.ui.quiz.activity.StormQuizActivity;
 import com.cube.storm.ui.quiz.activity.StormQuizResultsActivity;
 import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
@@ -137,6 +136,7 @@ public class QuizIntentFactory extends IntentFactory
 						extras = ret.getExtras();
 					}
 
+					extras.putString(StormActivity.EXTRA_URI, pageDescriptor.getSrc());
 					ret = new Intent(context, StormQuizActivity.class);
 					ret.putExtras(extras);
 				}
@@ -146,16 +146,6 @@ public class QuizIntentFactory extends IntentFactory
 		}
 
 		return null;
-	}
-
-	@Nullable @Override public FragmentIntent getFragmentIntentForPage(@NonNull Page pageData)
-	{
-		return superFactory.getFragmentIntentForPage(pageData);
-	}
-
-	@Nullable @Override public Intent getIntentForPage(@NonNull Context context, @NonNull Page pageData)
-	{
-		return superFactory.getIntentForPage(context, pageData);
 	}
 
 	@Nullable @Override public Intent getIntentForPageUri(@NonNull Context context, @NonNull Uri pageUri)
@@ -171,15 +161,6 @@ public class QuizIntentFactory extends IntentFactory
 				{
 					return getIntentForPageDescriptor(context, pageDescriptor);
 				}
-			}
-		}
-		else
-		{
-			Page page = UiSettings.getInstance().getViewBuilder().buildPage(pageUri);
-
-			if (page != null)
-			{
-				return getIntentForPage(context, page);
 			}
 		}
 

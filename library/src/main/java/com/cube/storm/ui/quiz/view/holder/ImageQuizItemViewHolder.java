@@ -87,6 +87,11 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 				currentCell.setVisibility(View.INVISIBLE);
 			}
 		}
+
+		if (optionLength % 2 != 0)
+		{
+			currentRow.findViewById(R.id.layout2).setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private class ModelClickListener implements OnClickListener

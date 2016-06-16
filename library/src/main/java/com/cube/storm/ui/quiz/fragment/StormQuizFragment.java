@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.controller.adapter.StormListAdapter;
 import com.cube.storm.ui.lib.helper.RecycledViewPoolHelper;
 import com.cube.storm.ui.quiz.R;
@@ -29,15 +30,15 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizFragment extends Fragment
+public class StormQuizFragment extends Fragment implements StormInterface
 {
-	@Getter private RecyclerView listView;
-	@Getter private StormListAdapter adapter;
-	@Getter private QuizItem question;
+	@Getter protected RecyclerView listView;
+	@Getter protected StormListAdapter adapter;
+	@Getter protected QuizItem question;
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v = inflater.inflate(R.layout.list_page_fragment_view, container, false);
+		View v = inflater.inflate(getLayoutResource(), container, false);
 
 		listView = (RecyclerView)v.findViewById(R.id.recyclerview);
 		listView.setRecycledViewPool(RecycledViewPoolHelper.getInstance().getRecycledViewPool());
@@ -57,19 +58,17 @@ public class StormQuizFragment extends Fragment
 		{
 			question = (QuizItem)getArguments().get(StormQuizActivity.EXTRA_QUESTION);
 		}
-		else
-		{
-			Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
-			getActivity().finish();
-			return;
-		}
 
 		if (question != null)
 		{
 			adapter.setItems(Arrays.asList(question));
+			listView.setAdapter(adapter);
 		}
-
-		listView.setAdapter(adapter);
+		else
+		{
+			onLoadFail();
+			return;
+		}
 	}
 
 	public boolean isCorrectAnswer()
@@ -83,6 +82,23 @@ public class StormQuizFragment extends Fragment
 			}
 
 		}
+
 		return false;
+	}
+
+	@Override public int getLayoutResource()
+	{
+		return R.layout.list_page_fragment_view;
+	}
+
+	@Override public void loadPage(String pageUri)
+	{
+
+	}
+
+	@Override public void onLoadFail()
+	{
+		Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
+		getActivity().finish();
 	}
 }

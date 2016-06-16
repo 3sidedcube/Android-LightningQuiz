@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
+import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.model.descriptor.PageDescriptor;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.quiz.R;
@@ -27,18 +27,19 @@ import java.util.List;
 
 import lombok.Getter;
 
-public class StormQuizLoseFragment extends Fragment implements OnClickListener
+public class StormQuizLoseFragment extends Fragment implements OnClickListener, StormInterface
 {
-	@Getter private QuizPage page;
-	protected TextView loseTitle;
-	protected Button retake;
-	protected Button home;
-	protected ViewGroup remember;
-	protected ViewGroup embeddedLinksContainer;
+	@Getter protected QuizPage page;
+	@Getter protected TextView loseTitle;
+	@Getter protected Button retake;
+	@Getter protected Button home;
+	@Getter protected ViewGroup remember;
+	@Getter protected ViewGroup embeddedLinksContainer;
+	@Getter protected boolean[] answers;
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v = inflater.inflate(R.layout.quiz_lose_view, container, false);
+		View v = inflater.inflate(getLayoutResource(), container, false);
 
 		loseTitle = (TextView)v.findViewById(R.id.lose_title);
 		retake = (Button)v.findViewById(R.id.retake);
@@ -57,92 +58,16 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 	@Override public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-		boolean[] answers = getArguments().getBooleanArray(StormQuizResultsActivity.EXTRA_RESULTS);
 
-		if (getArguments().containsKey(StormActivity.EXTRA_PAGE))
+		if (getArguments().containsKey(StormQuizResultsActivity.EXTRA_RESULTS))
 		{
-			page = (QuizPage)getArguments().get(StormActivity.EXTRA_PAGE);
+			answers = getArguments().getBooleanArray(StormQuizResultsActivity.EXTRA_RESULTS);
 		}
-		else if (getArguments().containsKey(StormActivity.EXTRA_URI))
+
+		if (getArguments().containsKey(StormActivity.EXTRA_URI))
 		{
 			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
-			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
-		}
-
-		if (page == null)
-		{
-			Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
-			getActivity().finish();
-
-			return;
-		}
-
-		if (page.getLoseMessage() != null)
-		{
-			loseTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getLoseMessage()));
-		}
-		else
-		{
-			loseTitle.setVisibility(View.GONE);
-		}
-
-		if (answers != null)
-		{
-			int index = 0;
-			for (QuizItem question : page.getChildren())
-			{
-				if (!answers[index])
-				{
-					View row = LayoutInflater.from(getActivity()).inflate(R.layout.quiz_remember_row, remember, false);
-					if (row != null && question != null)
-					{
-						((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
-
-						((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
-						((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(question.getFailure()));
-						(row.findViewById(R.id.description)).setVisibility(View.VISIBLE);
-
-						remember.addView(row);
-					}
-				}
-
-				index++;
-			}
-		}
-
-		if (page.getLoseRelatedLinks() != null)
-		{
-			embeddedLinksContainer.removeAllViews();
-
-			int index = 0;
-			for (LinkProperty link : page.getLoseRelatedLinks())
-			{
-				if (link == null) continue;
-				final LinkProperty property = link;
-
-				View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
-				if (embeddedLinkView != null)
-				{
-					Button button = (Button)embeddedLinkView.findViewById(R.id.button);
-					button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
-
-					button.setOnClickListener(new View.OnClickListener()
-					{
-						@Override public void onClick(View v)
-						{
-							UiSettings.getInstance().getLinkHandler().handleLink(v.getContext(), property);
-						}
-					});
-
-					embeddedLinksContainer.setVisibility(View.VISIBLE);
-					embeddedLinksContainer.addView(button);
-				}
-			}
-
-			if (page.getLoseRelatedLinks().size() > 0)
-			{
-				embeddedLinksContainer.setVisibility(View.VISIBLE);
-			}
+			loadPage(pageUri);
 		}
 	}
 
@@ -176,5 +101,96 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener
 			LinkProperty link = list.get(index);
 			UiSettings.getInstance().getLinkHandler().handleLink(v.getContext(), link);
 		}
+	}
+
+	@Override public int getLayoutResource()
+	{
+		return R.layout.quiz_lose_view;
+	}
+
+	@Override public void loadPage(String pageUri)
+	{
+		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		if (page != null)
+		{
+			if (page.getLoseMessage() != null)
+			{
+				loseTitle.setText(UiSettings.getInstance().getTextProcessor().process(page.getLoseMessage()));
+			}
+			else
+			{
+				loseTitle.setVisibility(View.GONE);
+			}
+
+			if (answers != null)
+			{
+				int index = 0;
+				for (QuizItem question : page.getChildren())
+				{
+					if (!answers[index])
+					{
+						View row = LayoutInflater.from(getActivity()).inflate(R.layout.quiz_remember_row, remember, false);
+						if (row != null && question != null)
+						{
+							((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
+
+							((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
+							((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(question.getFailure()));
+							(row.findViewById(R.id.description)).setVisibility(View.VISIBLE);
+
+							remember.addView(row);
+						}
+					}
+
+					index++;
+				}
+			}
+
+			if (page.getLoseRelatedLinks() != null)
+			{
+				embeddedLinksContainer.removeAllViews();
+
+				int index = 0;
+				for (LinkProperty link : page.getLoseRelatedLinks())
+				{
+					if (link == null) continue;
+					final LinkProperty property = link;
+
+					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
+					if (embeddedLinkView != null)
+					{
+						Button button = (Button)embeddedLinkView.findViewById(R.id.button);
+						button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
+
+						button.setOnClickListener(new View.OnClickListener()
+						{
+							@Override public void onClick(View v)
+							{
+								UiSettings.getInstance().getLinkHandler().handleLink(v.getContext(), property);
+							}
+						});
+
+						embeddedLinksContainer.setVisibility(View.VISIBLE);
+						embeddedLinksContainer.addView(button);
+					}
+				}
+
+				if (page.getLoseRelatedLinks().size() > 0)
+				{
+					embeddedLinksContainer.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+		else
+		{
+			onLoadFail();
+		}
+	}
+
+	@Override public void onLoadFail()
+	{
+		Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
+		getActivity().finish();
 	}
 }
