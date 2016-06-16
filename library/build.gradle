@@ -76,6 +76,7 @@ android.libraryVariants.all { variant ->
 		options.linksOffline("http://d.android.com/reference", "${android.sdkDirectory}/docs/reference");
 		options.links("http://docs.oracle.com/javase/7/docs/api/");
 		options.encoding("utf-8")
+		options.addStringOption('Xdoclint:none', '-quiet')
 
 		// exclude generated files
 		exclude '**/BuildConfig.java'
