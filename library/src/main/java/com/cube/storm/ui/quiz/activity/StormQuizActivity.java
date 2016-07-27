@@ -138,6 +138,9 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
 			((LinearLayout.LayoutParams)emptyParams).weight = progress;
 		}
+
+		progressFill.requestLayout();
+		progressEmpty.requestLayout();
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
