@@ -55,7 +55,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected View progressFill;
 	@Getter protected View progressEmpty;
 
-	@Getter private boolean[] correctAnswers;
+	@Getter protected int currentPage = 0;
+	@Getter protected boolean[] correctAnswers;
 
 	@Override protected void onCreate(Bundle savedInstanceState)
 	{
@@ -147,7 +148,9 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 	@Override public void onPageSelected(int pageIndex)
 	{
-		checkAnswers();
+		checkAnswers(currentPage);
+		currentPage = pageIndex;
+
 		updateProgress((int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100));
 
 		if (pageIndex == pageAdapter.getCount() - 1)
@@ -169,20 +172,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	public void checkAnswers()
+	public void checkAnswers(int pageIndex)
 	{
-		int pageIndex = viewPager.getCurrentItem();
-
-		if (pageIndex - 1 > -1)
-		{
-			Fragment question = getSupportFragmentManager().getFragments().get(pageIndex - 1);
-
-			if (question instanceof StormQuizFragment)
-			{
-				correctAnswers[pageIndex - 1] = ((StormQuizFragment)question).isCorrectAnswer();
-			}
-		}
-
 		if (pageIndex > -1 && pageIndex < pageAdapter.getCount())
 		{
 			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + pageIndex);
@@ -190,16 +181,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			if (question instanceof StormQuizFragment)
 			{
 				correctAnswers[pageIndex] = ((StormQuizFragment)question).isCorrectAnswer();
-			}
-		}
-
-		if (pageIndex + 1 < pageAdapter.getCount())
-		{
-			Fragment question = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + (pageIndex + 1));
-
-			if (question instanceof StormQuizFragment)
-			{
-				correctAnswers[pageIndex + 1] = ((StormQuizFragment)question).isCorrectAnswer();
 			}
 		}
 	}
@@ -213,8 +194,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	{
 		if (view == next)
 		{
-			checkAnswers();
-
 			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
 			{
 				finishQuiz();
@@ -227,8 +206,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 		else if (view == previous)
 		{
-			checkAnswers();
-
 			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
 		}
 	}
