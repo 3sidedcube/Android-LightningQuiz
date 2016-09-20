@@ -15,6 +15,7 @@ import com.cube.storm.ui.quiz.view.holder.ImageQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.SliderQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemViewHolder;
+import com.cube.storm.ui.quiz.view.holder.list.BadgeCollectionItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemViewHolder;
 
 /**
@@ -93,6 +94,7 @@ public class QuizSettings
 			this.uiSettings.getViewResolvers().put("TextQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.TextQuizItem.class, TextQuizItemViewHolder.Factory.class));
 			this.uiSettings.getViewResolvers().put("QuizGridItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.grid.QuizGridItem.class, QuizGridItemViewHolder.Factory.class));
 			this.uiSettings.getViewResolvers().put("QuizCollectionItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.list.collection.QuizCollectionItem.class, QuizCollectionItemViewHolder.Factory.class));
+			this.uiSettings.getViewResolvers().put("BadgeCollectionItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.list.collection.BadgeCollectionItem.class, BadgeCollectionItemViewHolder.Factory.class));
 			this.uiSettings.getViewResolvers().put("ImageQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.ImageQuizItem.class, ImageQuizItemViewHolder.Factory.class));
 			this.uiSettings.getViewResolvers().put("SliderQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.SliderQuizItem.class, SliderQuizItemViewHolder.Factory.class));
 			this.uiSettings.getViewResolvers().put("AreaQuizItem", new DefaultViewResolver(com.cube.storm.ui.quiz.model.quiz.AreaQuizItem.class, AreaQuizItemViewHolder.Factory.class));
