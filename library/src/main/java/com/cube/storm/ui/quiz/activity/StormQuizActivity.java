@@ -199,6 +199,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
 			{
+				// force check last answer
+				checkAnswers(viewPager.getCurrentItem());
 				finishQuiz();
 				finish();
 			}
