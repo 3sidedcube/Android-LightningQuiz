@@ -80,7 +80,6 @@ public class StormQuizFragment extends Fragment implements StormInterface
 			{
 				return ((QuizItem)item).isCorrect();
 			}
-
 		}
 
 		return false;
