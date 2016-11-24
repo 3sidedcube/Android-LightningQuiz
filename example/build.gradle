@@ -33,6 +33,5 @@ dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile 'com.android.support:appcompat-v7:23.1.0'
 
-	compile 'com.3sidedcube.storm:ui:0.4.1-internal'
 	compile project(':library')
 }
