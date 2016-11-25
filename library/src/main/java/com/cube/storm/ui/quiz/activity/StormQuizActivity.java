@@ -55,6 +55,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected View progressFill;
 	@Getter protected View progressEmpty;
 
+	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
 	@Getter protected boolean[] correctAnswers;
 
@@ -78,7 +79,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			if (getIntent().getExtras().containsKey(StormActivity.EXTRA_URI))
 			{
-				String pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
+				pageUri = String.valueOf(getIntent().getExtras().get(StormActivity.EXTRA_URI));
 				loadPage(pageUri);
 			}
 			else
@@ -106,14 +107,10 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			if (question != null)
 			{
-				Bundle args = new Bundle();
-				args.putSerializable(EXTRA_QUESTION, question);
+				FragmentIntent fragmentIntent = UiSettings.getInstance().getIntentFactory().getFragmentIntentForPageUri(Uri.parse(pageUri));
+				fragmentIntent.getArguments().putSerializable(EXTRA_QUESTION, question);
 
-				FragmentIntent intent = new FragmentIntent();
-				intent.setFragment(StormQuizFragment.class); // TODO: Use UiSettings#intentFactory to resolve this instead
-				intent.setArguments(args);
-
-				FragmentPackage fragmentPackage = new FragmentPackage(intent, null);//UiSettings.getInstance().getApp().findPageDescriptor(page));
+				FragmentPackage fragmentPackage = new FragmentPackage(fragmentIntent, null);
 				fragmentPages.add(fragmentPackage);
 			}
 		}
