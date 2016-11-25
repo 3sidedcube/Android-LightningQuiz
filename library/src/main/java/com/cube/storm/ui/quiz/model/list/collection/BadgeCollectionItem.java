@@ -2,7 +2,7 @@ package com.cube.storm.ui.quiz.model.list.collection;
 
 import android.os.Parcel;
 
-import com.cube.storm.ui.model.property.LinkProperty;
+import com.cube.storm.ui.model.list.collection.CollectionItem;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import lombok.experimental.Accessors;
 
 @NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
 @Accessors(chain = true) @Data
-public class QuizCollectionItem extends BadgeCollectionItem
+public class BadgeCollectionItem extends CollectionItem
 {
-	protected LinkProperty quiz;
+	protected String badgeId;
 
 	@Override public int describeContents()
 	{
