@@ -3,12 +3,11 @@ package com.cube.storm.ui;
 import android.support.annotation.NonNull;
 
 import com.cube.storm.UiSettings;
-import com.cube.storm.ui.lib.factory.IntentFactory;
 import com.cube.storm.ui.lib.parser.ViewProcessor;
 import com.cube.storm.ui.lib.resolver.DefaultViewResolver;
 import com.cube.storm.ui.lib.resolver.ViewResolver;
 import com.cube.storm.ui.model.Model;
-import com.cube.storm.ui.quiz.lib.factory.QuizIntentFactory;
+import com.cube.storm.ui.quiz.lib.provider.QuizIntentProvider;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.quiz.view.holder.AreaQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.ImageQuizItemViewHolder;
@@ -81,6 +80,11 @@ public class QuizSettings
 		private UiSettings uiSettings;
 
 		/**
+		 * Temp store for skipping adding default quiz intent provider
+		 */
+		private boolean skipIntentProvider = false;
+
+		/**
 		 * Default constructor
 		 *
 		 * @param uiSettings The settings object to use to enable quiz module
@@ -116,22 +120,18 @@ public class QuizSettings
 			};
 
 			this.uiSettings.getViewProcessors().put(QuizItem.class, baseProcessor);
-
-			intentFactory(new QuizIntentFactory(uiSettings.getIntentFactory()));
 		}
 
 		/**
-		 * Replaces the intent factory set in {@link com.cube.storm.UiSettings}. You should not use this
-		 * method, but instead set your custom intent factory in {@link com.cube.storm.UiSettings.Builder#intentFactory}
+		 * Call this to prevent the default {@link com.cube.storm.ui.quiz.lib.provider.QuizIntentProvider} from being added to {@link UiSettings#getIntentProviders()}
 		 *
-		 * @param intentFactory The intent factory used to catch Quiz models
+		 * @param skip Set this to true if you are already handling quiz intents
 		 *
-		 * @return The {@link com.cube.storm.ui.QuizSettings.Builder} instance for chaining
+		* @return The {@link Builder} instance for chaining
 		 */
-		public Builder intentFactory(@NonNull IntentFactory intentFactory)
+		public Builder skipIntentProvider(boolean skip)
 		{
-			uiSettings.setIntentFactory(intentFactory);
-
+			skipIntentProvider = skip;
 			return this;
 		}
 
@@ -143,6 +143,11 @@ public class QuizSettings
 		 */
 		public QuizSettings build()
 		{
+			if (!skipIntentProvider)
+			{
+				uiSettings.getIntentProviders().add(new QuizIntentProvider());
+			}
+
 			return (QuizSettings.instance = construct);
 		}
 	}
