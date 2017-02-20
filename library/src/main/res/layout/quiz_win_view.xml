@@ -4,7 +4,6 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:padding="12dp"
 	android:clipToPadding="false"
 	android:fillViewport="true"
 >
@@ -12,6 +11,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
+		android:padding="12dp"
 	>
 		<com.cube.storm.ui.view.TextView
 			android:layout_width="match_parent"
