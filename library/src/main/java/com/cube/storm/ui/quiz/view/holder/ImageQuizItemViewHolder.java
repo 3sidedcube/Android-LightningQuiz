@@ -29,7 +29,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 	{
 		@Override public ImageQuizItemViewHolder createViewHolder(ViewGroup parent)
 		{
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_quiz_item_view, parent, false);
+			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_quiz_item_view, parent, false);
 			return new ImageQuizItemViewHolder(view);
 		}
 	}
