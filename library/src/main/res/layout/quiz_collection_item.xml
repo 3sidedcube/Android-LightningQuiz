@@ -3,25 +3,19 @@
 <FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content"
-	android:layout_height="192dp"
+	android:layout_height="wrap_content"
 >
-	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-	>
-		<com.cube.storm.ui.view.ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:id="@+id/badge_icon"
-		/>
+	<com.cube.storm.ui.view.ImageView
+		android:layout_width="192dp"
+		android:layout_height="192dp"
+		android:id="@+id/badge_icon"
+		android:layout_gravity="center"
+	/>
 
-		<com.cube.storm.ui.view.TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/title"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="4dp"
-		/>
-	</LinearLayout>
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:id="@+id/title"
+		android:visibility="gone"
+	/>
 </FrameLayout>
