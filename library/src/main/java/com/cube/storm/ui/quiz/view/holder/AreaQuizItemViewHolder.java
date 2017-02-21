@@ -13,8 +13,10 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
 import com.cube.storm.ui.view.ImageView;
@@ -140,6 +142,11 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 									break;
 								}
 							}
+						}
+
+						for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+						{
+							quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, new float[]{event.getX() / v.getMeasuredWidth(), event.getY() / v.getMeasuredHeight()});
 						}
 
 						return true;

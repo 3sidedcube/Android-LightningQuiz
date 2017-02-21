@@ -102,6 +102,7 @@ public class QuizSettings
 		 */
 		public Builder(@NonNull UiSettings uiSettings)
 		{
+			this.construct = new QuizSettings();
 			this.uiSettings = uiSettings;
 
 			// Register quiz views into view resolver

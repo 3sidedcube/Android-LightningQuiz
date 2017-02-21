@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.cube.storm.ui.lib.EventHook;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
+import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 /**
  * Hook class used for registering for different user events within the framework
@@ -28,10 +29,10 @@ public class QuizEventHook extends EventHook
 	 *
 	 * @param pageContext The context of the activity
 	 * @param itemView The view of the item selected
-	 * @param page The quiz page started
+	 * @param item The quiz model
 	 * @param answer The object of the answer selected
 	 */
-	public void onQuizOptionSelected(@NonNull Context pageContext, @NonNull View itemView, @NonNull QuizPage page, @NonNull Object answer)
+	public void onQuizOptionSelected(@NonNull Context pageContext, @NonNull View itemView, @NonNull QuizItem item, @NonNull Object answer)
 	{
 
 	}
