@@ -6,9 +6,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.model.property.ImageProperty;
 import com.cube.storm.ui.model.property.TextProperty;
 import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.quiz.ImageQuizItem;
 import com.cube.storm.ui.view.ImageView;
 import com.cube.storm.ui.view.TextView;
@@ -29,7 +31,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 	{
 		@Override public ImageQuizItemViewHolder createViewHolder(ViewGroup parent)
 		{
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_quiz_item_view, parent, false);
+			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_quiz_item_view, parent, false);
 			return new ImageQuizItemViewHolder(view);
 		}
 	}
@@ -112,6 +114,11 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 			{
 				checker.setChecked(true);
 				model.getSelectHistory().add(index);
+
+				for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+				{
+					quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, index);
+				}
 			}
 			else
 			{

@@ -8,10 +8,12 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 
 import lombok.Getter;
@@ -101,6 +103,18 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 			if (!TextUtils.isEmpty(fragmentIntent.getTitle()))
 			{
 				setTitle(fragmentIntent.getTitle());
+			}
+		}
+
+		for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+		{
+			if (win)
+			{
+				quizEventHook.onQuizWon(this, page);
+			}
+			else
+			{
+				quizEventHook.onQuizLost(this, page, results);
 			}
 		}
 	}

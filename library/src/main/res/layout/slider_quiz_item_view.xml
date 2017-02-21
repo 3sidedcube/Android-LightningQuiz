@@ -7,6 +7,7 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:descendantFocusability="blocksDescendants"
+	android:paddingBottom="24dp"
 >
 	<include layout="@layout/quiz_question_header" />
 
@@ -17,20 +18,28 @@
 		android:layout_gravity="center_horizontal"
 	/>
 
-	<com.cube.storm.ui.view.TextView
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/slider_text"
+		android:orientation="vertical"
+		android:background="#ffffff"
+		android:padding="12dp"
 		android:layout_marginTop="8dp"
-		android:layout_gravity="center_horizontal"
-		android:gravity="center"
-		android:textColor="#666666"
-	/>
+	>
+		<SeekBar
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/slider"
+		/>
 
-	<SeekBar
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/slider"
-		android:layout_margin="8dp"
-	/>
+		<com.cube.storm.ui.view.TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/slider_text"
+			android:layout_marginTop="8dp"
+			android:layout_gravity="center_horizontal"
+			android:gravity="center"
+			android:textColor="#666666"
+		/>
+	</LinearLayout>
 </LinearLayout>

@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.cube.storm.UiSettings;
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.quiz.SliderQuizItem;
 import com.cube.storm.ui.view.ImageView;
 import com.cube.storm.ui.view.TextView;
@@ -111,6 +113,12 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 		}
 
 		@Override public void onStartTrackingTouch(SeekBar seekBar){}
-		@Override public void onStopTrackingTouch(SeekBar seekBar){}
+		@Override public void onStopTrackingTouch(SeekBar seekBar)
+		{
+			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+			{
+				quizEventHook.onQuizOptionSelected(seekBar.getContext(), itemView, model, seekBar.getProgress());
+			}
+		}
 	}
 }

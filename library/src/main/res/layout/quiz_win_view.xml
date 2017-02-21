@@ -3,19 +3,21 @@
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
+	android:clipToPadding="false"
+	android:fillViewport="true"
 >
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:padding="10dp"
+		android:padding="12dp"
 	>
 		<com.cube.storm.ui.view.TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/win_title"
-			android:textSize="20dp"
+			android:textSize="22sp"
 			android:gravity="center"
 			android:textColor="#000000"
 		/>
@@ -32,6 +34,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/win_description"
+			android:textSize="16sp"
 			android:gravity="center"
 		/>
 
@@ -39,6 +42,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/home_button"
+			android:layout_marginTop="12dp"
 		/>
 
 		<LinearLayout
@@ -46,7 +50,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:id="@+id/related_container"
+			android:layout_marginTop="12dp"
 		/>
-
 	</LinearLayout>
 </ScrollView>

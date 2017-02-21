@@ -13,15 +13,16 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
 import com.cube.storm.ui.view.ImageView;
 import com.cube.storm.ui.view.TextView;
 import com.cube.storm.ui.view.holder.ViewHolder;
 import com.cube.storm.ui.view.holder.ViewHolderFactory;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -36,14 +37,17 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 	private transient Bitmap overlay;
 	private ImageView image;
 	private ImageView canvas;
-	private TextView question;
+	protected TextView title;
+	protected TextView hint;
 
 	public AreaQuizItemViewHolder(View itemView)
 	{
 		super(itemView);
+
+		title = (TextView)itemView.findViewById(R.id.title);
+		hint = (TextView)itemView.findViewById(R.id.hint);
 		image = (ImageView)itemView.findViewById(R.id.image_view);
 		canvas = (ImageView)itemView.findViewById(R.id.canvas);
-		question = (TextView)itemView.findViewById(R.id.question);
 
 		Drawable drawable = itemView.getResources().getDrawable(R.drawable.area_select);
 		if (drawable != null)
@@ -74,10 +78,9 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 	@Override public void populateView(final AreaQuizItem model)
 	{
-		if (model.getTitle() != null)
-		{
-			question.populate(model.getTitle());
-		}
+		title.populate(model.getTitle());
+		hint.populate(model.getHint());
+
 		if (model.getImage() != null)
 		{
 			ImageHelper.displayImage(image, model.getImage(), new ImageLoadingListener()
@@ -108,9 +111,17 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 			});
 			canvas.setOnTouchListener(new OnTouchListener()
 			{
+				private long downTime = 0;
+
 				@Override public boolean onTouch(View v, MotionEvent event)
 				{
-					if (v.getId() == R.id.canvas && event.getAction() == MotionEvent.ACTION_DOWN)
+					if (event.getAction() == MotionEvent.ACTION_DOWN)
+					{
+						downTime = event.getDownTime();
+						return true;
+					}
+
+					if (v.getId() == R.id.canvas && event.getAction() == MotionEvent.ACTION_UP && event.getEventTime() - downTime >= 40 && event.getEventTime() - downTime <= 150)
 					{
 						float x = event.getX() - (overlay.getWidth() / 2);
 						float y = event.getY() - (overlay.getHeight() / 2);
@@ -131,6 +142,11 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 									break;
 								}
 							}
+						}
+
+						for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+						{
+							quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, new float[]{event.getX() / v.getMeasuredWidth(), event.getY() / v.getMeasuredHeight()});
 						}
 
 						return true;
