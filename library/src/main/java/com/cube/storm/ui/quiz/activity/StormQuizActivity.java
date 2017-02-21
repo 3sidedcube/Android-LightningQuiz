@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.data.FragmentIntent;
@@ -23,6 +24,7 @@ import com.cube.storm.ui.data.FragmentPackage;
 import com.cube.storm.ui.lib.adapter.StormPageAdapter;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
@@ -85,8 +87,11 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			else
 			{
 				onLoadFail();
+				return;
 			}
 		}
+
+		onPageLoaded();
 	}
 
 	protected void loadQuiz()
@@ -243,5 +248,13 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	{
 		Toast.makeText(this, "Failed to load page", Toast.LENGTH_SHORT).show();
 		finish();
+	}
+
+	protected void onPageLoaded()
+	{
+		for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+		{
+			quizEventHook.onQuizStarted(this, page);
+		}
 	}
 }

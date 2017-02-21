@@ -7,6 +7,7 @@ import com.cube.storm.ui.lib.parser.ViewProcessor;
 import com.cube.storm.ui.lib.resolver.DefaultViewResolver;
 import com.cube.storm.ui.lib.resolver.ViewResolver;
 import com.cube.storm.ui.model.Model;
+import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.provider.QuizIntentProvider;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.quiz.view.holder.AreaQuizItemViewHolder;
@@ -16,6 +17,11 @@ import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.list.BadgeCollectionItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemViewHolder;
+
+import java.util.ArrayList;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Settings class for the quiz module.
@@ -39,6 +45,11 @@ public class QuizSettings
 	 * The singleton instance of the settings
 	 */
 	private static QuizSettings instance;
+
+	/**
+	 * Registered hook classes for various events
+	 */
+	@Getter @Setter private ArrayList<QuizEventHook> eventHooks = new ArrayList<>();
 
 	/**
 	 * Gets the instance of the {@link QuizSettings} class
@@ -91,6 +102,7 @@ public class QuizSettings
 		 */
 		public Builder(@NonNull UiSettings uiSettings)
 		{
+			this.construct = new QuizSettings();
 			this.uiSettings = uiSettings;
 
 			// Register quiz views into view resolver
@@ -132,6 +144,20 @@ public class QuizSettings
 		public Builder skipIntentProvider(boolean skip)
 		{
 			skipIntentProvider = skip;
+			return this;
+		}
+
+		/**
+		 * Registers an event hook class for various events
+		 *
+		 * @param hook The hook to register
+		 *
+		 * @return The {@link Builder} instance for chaining
+		 */
+		public Builder registerEventHook(@NonNull QuizEventHook hook)
+		{
+			construct.getEventHooks().add(hook);
+
 			return this;
 		}
 
