@@ -96,7 +96,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 			}
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("image/png");
+			shareIntent.setType("*/*");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
 			shareIntent.putExtra(Intent.EXTRA_STREAM, saveBadgeToTemp(badge));
 
