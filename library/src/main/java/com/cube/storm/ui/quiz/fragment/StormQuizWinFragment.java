@@ -155,7 +155,12 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 			if (badgeProperty.getTitle() != null)
 			{
-				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
+				if (winTitle.getVisibility() == View.GONE)
+				{
+					winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getTitle()));
+					winTitle.setVisibility(View.VISIBLE);
+				}
+
 				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
 			}
 		}
