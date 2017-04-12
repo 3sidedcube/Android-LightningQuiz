@@ -158,15 +158,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		updateProgress((int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100));
 
-		if (pageIndex == pageAdapter.getCount() - 1)
-		{
-			next.setText("Finish");
-		}
-		else
-		{
-			next.setText("Next");
-		}
-
 		if (pageIndex == 0)
 		{
 			previous.setEnabled(false);

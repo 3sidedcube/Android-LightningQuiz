@@ -47,8 +47,6 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 		remember = (ViewGroup)v.findViewById(R.id.remember_container);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		retake.setText("Try Again?");
-		home.setText("Home");
 		home.setOnClickListener(this);
 		retake.setOnClickListener(this);
 

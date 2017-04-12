@@ -56,7 +56,6 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 		badge = (ImageView)v.findViewById(R.id.badge_icon);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		home.setText("Home");
 		home.setOnClickListener(this);
 
 		return v;
