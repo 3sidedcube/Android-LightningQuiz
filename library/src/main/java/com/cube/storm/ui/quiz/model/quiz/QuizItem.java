@@ -2,7 +2,7 @@ package com.cube.storm.ui.quiz.model.quiz;
 
 import android.os.Parcel;
 
-import com.cube.storm.ui.model.Model;
+import com.cube.storm.ui.model.list.ListItem;
 import com.cube.storm.ui.model.property.TextProperty;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  */
 @NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
 @Accessors(chain = true) @Data
-public class QuizItem extends Model
+public class QuizItem extends ListItem
 {
 	protected TextProperty title;
 	protected TextProperty failure;
