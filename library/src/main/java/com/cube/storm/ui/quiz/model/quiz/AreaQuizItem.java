@@ -1,6 +1,7 @@
 package com.cube.storm.ui.quiz.model.quiz;
 
 import com.cube.storm.ui.model.property.ImageProperty;
+import com.cube.storm.ui.quiz.model.property.CoordinateProperty;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 
 import java.util.ArrayList;
@@ -22,4 +23,5 @@ public class AreaQuizItem extends QuizItem
 {
 	protected ArrayList<ImageProperty> image;
 	protected ArrayList<ZoneProperty> answer;
+	protected CoordinateProperty touchCoordinate;
 }

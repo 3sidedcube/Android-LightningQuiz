@@ -2,7 +2,6 @@ package com.cube.storm.ui.quiz.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.fragment.StormFragment;
@@ -10,7 +9,6 @@ import com.cube.storm.ui.model.list.ListItem;
 import com.cube.storm.ui.model.page.ListPage;
 import com.cube.storm.ui.quiz.activity.StormQuizActivity;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
-import com.cube.storm.ui.quiz.model.quiz.TextQuizItem;
 
 import java.util.Collections;
 
