@@ -54,16 +54,7 @@ public class StormQuizFragment extends StormFragment implements StormInterface
 
 	public boolean isCorrectAnswer()
 	{
-		for (int itemIdx = 0; itemIdx < adapter.getItemCount(); ++itemIdx)
-		{
-			Object item = adapter.getItem(itemIdx);
-			if (item instanceof QuizItem)
-			{
-				return ((QuizItem)item).isCorrect();
-			}
-		}
-
-		return false;
+		return question.isCorrect();
 	}
 
 	/**
