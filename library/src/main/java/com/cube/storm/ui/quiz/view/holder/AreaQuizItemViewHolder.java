@@ -17,6 +17,7 @@ import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.lib.helper.ImageHelper;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
+import com.cube.storm.ui.quiz.model.property.CoordinateProperty;
 import com.cube.storm.ui.quiz.model.property.ZoneProperty;
 import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
 import com.cube.storm.ui.view.ImageView;
@@ -104,6 +105,11 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 						@Override public void run()
 						{
 							(((View)view.getParent()).findViewById(R.id.canvas)).setLayoutParams(new FrameLayout.LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight()));
+
+							if (model.getTouchCoordinate() != null)
+							{
+								drawTouchZone(canvas, view.getMeasuredWidth(), view.getMeasuredHeight(), model.getTouchCoordinate());
+							}
 						}
 					});
 				}
@@ -123,19 +129,18 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 					if (v.getId() == R.id.canvas && event.getAction() == MotionEvent.ACTION_UP && event.getEventTime() - downTime >= 40 && event.getEventTime() - downTime <= 150)
 					{
-						float x = event.getX() - (overlay.getWidth() / 2);
-						float y = event.getY() - (overlay.getHeight() / 2);
+						CoordinateProperty touchCoordinate = new CoordinateProperty();
+						touchCoordinate.setX(event.getX() / v.getMeasuredWidth());
+						touchCoordinate.setY(event.getY() / v.getMeasuredHeight());
+						model.setTouchCoordinate(touchCoordinate);
 
-						Bitmap bounds = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Config.ARGB_8888);
-						Canvas selectCanvas = new Canvas(bounds);
-						selectCanvas.drawBitmap(overlay, x, y, new Paint());
-						((ImageView)v).setImageBitmap(bounds);
+						drawTouchZone(canvas, image.getMeasuredWidth(), image.getMeasuredHeight(), touchCoordinate);
 
 						if (model.getAnswer() != null)
 						{
 							for (ZoneProperty z : model.getAnswer())
 							{
-								model.setCorrect(z.contains(event.getX() / v.getMeasuredWidth(), event.getY() / v.getMeasuredHeight()));
+								model.setCorrect(z.contains(model.getTouchCoordinate().getX(), model.getTouchCoordinate().getY()));
 
 								if (model.isCorrect())
 								{
@@ -146,7 +151,7 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 						for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 						{
-							quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, new float[]{event.getX() / v.getMeasuredWidth(), event.getY() / v.getMeasuredHeight()});
+							quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, new float[]{model.getTouchCoordinate().getX(), model.getTouchCoordinate().getY()});
 						}
 
 						return true;
@@ -156,5 +161,18 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 				}
 			});
 		}
+	}
+
+	private void drawTouchZone(ImageView target, int height, int width, CoordinateProperty touchCoordinate)
+	{
+		float imageX = touchCoordinate.getX() * width;
+		float imageY = touchCoordinate.getY() * height;
+		float x = imageX - (overlay.getWidth() / 2);
+		float y = imageY - (overlay.getHeight() / 2);
+
+		Bitmap bounds = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		Canvas selectCanvas = new Canvas(bounds);
+		selectCanvas.drawBitmap(overlay, x, y, new Paint());
+		target.setImageBitmap(bounds);
 	}
 }

@@ -39,8 +39,6 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 	protected SeekBar slider;
 	protected TextView sliderText;
 
-	protected int pos = Integer.MIN_VALUE;
-
 	public SliderQuizItemViewHolder(View view)
 	{
 		super(view);
@@ -56,11 +54,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 	{
 		slider.setOnSeekBarChangeListener(new ModelSeekBarListener(model));
 
-		if (pos < 0)
-		{
-			pos = model.getInitialPosition() - model.getRange().getStart();
-		}
-
+		int progress = model.getInitialPosition() - model.getRange().getStart();
 		title.populate(model.getTitle());
 		hint.populate(model.getHint());
 		image.populate(model.getImage());
@@ -68,7 +62,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 		if (model.getRange() != null)
 		{
 			slider.setMax(model.getRange().getLength() - 1);
-			slider.setProgress(pos);
+			slider.setProgress(progress);
 
 			if (model.getTitle() != null)
 			{
@@ -76,7 +70,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 				if (!TextUtils.isEmpty(content))
 				{
-					sliderText.setText("" + (pos + model.getRange().getStart()) + " " + content);
+					sliderText.setText(model.getInitialPosition() + " " + content);
 				}
 			}
 		}
@@ -95,8 +89,9 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 		{
 			if (fromUser)
 			{
-				pos = progress;
-				model.setCorrect((progress + model.getRange().getStart()) == model.getAnswer());
+				int pos = progress + model.getRange().getStart();
+				model.setInitialPosition(pos);
+				model.setCorrect(pos == model.getAnswer());
 
 				TextView sliderText = (TextView)((View)seekBar.getParent()).findViewById(R.id.slider_text);
 
@@ -106,7 +101,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 					if (!TextUtils.isEmpty(content))
 					{
-						sliderText.setText("" + (pos + model.getRange().getStart()) + " " + content);
+						sliderText.setText(pos + " " + content);
 					}
 				}
 			}

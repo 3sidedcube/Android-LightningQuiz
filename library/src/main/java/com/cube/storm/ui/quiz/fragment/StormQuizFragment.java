@@ -1,23 +1,16 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import android.support.annotation.Nullable;
 
 import com.cube.storm.ui.activity.StormInterface;
-import com.cube.storm.ui.controller.adapter.StormListAdapter;
-import com.cube.storm.ui.lib.helper.RecycledViewPoolHelper;
-import com.cube.storm.ui.quiz.R;
+import com.cube.storm.ui.fragment.StormFragment;
+import com.cube.storm.ui.model.list.ListItem;
+import com.cube.storm.ui.model.page.ListPage;
 import com.cube.storm.ui.quiz.activity.StormQuizActivity;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import lombok.Getter;
 
@@ -30,74 +23,54 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizFragment extends Fragment implements StormInterface
+public class StormQuizFragment extends StormFragment implements StormInterface
 {
-	@Getter protected RecyclerView listView;
-	@Getter protected StormListAdapter adapter;
 	@Getter protected QuizItem question;
 
-	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
-		View v = inflater.inflate(getLayoutResource(), container, false);
+		super.onCreate(savedInstanceState);
 
-		listView = (RecyclerView)v.findViewById(R.id.recyclerview);
-		listView.setRecycledViewPool(RecycledViewPoolHelper.getInstance().getRecycledViewPool());
-		listView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		listView.setItemAnimator(new DefaultItemAnimator());
-
-		return v;
-	}
-
-	@Override public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-
-		adapter = new StormListAdapter();
-
-		if (getArguments().containsKey(StormQuizActivity.EXTRA_QUESTION))
+		// If question is null after this then the failure will be reported in loadPage
+		if (savedInstanceState == null)
 		{
 			question = (QuizItem)getArguments().get(StormQuizActivity.EXTRA_QUESTION);
 		}
-
-		if (question != null)
-		{
-			adapter.setItems(Arrays.asList(question));
-			listView.setAdapter(adapter);
-		}
 		else
 		{
-			onLoadFail();
-			return;
+			question = (QuizItem) savedInstanceState.getSerializable("question");
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("question", question);
 	}
 
 	public boolean isCorrectAnswer()
 	{
-		for (int itemIdx = 0; itemIdx < adapter.getItemCount(); ++itemIdx)
-		{
-			Object item = adapter.getItem(itemIdx);
-			if (item instanceof QuizItem)
-			{
-				return ((QuizItem)item).isCorrect();
-			}
-		}
-
-		return false;
+		return question.isCorrect();
 	}
 
-	@Override public int getLayoutResource()
-	{
-		return R.layout.list_page_fragment_view;
-	}
-
+	/**
+	 * Override loadPage for StormQuizFragment to supply a constructued page consisting solely of the QuizItem(s) this fragment is associated with
+	 *
+	 * @param pageUri
+	 */
 	@Override public void loadPage(String pageUri)
 	{
-
-	}
-
-	@Override public void onLoadFail()
-	{
-		Toast.makeText(getActivity(), "Failed to load page", Toast.LENGTH_SHORT).show();
-		getActivity().finish();
+		if (question != null)
+		{
+			page = new ListPage(Collections.<ListItem>singleton(question));
+			setAdapter();
+			setTitle();
+		}
+		else
+		{
+			onLoadFail();
+		}
 	}
 }

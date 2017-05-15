@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Checkable;
 
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.model.property.TextProperty;
@@ -52,12 +53,15 @@ public class TextQuizItemViewHolder extends ViewHolder<TextQuizItem>
 
 		options.removeAllViewsInLayout();
 
+		int index = 0;
 		for (TextProperty option : model.getOptions())
 		{
 			View row = LayoutInflater.from(options.getContext()).inflate(R.layout.text_quiz_item_item, options, false);
 			((TextView)row.findViewById(R.id.title)).populate(option);
+			((Checkable) row.findViewById(R.id.checkbox)).setChecked(model.getSelectHistory().contains(index));
 			row.setOnClickListener(new ModelClickListener(model));
 			options.addView(row);
+			++index;
 		}
 	}
 
