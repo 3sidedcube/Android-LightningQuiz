@@ -104,11 +104,12 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 					{
 						@Override public void run()
 						{
-							(((View)view.getParent()).findViewById(R.id.canvas)).setLayoutParams(new FrameLayout.LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight()));
+							canvas.setLayoutParams(new FrameLayout.LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight()));
+							canvas.measure(View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
 
 							if (model.getTouchCoordinate() != null)
 							{
-								drawTouchZone(canvas, view.getMeasuredWidth(), view.getMeasuredHeight(), model.getTouchCoordinate());
+								drawTouchZone(canvas, model.getTouchCoordinate());
 							}
 						}
 					});
@@ -129,12 +130,17 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 					if (v.getId() == R.id.canvas && event.getAction() == MotionEvent.ACTION_UP && event.getEventTime() - downTime >= 40 && event.getEventTime() - downTime <= 150)
 					{
+						float x = event.getX();
+						float y = event.getY();
+						float xpc = x / v.getMeasuredWidth();
+						float ypc = y / v.getMeasuredHeight();
+
 						CoordinateProperty touchCoordinate = new CoordinateProperty();
-						touchCoordinate.setX(event.getX() / v.getMeasuredWidth());
-						touchCoordinate.setY(event.getY() / v.getMeasuredHeight());
+						touchCoordinate.setX(xpc);
+						touchCoordinate.setY(ypc);
 						model.setTouchCoordinate(touchCoordinate);
 
-						drawTouchZone(canvas, image.getMeasuredWidth(), image.getMeasuredHeight(), touchCoordinate);
+						drawTouchZone(canvas, touchCoordinate);
 
 						if (model.getAnswer() != null)
 						{
@@ -163,16 +169,16 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 		}
 	}
 
-	private void drawTouchZone(ImageView target, int height, int width, CoordinateProperty touchCoordinate)
+	private void drawTouchZone(ImageView target, CoordinateProperty touchCoordinate)
 	{
-		float imageX = touchCoordinate.getX() * width;
-		float imageY = touchCoordinate.getY() * height;
-		float x = imageX - (overlay.getWidth() / 2);
-		float y = imageY - (overlay.getHeight() / 2);
+		float x = touchCoordinate.getX() * target.getMeasuredWidth();
+		float y = touchCoordinate.getY() * target.getMeasuredHeight();
+		x -= (overlay.getWidth() / 2.0f);
+		y -= (overlay.getHeight() / 2.0f);
 
-		Bitmap bounds = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		Bitmap bounds = Bitmap.createBitmap(target.getMeasuredWidth(), target.getMeasuredHeight(), Config.ARGB_8888);
 		Canvas selectCanvas = new Canvas(bounds);
 		selectCanvas.drawBitmap(overlay, x, y, new Paint());
-		target.setImageBitmap(bounds);
+		((ImageView)target).setImageBitmap(bounds);
 	}
 }
