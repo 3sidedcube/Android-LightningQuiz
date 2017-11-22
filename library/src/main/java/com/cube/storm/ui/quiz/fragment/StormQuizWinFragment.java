@@ -56,7 +56,6 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 		badge = (ImageView)v.findViewById(R.id.badge_icon);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		home.setText("Home");
 		home.setOnClickListener(this);
 
 		return v;
@@ -96,7 +95,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 			}
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("image/png");
+			shareIntent.setType("*/*");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
 			shareIntent.putExtra(Intent.EXTRA_STREAM, saveBadgeToTemp(badge));
 
@@ -155,7 +154,12 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 			if (badgeProperty.getTitle() != null)
 			{
-				winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
+				if (winTitle.getVisibility() == View.GONE)
+				{
+					winTitle.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getTitle()));
+					winTitle.setVisibility(View.VISIBLE);
+				}
+
 				winDescription.setText(UiSettings.getInstance().getTextProcessor().process(badgeProperty.getCompletion()));
 			}
 		}

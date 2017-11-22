@@ -30,7 +30,6 @@ import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import lombok.Getter;
@@ -90,8 +89,25 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 				return;
 			}
 		}
+		else
+		{
+			pageUri = savedInstanceState.getString("pageUri");
+			page = (QuizPage) savedInstanceState.getSerializable("page");
+			currentPage = savedInstanceState.getInt("currentPage");
+			correctAnswers = savedInstanceState.getBooleanArray("correctAnswers");
+		}
 
-		onPageLoaded();
+		loadQuiz();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("page", page);
+		outState.putString("pageUri", pageUri);
+		outState.putInt("currentPage", currentPage);
+		outState.putBooleanArray("correctAnswers", correctAnswers);
 	}
 
 	protected void loadQuiz()
@@ -120,30 +136,33 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			}
 		}
 
-		((StormPageAdapter)pageAdapter).setPages(fragmentPages);
+		pageAdapter.setPages(fragmentPages);
 		viewPager.setAdapter(pageAdapter);
+		viewPager.setCurrentItem(currentPage);
 		viewPager.setOnPageChangeListener(this);
-		viewPager.setCurrentItem(0);
-		pageAdapter.setIndex(0);
-		updateProgress((int)((1d / pageAdapter.getCount()) * 100));
-
-		correctAnswers = new boolean[page.getChildren().size()];
-		Arrays.fill(correctAnswers, false);
+		updateProgress(currentPage);
 	}
 
-	protected void updateProgress(int progress)
+	/**
+	 * Updates UI state to reflect a given page index. Should be called every time the page index changes
+	 *
+	 * @param pageIndex
+	 */
+	protected void updateProgress(int pageIndex)
 	{
 		LayoutParams fillParams = progressFill.getLayoutParams();
 		LayoutParams emptyParams = progressEmpty.getLayoutParams();
 
 		if (fillParams instanceof LinearLayout.LayoutParams && emptyParams instanceof LinearLayout.LayoutParams)
 		{
+			int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
 			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
 			((LinearLayout.LayoutParams)emptyParams).weight = progress;
 		}
 
 		progressFill.requestLayout();
 		progressEmpty.requestLayout();
+		previous.setEnabled(pageIndex != 0);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -155,26 +174,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	{
 		checkAnswers(currentPage);
 		currentPage = pageIndex;
-
-		updateProgress((int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100));
-
-		if (pageIndex == pageAdapter.getCount() - 1)
-		{
-			next.setText("Finish");
-		}
-		else
-		{
-			next.setText("Next");
-		}
-
-		if (pageIndex == 0)
-		{
-			previous.setEnabled(false);
-		}
-		else
-		{
-			previous.setEnabled(true);
-		}
+		updateProgress(pageIndex);
 	}
 
 	public void checkAnswers(int pageIndex)
@@ -236,7 +236,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		if (page != null)
 		{
-			loadQuiz();
+			correctAnswers = new boolean[page.getChildren().size()];
+			onPageLoaded();
 		}
 		else
 		{

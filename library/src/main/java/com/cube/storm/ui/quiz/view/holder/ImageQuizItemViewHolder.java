@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Checkable;
 
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.model.property.ImageProperty;
@@ -80,6 +81,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 			if (index < images.size())
 			{
 				((ImageView)currentCell.findViewById(R.id.image)).populate(model.getImages().get(index));
+				((Checkable)currentCell.findViewById(R.id.checkbox)).setChecked(model.getSelectHistory().contains(index));
 				currentCell.setTag(R.id.checkbox, index);
 				currentCell.setOnClickListener(new ModelClickListener(model));
 				currentCell.setVisibility(View.VISIBLE);

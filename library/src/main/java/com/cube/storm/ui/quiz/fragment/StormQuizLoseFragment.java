@@ -47,8 +47,6 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 		remember = (ViewGroup)v.findViewById(R.id.remember_container);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		retake.setText("Try Again?");
-		home.setText("Home");
 		home.setOnClickListener(this);
 		retake.setOnClickListener(this);
 
@@ -128,19 +126,16 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 				int index = 0;
 				for (QuizItem question : page.getChildren())
 				{
-					if (!answers[index])
+					View row = LayoutInflater.from(getActivity()).inflate(R.layout.quiz_remember_row, remember, false);
+					if (row != null && question != null)
 					{
-						View row = LayoutInflater.from(getActivity()).inflate(R.layout.quiz_remember_row, remember, false);
-						if (row != null && question != null)
-						{
-							((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
+						((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
 
-							((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
-							((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(question.getFailure()));
-							(row.findViewById(R.id.description)).setVisibility(View.VISIBLE);
+						((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
+						((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(answers[index] ? question.getCompletion() : question.getFailure()));
+						row.findViewById(R.id.description).setVisibility(View.VISIBLE);
 
-							remember.addView(row);
-						}
+						remember.addView(row);
 					}
 
 					index++;
