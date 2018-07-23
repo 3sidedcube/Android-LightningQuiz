@@ -2,7 +2,6 @@ package com.cube.storm.quiz.example;
 
 import android.app.Application;
 import android.net.Uri;
-
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.lib.migration.LegacyImageViewProcessor;
