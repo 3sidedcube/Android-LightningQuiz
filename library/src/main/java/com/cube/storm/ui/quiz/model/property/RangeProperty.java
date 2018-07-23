@@ -21,6 +21,7 @@ public class RangeProperty extends Property
 {
 	protected int start;
 	protected int length;
+	protected int increment = 1;
 
 	@Override public int describeContents()
 	{
