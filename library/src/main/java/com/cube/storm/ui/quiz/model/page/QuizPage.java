@@ -1,18 +1,16 @@
 package com.cube.storm.ui.quiz.model.page;
 
 import android.os.Parcel;
-
 import com.cube.storm.ui.model.page.Page;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.model.property.TextProperty;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
-
-import java.util.Collection;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.util.Collection;
 
 /**
  * Basic list page model which has an array of {@link com.cube.storm.ui.quiz.model.quiz.QuizItem} models
@@ -53,6 +51,14 @@ public class QuizPage extends Page
 	 * The array list of children {@link com.cube.storm.ui.quiz.model.quiz.QuizItem}
 	 */
 	protected Collection<QuizItem> children;
+
+	/**
+	 * The percentage of quiz questions that must be correct for the quiz to be considered "won".
+	 *
+	 * The threshold is inclusive. That is if winThreshold == 80 and there are 5 questions, then 4 correct
+	 * questions will be sufficient to win.
+	 */
+	protected Integer winThreshold;
 
 	@Override public int describeContents()
 	{
