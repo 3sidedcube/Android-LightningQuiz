@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
  * @author Matt Allen
  * @project Hazards
  */
-@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor @AllArgsConstructor
 @Accessors(chain = true) @Data
 public class AreaQuizItem extends QuizItem
 {
