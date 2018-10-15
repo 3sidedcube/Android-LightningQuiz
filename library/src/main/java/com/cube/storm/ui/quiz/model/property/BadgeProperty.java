@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor @AllArgsConstructor
 @Accessors(chain = true) @Data
 public class BadgeProperty extends Property
 {
