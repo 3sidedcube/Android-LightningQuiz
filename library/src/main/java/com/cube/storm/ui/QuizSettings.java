@@ -1,7 +1,6 @@
 package com.cube.storm.ui;
 
 import android.support.annotation.NonNull;
-
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.parser.ViewProcessor;
 import com.cube.storm.ui.lib.resolver.DefaultViewResolver;
@@ -17,11 +16,10 @@ import com.cube.storm.ui.quiz.view.holder.TextQuizItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.grid.QuizGridItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.list.BadgeCollectionItemViewHolder;
 import com.cube.storm.ui.quiz.view.holder.list.QuizCollectionItemViewHolder;
-
-import java.util.ArrayList;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 
 /**
  * Settings class for the quiz module.
@@ -66,11 +64,6 @@ public class QuizSettings
 
 		return instance;
 	}
-
-	/**
-	 * Default private constructor
-	 */
-	private QuizSettings(){}
 
 	/**
 	 * The builder class for {@link com.cube.storm.UiSettings}. Use this to create a new {@link com.cube.storm.UiSettings} instance
