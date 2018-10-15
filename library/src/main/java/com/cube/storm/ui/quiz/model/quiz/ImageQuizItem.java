@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * @author Luke Reed
  * @project Storm
  */
-@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor @AllArgsConstructor
 @Accessors(chain = true) @Data
 public class ImageQuizItem extends ItemQuizItem
 {

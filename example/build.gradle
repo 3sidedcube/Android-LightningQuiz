@@ -1,13 +1,15 @@
-apply plugin: 'com.android.application'
+plugins {
+	id 'com.android.application'
+	id 'io.franzbecker.gradle-lombok' version '1.14'
+}
 
 android {
-	compileSdkVersion 26
-	buildToolsVersion '27.0.3'
+	compileSdkVersion rootProject.ext.compileSdkVersion
 
 	defaultConfig {
 		applicationId "com.cube.storm.ui.quiz.example"
-		minSdkVersion 16
-		targetSdkVersion 26
+		minSdkVersion rootProject.ext.minSdkVersion
+		targetSdkVersion rootProject.ext.targetSdkVersion
 	}
 
 	packagingOptions {
@@ -31,9 +33,11 @@ android {
 
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
-	implementation 'com.android.support:appcompat-v7:26.0.2'
-	implementation 'com.3sidedcube.storm:ui:0.9.1'
-
 	implementation project(':library')
-	annotationProcessor 'org.projectlombok:lombok:1.16.10'
+
+	implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+	implementation 'com.3sidedcube.storm:ui:1.0.0-SNAPSHOT'
+
+	compileOnly 'org.projectlombok:lombok:1.18.2'
+	annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }

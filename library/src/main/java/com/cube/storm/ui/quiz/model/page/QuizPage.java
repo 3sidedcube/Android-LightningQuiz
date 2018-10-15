@@ -18,7 +18,7 @@ import java.util.Collection;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-@NoArgsConstructor @AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor @AllArgsConstructor
 @Accessors(chain = true) @Data
 public class QuizPage extends Page
 {
