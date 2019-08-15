@@ -30,22 +30,9 @@
 			tools:text="1 of 5"
 			android:text="1 of 5"
 		/>
-		<FrameLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="3dp"
-		>
-			<com.cube.storm.ui.view.ImageView
-				android:layout_width="100dp"
-				android:layout_height="6dp"
-				android:src="@drawable/progress_indicator_background"
-			/>
-			<com.cube.storm.ui.view.ImageView
-				android:layout_width="50dp"
-				android:layout_height="6dp"
-				android:src="@drawable/progress_indicator_foreground"
-			/>
-		</FrameLayout>
+		<ProgressBar
+			style="@style/quizProgressBar"
+		/>
 	</LinearLayout>
 	<ImageView
 		android:layout_width="24dp"
