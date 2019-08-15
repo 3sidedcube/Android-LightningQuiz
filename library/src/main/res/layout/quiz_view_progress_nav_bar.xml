@@ -10,6 +10,7 @@
 	<ImageView
 		android:layout_width="24dp"
 		android:layout_height="24dp"
+		android:id="@+id/quiz_back"
 		android:src="@drawable/ic_nav_back"
 		android:tint="@color/quizNavBarIconBackTint"
 	/>
@@ -31,12 +32,14 @@
 			android:text="1 of 5"
 		/>
 		<ProgressBar
+			android:id="@+id/quiz_progress_bar"
 			style="@style/quizProgressBar"
 		/>
 	</LinearLayout>
 	<ImageView
 		android:layout_width="24dp"
 		android:layout_height="24dp"
+		android:id="@+id/quiz_close"
 		android:src="@drawable/ic_close"
 		android:tint="@color/quizNavBarIconCloseTint"
 	/>

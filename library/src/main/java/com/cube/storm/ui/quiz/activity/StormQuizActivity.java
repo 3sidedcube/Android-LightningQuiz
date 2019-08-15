@@ -8,14 +8,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
@@ -51,15 +50,14 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 {
 	public static final String EXTRA_QUESTION = "stormquiz.question";
 
-	@Getter protected View customToolbar;
+	@Getter protected View customActionBar;
 
 	@Getter protected StormPageAdapter pageAdapter;
 	@Getter protected QuizPage page;
 	@Getter protected ViewPager viewPager;
 	@Getter protected Button previous;
 	@Getter protected Button next;
-	@Getter protected View progressFill;
-	@Getter protected View progressEmpty;
+	@Getter protected ProgressBar progressBar;
 
 	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
@@ -71,11 +69,12 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		setContentView(getLayoutResource());
 
+		setCustomActionBar();
+
 		pageAdapter = new StormQuizPageAdapter(this, getSupportFragmentManager());
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
-		progressFill = findViewById(R.id.progress_fill);
-		progressEmpty = findViewById(R.id.progress_empty);
+		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
 		previous = (Button)findViewById(R.id.previous);
 		next = (Button)findViewById(R.id.next);
 		previous.setOnClickListener(this);
@@ -102,18 +101,46 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			correctAnswers = savedInstanceState.getBooleanArray("correctAnswers");
 		}
 
-		// Set custom action bar
+		loadQuiz();
+	}
+
+	private void setCustomActionBar()
+	{
 		if (getSupportActionBar() != null)
 		{
 			// Show custom logo toolbar
 			ActionBar actionBar = getSupportActionBar();
 			actionBar.setDisplayShowCustomEnabled(true);
 
-			customToolbar = LayoutInflater.from(actionBar.getThemedContext()).inflate(R.layout.quiz_view_progress_nav_bar, null);
-			actionBar.setCustomView(customToolbar, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		}
+			customActionBar = LayoutInflater.from(actionBar.getThemedContext()).inflate(R.layout.quiz_view_progress_nav_bar, null);
+			actionBar.setCustomView(customActionBar, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-		loadQuiz();
+			ImageView backIcon = customActionBar.findViewById(R.id.quiz_back);
+			ImageView closeIcon = customActionBar.findViewById(R.id.quiz_close);
+
+			backIcon.setOnClickListener(new OnClickListener()
+			{
+				@Override public void onClick(View view)
+				{
+					if (viewPager.getCurrentItem() == 0)
+					{
+						finish();
+					}
+					else
+					{
+						viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+					}
+				}
+			});
+
+			closeIcon.setOnClickListener(new OnClickListener()
+			{
+				@Override public void onClick(View view)
+				{
+					finish();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -156,18 +183,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	 */
 	protected void updateProgress(int pageIndex)
 	{
-		LayoutParams fillParams = progressFill.getLayoutParams();
-		LayoutParams emptyParams = progressEmpty.getLayoutParams();
-
-		if (fillParams instanceof LinearLayout.LayoutParams && emptyParams instanceof LinearLayout.LayoutParams)
-		{
-			int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
-			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
-			((LinearLayout.LayoutParams)emptyParams).weight = progress;
-		}
-
-		progressFill.requestLayout();
-		progressEmpty.requestLayout();
+		int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
+		progressBar.setProgress(progress);
 		previous.setEnabled(pageIndex != 0);
 	}
 
