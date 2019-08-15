@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -47,6 +50,8 @@ import lombok.Getter;
 public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, OnClickListener, StormInterface
 {
 	public static final String EXTRA_QUESTION = "stormquiz.question";
+
+	@Getter protected View customToolbar;
 
 	@Getter protected StormPageAdapter pageAdapter;
 	@Getter protected QuizPage page;
@@ -97,6 +102,17 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			correctAnswers = savedInstanceState.getBooleanArray("correctAnswers");
 		}
 
+		// Set custom action bar
+		if (getSupportActionBar() != null)
+		{
+			// Show custom logo toolbar
+			ActionBar actionBar = getSupportActionBar();
+			actionBar.setDisplayShowCustomEnabled(true);
+
+			customToolbar = LayoutInflater.from(actionBar.getThemedContext()).inflate(R.layout.quiz_view_progress_nav_bar, null);
+			actionBar.setCustomView(customToolbar, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		}
+
 		loadQuiz();
 	}
 
@@ -112,16 +128,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 	protected void loadQuiz()
 	{
-		if (page.getTitle() != null)
-		{
-			String title = UiSettings.getInstance().getTextProcessor().process(page.getTitle());
-
-			if (!TextUtils.isEmpty(title))
-			{
-				setTitle(title);
-			}
-		}
-
 		Collection<FragmentPackage> fragmentPages = new ArrayList<FragmentPackage>();
 
 		for (QuizItem question : page.getChildren())
