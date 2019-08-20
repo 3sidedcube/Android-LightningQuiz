@@ -29,7 +29,6 @@
 			android:textStyle="normal"
 			android:textColor="@color/quizNavBarText"
 			tools:text="1 of 5"
-			android:text="1 of 5"
 		/>
 		<ProgressBar
 			android:id="@+id/quiz_progress_bar"
