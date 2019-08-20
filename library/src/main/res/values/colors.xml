@@ -6,4 +6,8 @@
 	<color name="quizProgressForeground">#FFFFFFFF</color>
 	<color name="quizNavBarIconBackTint">#FFFFFF</color>
 	<color name="quizNavBarIconCloseTint">#FFFFFF</color>
+	<color name="quizImageLabelUnselected">#6D6D6D</color>
+	<color name="quizImageLabelSelected">#FFFFFF</color>
+	<color name="quizImageLabelBackgroundSelected">#ED1B2E</color>
+	<color name="quizImageSelectionBorder">#ED1B2E</color>
 </resources>
