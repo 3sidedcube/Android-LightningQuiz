@@ -30,6 +30,7 @@ import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+import com.cube.storm.ui.view.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +59,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected Button previous;
 	@Getter protected Button next;
 	@Getter protected ProgressBar progressBar;
+	@Getter protected TextView progressText;
 
 	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
@@ -75,6 +77,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
+		progressText = customActionBar.findViewById(R.id.progress_text);
 		previous = (Button)findViewById(R.id.previous);
 		next = (Button)findViewById(R.id.next);
 		previous.setOnClickListener(this);
@@ -183,6 +186,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	 */
 	protected void updateProgress(int pageIndex)
 	{
+		progressText.setText(String.format(getString(R.string.progress_string), pageIndex + 1, pageAdapter.getCount()));
 		int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
 		progressBar.setProgress(progress);
 		previous.setEnabled(pageIndex != 0);

@@ -24,6 +24,7 @@
 		<com.cube.storm.ui.view.TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:id="@+id/progress_text"
 			android:textSize="15sp"
 			android:fontFamily="sans-serif-medium"
 			android:textStyle="normal"
