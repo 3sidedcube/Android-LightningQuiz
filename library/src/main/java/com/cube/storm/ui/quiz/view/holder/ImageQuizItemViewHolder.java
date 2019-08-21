@@ -87,6 +87,11 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 				{
 					selectAnswer(currentCell, true);
 				}
+				else
+				{
+					// we set this in case the view is recycled
+					selectAnswer(currentCell, false);
+				}
 
 				currentCell.setOnClickListener(new ModelClickListener(model, index));
 				currentCell.setVisibility(View.VISIBLE);
@@ -167,16 +172,8 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 			{
 				int remIndex = model.getSelectHistory().get(0);
 				model.getSelectHistory().remove(0);
-				View answerLayout;
+				View answerLayout = answerLayouts.get(remIndex);
 
-				if (remIndex % 2 == 0)
-				{
-					answerLayout = options.getChildAt((int) Math.floor(remIndex / 2)).findViewById(R.id.layout1);
-				}
-				else
-				{
-					answerLayout = options.getChildAt((int) Math.floor(remIndex / 2)).findViewById(R.id.layout2);
-				}
 				// unselect image answer
 				selectAnswer(answerLayout, false);
 			}
