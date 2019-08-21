@@ -1,6 +1,5 @@
 package com.cube.storm.ui.quiz.view.holder;
 
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,7 +122,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 		if (textView != null)
 		{
 			textView.setTextAppearance(answerLayout.getContext(),
-				selectAnswer ? R.style.QuizImageLabel_Selected :R.style.QuizImageLabel_Unselected);
+				selectAnswer ? R.style.QuizImageLabel_Selected : R.style.QuizImageLabel_Unselected);
 			textView.setBackgroundResource(selectAnswer ? R.drawable.quiz_image_label_selected_border : 0);
 		}
 	}

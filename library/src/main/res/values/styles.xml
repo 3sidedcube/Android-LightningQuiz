@@ -9,7 +9,8 @@
 		<item name="android:indeterminateOnly">false</item>
 	</style>
 
-	<style name="QuizImageLabel" parent="TextAppearance.AppCompat">
+	<style name="QuizImageLabel">
+		<item name="android:fontFamily">sans-serif-medium</item>
 	</style>
 
 	<style name="QuizImageLabel.Unselected">
