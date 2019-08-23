@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- quiz progress nav bar color's - can be overridden in project file -->
+	<color name="quizNavBarText">#ffffff</color>
+	<color name="quizProgressBackground">#80FFFFFF</color>
+	<color name="quizProgressForeground">#FFFFFFFF</color>
+	<color name="quizNavBarIconBackTint">#FFFFFF</color>
+	<color name="quizNavBarIconCloseTint">#FFFFFF</color>
+</resources>
