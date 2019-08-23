@@ -4,8 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Checkable;
 
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.model.property.ImageProperty;
@@ -40,6 +38,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 	protected TextView title;
 	protected TextView hint;
 	protected ViewGroup options;
+	protected ArrayList<View> answerLayouts = new ArrayList<>();
 
 	public ImageQuizItemViewHolder(View view)
 	{
@@ -80,10 +79,21 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 
 			if (index < images.size())
 			{
-				((ImageView)currentCell.findViewById(R.id.image)).populate(model.getImages().get(index));
-				((Checkable)currentCell.findViewById(R.id.checkbox)).setChecked(model.getSelectHistory().contains(index));
-				currentCell.setTag(R.id.checkbox, index);
-				currentCell.setOnClickListener(new ModelClickListener(model));
+				answerLayouts.add(index, currentCell);
+				ImageView imageView = currentCell.findViewById(R.id.image);
+				imageView.populate(model.getImages().get(index));
+
+				if (model.getSelectHistory().contains(index))
+				{
+					selectAnswer(currentCell, true);
+				}
+				else
+				{
+					// we set this in case the view is recycled
+					selectAnswer(currentCell, false);
+				}
+
+				currentCell.setOnClickListener(new ModelClickListener(model, index));
 				currentCell.setVisibility(View.VISIBLE);
 			}
 			else if (index >= images.size())
@@ -98,50 +108,74 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 		}
 	}
 
+	/**
+	 * Handles the view changes when an image answer is selected or unselected
+	 * @param answerLayout the layout container other views
+	 * @param selectAnswer if answer is selected or unselected
+	 */
+	private void selectAnswer(View answerLayout, boolean selectAnswer)
+	{
+		// Set border around image
+		View border = answerLayout.findViewById(R.id.image_border);
+		if (border != null)
+		{
+			border.setVisibility(selectAnswer ? View.VISIBLE : View.INVISIBLE);
+		}
+
+		// Set image label style and its background
+		TextView textView = answerLayout.findViewById(R.id.label);
+		if (textView != null)
+		{
+			textView.setTextAppearance(answerLayout.getContext(),
+				selectAnswer ? R.style.QuizImageLabel_Selected : R.style.QuizImageLabel_Unselected);
+			textView.setBackgroundResource(selectAnswer ? R.drawable.quiz_image_label_selected_border : 0);
+		}
+	}
+
 	private class ModelClickListener implements OnClickListener
 	{
 		private ImageQuizItem model;
+		private int index;
 
-		private ModelClickListener(ImageQuizItem model)
+		private ModelClickListener(ImageQuizItem model, int index)
 		{
 			this.model = model;
+			this.index = index;
 		}
 
 		@Override public void onClick(View v)
 		{
-			int index = (Integer)v.getTag(R.id.checkbox);
-			CheckBox checker = ((CheckBox)v.findViewById(R.id.checkbox));
-
-			if (!checker.isChecked())
+			if (answerLayouts != null && answerLayouts.get(index) != null)
 			{
-				checker.setChecked(true);
-				model.getSelectHistory().add(index);
+				View answerLayout = answerLayouts.get(index);
 
-				for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+				if (!model.getSelectHistory().contains(index))
 				{
-					quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, index);
+					// select image answer
+					for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+					{
+						quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, index);
+					}
+					selectAnswer(answerLayout, true);
+					model.getSelectHistory().add(index);
+				}
+				else
+				{
+					// unselect image answer
+					selectAnswer(answerLayout, false);
+					model.getSelectHistory().remove((Integer)index);
 				}
 			}
-			else
-			{
-				checker.setChecked(false);
-				model.getSelectHistory().remove((Integer)index);
-			}
 
-			// disable select if checked > limit
+			// unselect first selected answer if selected answers goes over answer limit
 			if (model.getSelectHistory().size() > model.getLimit())
 			{
 				int remIndex = model.getSelectHistory().get(0);
 				model.getSelectHistory().remove(0);
+				View answerLayout = answerLayouts.get(remIndex);
 
-				if (remIndex % 2 == 0)
-				{
-					((CheckBox)options.getChildAt((int)Math.floor(remIndex / 2)).findViewById(R.id.layout1).findViewById(R.id.checkbox)).setChecked(false);
-				}
-				else
-				{
-					((CheckBox)options.getChildAt((int)Math.floor(remIndex / 2)).findViewById(R.id.layout2).findViewById(R.id.checkbox)).setChecked(false);
-				}
+				// unselect image answer
+				selectAnswer(answerLayout, false);
 			}
 
 			// check the answers in the history

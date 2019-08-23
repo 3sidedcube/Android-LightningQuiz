@@ -8,4 +8,16 @@
 		<item name="android:layout_marginTop">3dp</item>
 		<item name="android:indeterminateOnly">false</item>
 	</style>
+
+	<style name="QuizImageLabel">
+		<item name="android:fontFamily">sans-serif-medium</item>
+	</style>
+
+	<style name="QuizImageLabel.Unselected">
+		<item name="android:textColor">@color/quizImageLabelUnselected</item>
+	</style>
+
+	<style name="QuizImageLabel.Selected">
+		<item name="android:textColor">@color/quizImageLabelSelected</item>
+	</style>
 </resources>
