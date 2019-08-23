@@ -47,7 +47,7 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, OnClickListener, StormInterface
+public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, StormInterface
 {
 	public static final String EXTRA_QUESTION = "stormquiz.question";
 
@@ -56,7 +56,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected StormPageAdapter pageAdapter;
 	@Getter protected QuizPage page;
 	@Getter protected ViewPager viewPager;
-	@Getter protected Button previous;
 	@Getter protected Button next;
 	@Getter protected ProgressBar progressBar;
 	@Getter protected TextView progressText;
@@ -78,10 +77,25 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
 		progressText = customActionBar.findViewById(R.id.progress_text);
-		previous = (Button)findViewById(R.id.previous);
 		next = (Button)findViewById(R.id.next);
-		previous.setOnClickListener(this);
-		next.setOnClickListener(this);
+		next.setOnClickListener(new OnClickListener()
+		{
+			@Override public void onClick(View view)
+			{
+				if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
+				{
+					// force check last answer
+					checkAnswers(viewPager.getCurrentItem());
+					finishQuiz();
+					finish();
+				}
+				else
+				{
+					viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+				}
+			}
+		});
+
 
 		if (savedInstanceState == null)
 		{
@@ -189,7 +203,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		progressText.setText(String.format(getString(R.string.progress_string), pageIndex + 1, pageAdapter.getCount()));
 		int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
 		progressBar.setProgress(progress);
-		previous.setEnabled(pageIndex != 0);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -220,28 +233,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Override public void onPageScrollStateChanged(int i)
 	{
 
-	}
-
-	@Override public void onClick(View view)
-	{
-		if (view == next)
-		{
-			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
-			{
-				// force check last answer
-				checkAnswers(viewPager.getCurrentItem());
-				finishQuiz();
-				finish();
-			}
-			else
-			{
-				viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-			}
-		}
-		else if (view == previous)
-		{
-			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-		}
 	}
 
 	public void finishQuiz()

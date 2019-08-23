@@ -10,4 +10,6 @@
 	<color name="quizImageLabelSelected">#FFFFFF</color>
 	<color name="quizImageLabelBackgroundSelected">#ED1B2E</color>
 	<color name="quizImageSelectionBorder">#ED1B2E</color>
+	<color name="buttonBackgroundActive">#ED1B2E</color>
+	<color name="buttonTextActive">#FFFFFF</color>
 </resources>
