@@ -154,13 +154,14 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 
 				if (!model.getSelectHistory().contains(index))
 				{
+					selectAnswer(answerLayout, true);
+					model.getSelectHistory().add(index);
+
 					// select image answer
 					for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 					{
 						quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, index);
 					}
-					selectAnswer(answerLayout, true);
-					model.getSelectHistory().add(index);
 				}
 				else
 				{
@@ -196,6 +197,11 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 						break;
 					}
 				}
+			}
+
+			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+			{
+				quizEventHook.onQuizItemAnswersChanged(v.getContext(), model);
 			}
 		}
 	}

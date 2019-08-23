@@ -72,14 +72,12 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	protected QuizEventHook eventHook = new QuizEventHook()
 	{
 		@Override
-		public void onQuizOptionSelected(
+		public void onQuizItemAnswersChanged(
 			@NonNull Context pageContext,
-			@NonNull View itemView,
-			@NonNull QuizItem item,
-			@NonNull Object answer
+			@NonNull QuizItem item
 		)
 		{
-			super.onQuizOptionSelected(pageContext, itemView, item, answer);
+			super.onQuizItemAnswersChanged(pageContext, item);
 			updateQuestionProgressLabel(item);
 		}
 	};
