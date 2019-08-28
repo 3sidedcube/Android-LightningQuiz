@@ -57,7 +57,7 @@ public class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements 
 
 		if (badgeProperty != null)
 		{
-			image.populate(badgeProperty.getIcon(), progress);
+			image.populate(badgeProperty.getIcon(), null, progress);
 			title.populate(model.getTitle());
 
 			if (badgeProperty.hasAchieved(image.getContext()))

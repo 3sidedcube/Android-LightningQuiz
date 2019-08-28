@@ -20,4 +20,25 @@
 	<style name="QuizImageLabel.Selected">
 		<item name="android:textColor">@color/quizImageLabelSelected</item>
 	</style>
+
+	<style name="BadgeCollectionItemLabel">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">13sp</item>
+		<item name="android:textColor">@color/BadgeCollectionItemInactive</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:letterSpacing">0.03</item>
+		<item name="android:gravity">center_horizontal</item>
+		<item name="android:paddingTop">3dp</item>
+		<item name="android:paddingBottom">3dp</item>
+		<item name="android:paddingLeft">12dp</item>
+		<item name="android:paddingRight">12dp</item>
+		<item name="android:layout_marginTop">6dp</item>
+		<item name="android:layout_marginBottom">6dp</item>
+		<item name="android:layout_gravity">center</item>
+	</style>
+
+	<style name="BadgeCollectionItemLabel.Active">
+		<item name="android:textColor">@color/BadgeCollectionItemActive</item>
+	</style>
 </resources>
