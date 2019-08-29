@@ -9,102 +9,10 @@
 	android:paddingBottom="12dp"
 	android:weightSum="1"
 >
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_weight=".5"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
+	<include layout="@layout/image_quiz_item_view"
 		android:id="@+id/layout1"
-	>
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="156dp"
-			android:maxHeight="300dp"
-		>
-			<com.cube.storm.ui.view.ImageView
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/image"
-				android:scaleType="centerCrop"
-				android:cropToPadding="true"
-				tools:src="@drawable/area_select"
-			/>
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/image_border"
-				android:background="@drawable/quiz_image_selected_border"
-				android:visibility="invisible"
-				tools:visibility="visible"
-			/>
-		</FrameLayout>
-
-		<com.cube.storm.ui.view.TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/label"
-			style="@style/QuizImageLabel.Unselected"
-			android:textSize="13sp"
-			android:fontFamily="sans-serif-medium"
-			android:letterSpacing="0.02"
-			android:paddingTop="2dp"
-			android:paddingBottom="2dp"
-			android:layout_marginTop="4dp"
-			android:gravity="center"
-			tools:text="Answer 1"
-			tools:background="@drawable/quiz_image_label_selected_border"
-			tools:textColor="@color/quizImageLabelSelected"
-		/>
-	</LinearLayout>
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_weight=".5"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
+	/>
+	<include layout="@layout/image_quiz_item_view"
 		android:id="@+id/layout2"
-	>
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="156dp"
-			android:maxHeight="300dp"
-		>
-			<com.cube.storm.ui.view.ImageView
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/image"
-				android:scaleType="centerCrop"
-				android:cropToPadding="true"
-				tools:src="@drawable/area_select"
-			/>
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/image_border"
-				android:background="@drawable/quiz_image_selected_border"
-				android:visibility="invisible"
-			/>
-		</FrameLayout>
-
-		<com.cube.storm.ui.view.TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/label"
-			style="@style/QuizImageLabel.Unselected"
-			android:textSize="13sp"
-			android:fontFamily="sans-serif-medium"
-			android:letterSpacing="0.02"
-			android:paddingTop="2dp"
-			android:paddingBottom="2dp"
-			android:layout_marginTop="4dp"
-			android:gravity="center"
-			tools:text="Answer 2"
-		/>
-	</LinearLayout>
+	/>
 </LinearLayout>

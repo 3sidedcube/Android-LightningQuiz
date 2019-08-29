@@ -1,5 +1,8 @@
 package com.cube.storm.ui.quiz.view.holder;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +33,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 	{
 		@Override public ImageQuizItemViewHolder createViewHolder(ViewGroup parent)
 		{
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_quiz_item_view, parent, false);
+			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_quiz_view, parent, false);
 			return new ImageQuizItemViewHolder(view);
 		}
 	}
@@ -116,19 +119,27 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 	private void selectAnswer(View answerLayout, boolean selectAnswer)
 	{
 		// Set border around image
-		View border = answerLayout.findViewById(R.id.image_border);
+		CardView border = answerLayout.findViewById(R.id.image_container);
+		Context context = border.getContext();
 		if (border != null)
 		{
-			border.setVisibility(selectAnswer ? View.VISIBLE : View.INVISIBLE);
+			border.setCardBackgroundColor(selectAnswer ? ContextCompat.getColor(context, R.color.quizImageSelectionBorder) : ContextCompat.getColor(context, R.color.transparent));
 		}
 
 		// Set image label style and its background
 		TextView textView = answerLayout.findViewById(R.id.label);
 		if (textView != null)
 		{
-			textView.setTextAppearance(answerLayout.getContext(),
-				selectAnswer ? R.style.QuizImageLabel_Selected : R.style.QuizImageLabel_Unselected);
+			textView.setTextAppearance(answerLayout.getContext(), selectAnswer ? R.style.QuizImageLabel_Selected : R.style.QuizImageLabel_Unselected);
 			textView.setBackgroundResource(selectAnswer ? R.drawable.quiz_image_label_selected_border : 0);
+		}
+
+		// Set image label style and its background
+		ImageView imageView = answerLayout.findViewById(R.id.image);
+		if (imageView != null)
+		{
+			imageView.setAlpha(selectAnswer ? 1f : 0.5f);
+
 		}
 	}
 
