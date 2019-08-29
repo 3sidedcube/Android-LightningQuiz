@@ -1,6 +1,7 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -160,10 +161,18 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 		if (v == share)
 		{
 			BadgeProperty badge = BadgeManager.getInstance().getBadgeById(getPage().getBadgeId());
+			Context context = v.getContext();
 
 			if (badge != null)
 			{
-				String shareText = "";
+				String badgeTitle = "a badge";
+
+				if (badge.getTitle() != null)
+				{
+					badgeTitle = UiSettings.getInstance().getTextProcessor().process(badge.getTitle());
+				}
+
+				String shareText = String.format("I've just earned %s on the %s app!", badgeTitle, getString(R.string.app_name));
 
 				if (badge.getShareMessage() != null)
 				{
@@ -173,7 +182,14 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("*/*");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-				shareIntent.putExtra(Intent.EXTRA_STREAM, saveBadgeToTemp(badge));
+
+				Uri badgeUri = saveBadgeToTemp(badge);
+
+				if (badgeUri != null)
+				{
+					shareIntent.putExtra(Intent.EXTRA_STREAM, badgeUri);
+				}
+
 				startActivity(shareIntent);
 			}
 		}

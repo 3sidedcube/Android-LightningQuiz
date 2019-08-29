@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,7 +35,6 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 	@Getter protected QuizPage page;
 	@Getter protected TextView loseTitle;
 	@Getter protected Button retake;
-	@Getter protected Button home;
 	@Getter protected ViewGroup remember;
 	@Getter protected ViewGroup embeddedLinksContainer;
 	@Getter protected boolean[] answers;
@@ -43,14 +45,19 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 
 		loseTitle = (TextView)v.findViewById(R.id.lose_title);
 		retake = (Button)v.findViewById(R.id.retake);
-		home = (Button)v.findViewById(R.id.home_button);
 		remember = (ViewGroup)v.findViewById(R.id.remember_container);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		home.setOnClickListener(this);
 		retake.setOnClickListener(this);
 
 		return v;
+	}
+
+	@Override public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		setHasOptionsMenu(true);
 	}
 
 	@Override public void onActivityCreated(Bundle savedInstanceState)
@@ -69,13 +76,27 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 		}
 	}
 
+	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		inflater.inflate(R.menu.menu, menu);
+	}
+
+	@Override public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if (item.getItemId() == R.id.menu_home)
+		{
+			if (getActivity() != null)
+			{
+				getActivity().finish();
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override public void onClick(View v)
 	{
-		if (v == home)
-		{
-			getActivity().finish();
-		}
-		else if (v == retake)
+
+		if (v == retake)
 		{
 			PageDescriptor quiz = UiSettings.getInstance().getApp().findPageDescriptor(getPage());
 
@@ -149,7 +170,10 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 				int index = 0;
 				for (LinkProperty link : page.getLoseRelatedLinks())
 				{
-					if (link == null) continue;
+					if (link == null)
+					{
+						continue;
+					}
 					final LinkProperty property = link;
 
 					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);

@@ -21,6 +21,8 @@
 		<item name="android:textColor">@color/quizImageLabelSelected</item>
 	</style>
 
+	<style name="Quiz" />
+
 	<style name="Quiz.WinTitle" parent="android:TextAppearance">
 		<item name="android:textSize">20sp</item>
 		<item name="android:gravity">center</item>
@@ -52,5 +54,11 @@
 	<style name="Quiz.BadgeShareContainer" parent="android:Widget">
 		<item name="android:padding">20dp</item>
 		<item name="android:layout_margin">20dp</item>
+	</style>
+	<style name="Quiz.RetakeButton" parent="android:Widget.Button">
+		<item name="android:textColor">@android:color/black</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:textSize">14sp</item>
 	</style>
 </resources>
