@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="progress_string" formatted="false">%d of %d</string>
-	<string name="app_name">3 SIDED CUBE</string> <!-- Should be overridden inside application-->
+	<string name="app_name">3 SIDED CUBE</string>
+	<string name="back">Back</string>
+	<string name="close">Close</string> <!-- Should be overridden inside application-->
 </resources>
