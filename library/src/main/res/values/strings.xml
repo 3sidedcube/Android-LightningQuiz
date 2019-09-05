@@ -2,4 +2,7 @@
 <resources>
 	<string name="progress_string" formatted="false">%d of %d</string>
 	<string name="answers_selected" formatted="false">%d of %d selected</string>
+	<string name="app_name">3 SIDED CUBE</string> <!-- app_name should be overridden inside application-->
+	<string name="back">Back</string>
+	<string name="close">Close</string>
 </resources>
