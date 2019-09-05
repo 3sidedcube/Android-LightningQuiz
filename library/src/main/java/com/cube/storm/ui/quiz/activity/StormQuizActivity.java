@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,6 +60,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected Button next;
 	@Getter protected ProgressBar progressBar;
 	@Getter protected TextView progressText;
+	@Getter protected TextView answersSelected;
+
 
 	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
@@ -78,7 +79,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		)
 		{
 			super.onQuizItemAnswersChanged(pageContext, item);
-			updateQuestionProgressLabel(item);
+			updateAnswersSelectedLabel(item);
 		}
 	};
 
@@ -95,6 +96,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
 		progressText = customActionBar.findViewById(R.id.progress_text);
+		answersSelected = findViewById(R.id.answersSelected);
 		next = (Button)findViewById(R.id.next);
 		next.setOnClickListener(new OnClickListener()
 		{
@@ -237,7 +239,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		progressBar.setProgress(progress);
 
 		QuizItem quizItem = new ArrayList<>(page.getChildren()).get(pageIndex);
-		updateQuestionProgressLabel(quizItem);
+		updateAnswersSelectedLabel(quizItem);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -312,8 +314,31 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	private void updateQuestionProgressLabel(QuizItem item)
+	private void updateAnswersSelectedLabel(QuizItem item)
 	{
-		Log.d("3SC", "quiz item: " + ((ItemQuizItem)item).getSelectHistory());
+		if (item instanceof ItemQuizItem)
+		{
+			// Image or Text Quiz Item: show answers selected
+			ItemQuizItem model = (ItemQuizItem)item;
+			// set answers selected text
+			String selectedText = answersSelected.getResources().getString(
+				R.string.answers_selected, model.getSelectHistory().size(), model.getLimit());
+			answersSelected.setText(selectedText);
+			answersSelected.setVisibility(View.VISIBLE);
+			// Use active / inactive continue button style
+			styleNextButton(model.getSelectHistory().size() >= model.getLimit());
+		}
+		else
+		{
+			// Area or slider Item: hide answers selected view
+			answersSelected.setVisibility(View.GONE);
+			styleNextButton(true);
+		}
+	}
+
+	private void styleNextButton(boolean active)
+	{
+		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
+		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);
 	}
 }

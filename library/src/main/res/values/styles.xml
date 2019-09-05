@@ -20,4 +20,27 @@
 	<style name="QuizImageLabel.Selected">
 		<item name="android:textColor">@color/quizImageLabelSelected</item>
 	</style>
+
+	<style name="QuizNextButton" parent="Widget.AppCompat.Button.Borderless">
+		<item name="android:paddingTop">15dp</item>
+		<item name="android:paddingBottom">15dp</item>
+		<item name="android:paddingLeft">30dp</item>
+		<item name="android:paddingRight">30dp</item>
+		<item name="android:layout_marginTop">15dp</item>
+		<item name="android:layout_marginBottom">15dp</item>
+		<item name="android:layout_marginLeft">24dp</item>
+		<item name="android:layout_marginRight">24dp</item>
+		<item name="android:background">@drawable/button_active</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:layout_gravity">center</item>
+		<item name="android:gravity">center</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:textColor">@color/buttonTextActive</item>
+		<item name="android:letterSpacing">0.04</item>
+	</style>
+
+	<style name="QuizNextButton.Inactive">
+		<item name="android:background">@drawable/button_inactive</item>
+		<item name="android:textColor">@color/buttonTextInactive</item>
+	</style>
 </resources>
