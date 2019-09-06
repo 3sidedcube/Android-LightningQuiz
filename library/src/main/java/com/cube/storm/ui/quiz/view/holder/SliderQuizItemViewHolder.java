@@ -113,6 +113,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 			{
 				quizEventHook.onQuizOptionSelected(seekBar.getContext(), itemView, model, seekBar.getProgress());
+				quizEventHook.onQuizItemAnswersChanged(seekBar.getContext(), model);
 			}
 		}
 	}

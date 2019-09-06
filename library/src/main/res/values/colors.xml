@@ -14,5 +14,8 @@
 	<color name="cardBorder">#1E000000</color>
 	<color name="textItem">#DE000000</color>
 	<color name="buttonBackgroundActive">#ED1B2E</color>
+	<color name="buttonBorderInactive">#D7D7D7</color>
 	<color name="buttonTextActive">#FFFFFF</color>
+	<color name="buttonTextInactive">#6D6D6D</color>
+	<color name="answersSelectedText">#6D6D6D</color>
 </resources>

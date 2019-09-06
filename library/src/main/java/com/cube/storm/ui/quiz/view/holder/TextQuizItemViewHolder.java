@@ -119,6 +119,11 @@ public class TextQuizItemViewHolder extends ViewHolder<TextQuizItem>
 					}
 				}
 			}
+
+			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+			{
+				quizEventHook.onQuizItemAnswersChanged(v.getContext(), model);
+			}
 		}
 	}
 }

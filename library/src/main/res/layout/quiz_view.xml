@@ -2,7 +2,7 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
@@ -14,24 +14,25 @@
 		android:id="@+id/view_pager"
 		android:background="#F5F5F5"
 	/>
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/answers_selected"
+		android:layout_marginTop="15dp"
+		android:layout_gravity="center"
+		android:textSize="11sp"
+		android:fontFamily="sans-serif-medium"
+		android:textColor="@color/answersSelectedText"
+		android:letterSpacing="0.02"
+		tools:text="1 of 1 selected"
+		tools:visibility="visible"
+	/>
+
 	<com.cube.storm.ui.view.Button
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/next"
-		android:paddingTop="15dp"
-		android:paddingBottom="15dp"
-		android:paddingLeft="30dp"
-		android:paddingRight="30dp"
-		android:layout_marginTop="15dp"
-		android:layout_marginBottom="15dp"
-		android:layout_marginLeft="24dp"
-		android:layout_marginRight="24dp"
-		android:background="@drawable/button_active"
-		android:textSize="14sp"
-		android:fontFamily="sans-serif-medium"
-		android:textColor="@color/buttonTextActive"
-		style="?android:attr/borderlessButtonStyle"
-		android:letterSpacing="0.04"
+		style="@style/QuizNextButton"
 		android:text="Continue"
 	/>
 </LinearLayout>

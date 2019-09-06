@@ -1,8 +1,10 @@
 package com.cube.storm.ui.quiz.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -16,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.activity.StormActivity;
@@ -29,13 +30,13 @@ import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
+import com.cube.storm.ui.quiz.model.quiz.ItemQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.view.TextView;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import lombok.Getter;
 
 /**
  * Storm quiz fragment used for displaying individual quiz questions. Use this class to display each
@@ -59,10 +60,28 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Getter protected Button next;
 	@Getter protected ProgressBar progressBar;
 	@Getter protected TextView progressText;
+	@Getter protected TextView answersSelected;
+
 
 	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
 	@Getter protected boolean[] correctAnswers;
+
+	/**
+	 * Private event hook used to know when a quiz answer has changed
+	 */
+	protected QuizEventHook eventHook = new QuizEventHook()
+	{
+		@Override
+		public void onQuizItemAnswersChanged(
+			@NonNull Context pageContext,
+			@NonNull QuizItem item
+		)
+		{
+			super.onQuizItemAnswersChanged(pageContext, item);
+			updateAnswersSelectedLabel(item);
+		}
+	};
 
 	@Override protected void onCreate(Bundle savedInstanceState)
 	{
@@ -77,6 +96,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
 		progressText = customActionBar.findViewById(R.id.progress_text);
+		answersSelected = findViewById(R.id.answers_selected);
 		next = (Button)findViewById(R.id.next);
 		next.setOnClickListener(new OnClickListener()
 		{
@@ -119,6 +139,20 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 
 		loadQuiz();
+	}
+
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		QuizSettings.getInstance().getEventHooks().add(eventHook);
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		QuizSettings.getInstance().getEventHooks().remove(eventHook);
 	}
 
 	private void setCustomActionBar()
@@ -203,6 +237,9 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		progressText.setText(String.format(getString(R.string.progress_string), pageIndex + 1, pageAdapter.getCount()));
 		int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
 		progressBar.setProgress(progress);
+
+		QuizItem quizItem = new ArrayList<>(page.getChildren()).get(pageIndex);
+		updateAnswersSelectedLabel(quizItem);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -275,5 +312,33 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			quizEventHook.onQuizStarted(this, page);
 		}
+	}
+
+	private void updateAnswersSelectedLabel(QuizItem item)
+	{
+		if (item instanceof ItemQuizItem)
+		{
+			// Image or Text Quiz Item: show answers selected
+			ItemQuizItem model = (ItemQuizItem)item;
+			// set answers selected text
+			String selectedText = answersSelected.getResources().getString(
+				R.string.answers_selected, model.getSelectHistory().size(), model.getLimit());
+			answersSelected.setText(selectedText);
+			answersSelected.setVisibility(View.VISIBLE);
+			// Use active / inactive continue button style
+			styleNextButton(model.getSelectHistory().size() >= model.getLimit());
+		}
+		else
+		{
+			// Area or slider Item: hide answers selected view
+			answersSelected.setVisibility(View.GONE);
+			styleNextButton(true);
+		}
+	}
+
+	private void styleNextButton(boolean active)
+	{
+		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
+		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);
 	}
 }

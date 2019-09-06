@@ -1,5 +1,7 @@
 package com.cube.storm.ui.quiz.view.holder;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +13,7 @@ import com.cube.storm.ui.model.property.TextProperty;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.quiz.ImageQuizItem;
+import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.view.ImageView;
 import com.cube.storm.ui.view.TextView;
 import com.cube.storm.ui.view.holder.ViewHolder;
@@ -151,13 +154,14 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 
 				if (!model.getSelectHistory().contains(index))
 				{
+					selectAnswer(answerLayout, true);
+					model.getSelectHistory().add(index);
+
 					// select image answer
 					for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 					{
 						quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, index);
 					}
-					selectAnswer(answerLayout, true);
-					model.getSelectHistory().add(index);
 				}
 				else
 				{
@@ -193,6 +197,11 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 						break;
 					}
 				}
+			}
+
+			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
+			{
+				quizEventHook.onQuizItemAnswersChanged(v.getContext(), model);
 			}
 		}
 	}
