@@ -96,7 +96,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
 		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
 		progressText = customActionBar.findViewById(R.id.progress_text);
-		answersSelected = findViewById(R.id.answersSelected);
+		answersSelected = findViewById(R.id.answers_selected);
 		next = (Button)findViewById(R.id.next);
 		next.setOnClickListener(new OnClickListener()
 		{

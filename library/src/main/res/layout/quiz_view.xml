@@ -17,7 +17,7 @@
 	<com.cube.storm.ui.view.TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/answersSelected"
+		android:id="@+id/answers_selected"
 		android:layout_marginTop="15dp"
 		android:layout_gravity="center"
 		android:textSize="11sp"
