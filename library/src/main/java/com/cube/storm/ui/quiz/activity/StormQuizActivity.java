@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -240,6 +241,9 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		QuizItem quizItem = new ArrayList<>(page.getChildren()).get(pageIndex);
 		updateAnswersSelectedLabel(quizItem);
+
+		// Set screen reader focus back to first item on screen after changing page.
+		next.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
