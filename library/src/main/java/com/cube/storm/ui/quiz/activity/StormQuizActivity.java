@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -243,7 +243,11 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		updateAnswersSelectedLabel(quizItem);
 
 		// Set screen reader focus back to first item on screen after changing page.
-		next.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null);
+		View navBackButton = customActionBar.findViewById(R.id.quiz_back);
+		if (navBackButton != null)
+		{
+			navBackButton.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+		}
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
