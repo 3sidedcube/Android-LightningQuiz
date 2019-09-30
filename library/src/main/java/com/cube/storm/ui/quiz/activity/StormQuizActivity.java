@@ -31,8 +31,10 @@ import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
+import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.ItemQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+import com.cube.storm.ui.quiz.model.quiz.SliderQuizItem;
 import com.cube.storm.ui.view.TextView;
 import lombok.Getter;
 
@@ -340,7 +342,16 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			// Area or slider Item: hide answers selected view
 			answersSelected.setVisibility(View.GONE);
-			styleNextButton(true);
+			if (item instanceof SliderQuizItem)
+			{
+				SliderQuizItem model = (SliderQuizItem)item;
+				styleNextButton(model.isUserInteracted());
+			}
+			else if (item instanceof AreaQuizItem)
+			{
+				AreaQuizItem model = (AreaQuizItem)item;
+				styleNextButton(model.getTouchCoordinate() != null);
+			}
 		}
 	}
 
@@ -348,5 +359,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	{
 		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
 		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);
+		// ARCFA-236 - Disable next button until user selects an answer. User can still scroll viewpager.
+		next.setEnabled(active);
 	}
 }

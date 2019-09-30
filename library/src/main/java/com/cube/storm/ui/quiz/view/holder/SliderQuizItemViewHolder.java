@@ -83,6 +83,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 		private ModelSeekBarListener(SliderQuizItem model)
 		{
 			this.model = model;
+			this.model.setUserInteracted(false);
 		}
 
 		@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
@@ -90,6 +91,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 			if (fromUser)
 			{
 				int pos = progress + model.getRange().getStart();
+				model.setUserInteracted(true);
 				model.setInitialPosition(pos);
 				model.setCorrect(pos == model.getAnswer());
 

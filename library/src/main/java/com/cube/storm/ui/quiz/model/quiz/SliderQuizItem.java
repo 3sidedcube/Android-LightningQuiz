@@ -26,4 +26,5 @@ public class SliderQuizItem extends QuizItem
 	protected TextProperty unit;
 	protected int answer;
 	protected int initialPosition;
+	protected boolean userInteracted; // user has interacted with / answered this question
 }
