@@ -155,6 +155,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 				{
 					selectAnswer(answerLayout, true);
 					model.getSelectHistory().add(index);
+					v.announceForAccessibility(""); // reads label out loud when selected
 
 					// select image answer
 					for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
@@ -167,6 +168,7 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 					// unselect image answer
 					selectAnswer(answerLayout, false);
 					model.getSelectHistory().remove((Integer)index);
+					v.announceForAccessibility(""); // reads label out loud when selected
 				}
 			}
 
