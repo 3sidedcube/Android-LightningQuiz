@@ -41,6 +41,7 @@
 			android:gravity="center"
 			android:textColor="#666666"
 			android:accessibilityLiveRegion="assertive"
+			android:focusable="true"
 		/>
 	</LinearLayout>
 </LinearLayout>
