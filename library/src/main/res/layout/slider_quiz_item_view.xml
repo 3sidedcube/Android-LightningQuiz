@@ -40,6 +40,7 @@
 			android:layout_gravity="center_horizontal"
 			android:gravity="center"
 			android:textColor="#666666"
+			android:accessibilityLiveRegion="assertive"
 		/>
 	</LinearLayout>
 </LinearLayout>

@@ -88,35 +88,35 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 		@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 		{
-			if (fromUser)
+			if (!fromUser)
 			{
-				int pos = progress + model.getRange().getStart();
-				model.setUserInteracted(true);
-				model.setInitialPosition(pos);
-				model.setCorrect(pos == model.getAnswer());
+				return;
+			}
+			int pos = progress + model.getRange().getStart();
+			model.setUserInteracted(true);
+			model.setInitialPosition(pos);
+			model.setCorrect(pos == model.getAnswer());
 
-				TextView sliderText = (TextView)((View)seekBar.getParent()).findViewById(R.id.slider_text);
+			TextView sliderText = (TextView)((View)seekBar.getParent()).findViewById(R.id.slider_text);
 
-				if (model.getTitle() != null)
+			if (model.getTitle() != null)
+			{
+				String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit());
+
+				if (!TextUtils.isEmpty(content))
 				{
-					String content = UiSettings.getInstance().getTextProcessor().process(model.getUnit());
-
-					if (!TextUtils.isEmpty(content))
-					{
-						sliderText.setText(pos + " " + content);
-					}
+					sliderText.setText(pos + " " + content);
 				}
 			}
-		}
 
-		@Override public void onStartTrackingTouch(SeekBar seekBar){}
-		@Override public void onStopTrackingTouch(SeekBar seekBar)
-		{
 			for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 			{
 				quizEventHook.onQuizOptionSelected(seekBar.getContext(), itemView, model, seekBar.getProgress());
 				quizEventHook.onQuizItemAnswersChanged(seekBar.getContext(), model);
 			}
 		}
+
+		@Override public void onStartTrackingTouch(SeekBar seekBar){}
+		@Override public void onStopTrackingTouch(SeekBar seekBar) {}
 	}
 }
