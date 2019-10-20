@@ -350,6 +350,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 			}
 			else if (item instanceof AreaQuizItem)
 			{
+				// ARCFA-247 mark true and skip AreaQuizItem question if talkback enabled
 				AccessibilityManager am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
 				if (am != null && am.isEnabled())
 				{
