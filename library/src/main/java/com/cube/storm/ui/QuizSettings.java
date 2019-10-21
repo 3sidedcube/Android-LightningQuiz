@@ -66,6 +66,11 @@ public class QuizSettings
 	}
 
 	/**
+	 * Randomised the order of questions when starting a quiz if true;
+	 */
+	@Getter @Setter private Boolean randomiseQuestionOrder;
+
+	/**
 	 * The builder class for {@link com.cube.storm.UiSettings}. Use this to create a new {@link com.cube.storm.UiSettings} instance
 	 * with the customised properties specific for your project.
 	 *
@@ -125,6 +130,9 @@ public class QuizSettings
 			};
 
 			this.uiSettings.getViewProcessors().put(QuizItem.class, baseProcessor);
+
+			// Set quiz settings defaults
+			randomiseQuestionOrder(false);
 		}
 
 		/**
@@ -150,6 +158,20 @@ public class QuizSettings
 		public Builder registerEventHook(@NonNull QuizEventHook hook)
 		{
 			construct.getEventHooks().add(hook);
+
+			return this;
+		}
+
+		/**
+		 * Randomise the order of questions each time when taking a quiz
+		 *
+		 * @param bool Whether to randomise the order of questions for a quiz
+		 *
+		 * @return The {@link Builder} instance for chaining
+		 */
+		public Builder randomiseQuestionOrder(boolean bool)
+		{
+			construct.randomiseQuestionOrder = bool;
 
 			return this;
 		}

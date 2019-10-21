@@ -31,6 +31,7 @@ import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import lombok.Getter;
 
@@ -233,6 +234,14 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Override public void loadPage(String pageUri)
 	{
 		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		// Randomise quiz questions
+		if (page != null && QuizSettings.getInstance().getRandomiseQuestionOrder())
+		{
+			ArrayList<QuizItem> quizChildren = new ArrayList<>(page.getChildren());
+			Collections.shuffle(quizChildren);
+			page.setChildren(quizChildren);
+		}
 
 		if (page != null)
 		{
