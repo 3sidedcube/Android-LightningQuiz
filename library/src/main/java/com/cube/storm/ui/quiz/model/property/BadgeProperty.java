@@ -29,6 +29,7 @@ public class BadgeProperty extends Property
 	protected TextProperty how;
 	protected TextProperty shareMessage;
 	protected ArrayList<ImageProperty> icon;
+	protected int validFor; // days for badge to expire once completed
 
 	/**
 	 * Returns if the badge has been achieved or not
