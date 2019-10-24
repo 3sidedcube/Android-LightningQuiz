@@ -71,6 +71,12 @@ public class QuizSettings
 	@Getter @Setter private Boolean randomiseQuestionOrder;
 
 	/**
+	 * This is part of the blended learning piece of work for GDPC FA.
+	 * Badges have an expiry date when completed, this duration is set by the society.
+	 */
+	@Getter @Setter private Boolean badgeExpiry;
+
+	/**
 	 * The builder class for {@link com.cube.storm.UiSettings}. Use this to create a new {@link com.cube.storm.UiSettings} instance
 	 * with the customised properties specific for your project.
 	 *
@@ -133,6 +139,7 @@ public class QuizSettings
 
 			// Set quiz settings defaults
 			randomiseQuestionOrder(false);
+			useBadgeExpiryFeature(false);
 		}
 
 		/**
@@ -172,6 +179,22 @@ public class QuizSettings
 		public Builder randomiseQuestionOrder(boolean bool)
 		{
 			construct.randomiseQuestionOrder = bool;
+
+			return this;
+		}
+
+		/**
+		 * This is part of the blended learning piece of work for GDPC FA.
+		 * Badges have an expiry date when completed, this duration is set by the society.
+		 * Setting this to true will change what layout files are used.
+		 *
+		 * @param bool Whether to randomise the order of questions for a quiz
+		 *
+		 * @return The {@link Builder} instance for chaining
+		 */
+		public Builder useBadgeExpiryFeature(boolean bool)
+		{
+			construct.badgeExpiry = bool;
 
 			return this;
 		}

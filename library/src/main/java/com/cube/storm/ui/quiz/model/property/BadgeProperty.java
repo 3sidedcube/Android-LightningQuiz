@@ -1,13 +1,17 @@
 package com.cube.storm.ui.quiz.model.property;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
+import android.text.format.DateUtils;
 
+import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.model.property.ImageProperty;
 import com.cube.storm.ui.model.property.Property;
 import com.cube.storm.ui.model.property.TextProperty;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +33,9 @@ public class BadgeProperty extends Property
 	protected TextProperty how;
 	protected TextProperty shareMessage;
 	protected ArrayList<ImageProperty> icon;
-	protected int validFor; // days for badge to expire once completed
+	protected long validFor; // days for badge to expire once completed
+
+	public static final String PREFERENCE_BADGE_COMPLETION_DATE = "badge_completion_date_";
 
 	/**
 	 * Returns if the badge has been achieved or not
@@ -50,7 +56,16 @@ public class BadgeProperty extends Property
 
 	public void setAchieved(Context context, boolean isAchieved)
 	{
-		context.getSharedPreferences("badges", Context.MODE_PRIVATE).edit().putBoolean(getId(), isAchieved).apply();
+		SharedPreferences badgePreferences = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
+		if (QuizSettings.getInstance().getBadgeExpiry())
+		{
+			String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
+			badgePreferences.edit().putLong(badgePreferenceKey, new Date().getTime()).apply();
+		}
+		else
+		{
+			badgePreferences.edit().putBoolean(getId(), isAchieved).apply();
+		}
 	}
 
 	@Override public void writeToParcel(Parcel dest, int flags)
