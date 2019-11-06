@@ -62,10 +62,8 @@ public class BadgeProperty extends Property
 			String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
 			badgePreferences.edit().putLong(badgePreferenceKey, new Date().getTime()).apply();
 		}
-		else
-		{
-			badgePreferences.edit().putBoolean(getId(), isAchieved).apply();
-		}
+		// This preference is still used in badge expiry via the hasAchieved method.
+		badgePreferences.edit().putBoolean(getId(), isAchieved).apply();
 	}
 
 	@Override public void writeToParcel(Parcel dest, int flags)
