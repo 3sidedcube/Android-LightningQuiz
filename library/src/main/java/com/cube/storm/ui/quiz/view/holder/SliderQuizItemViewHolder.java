@@ -61,7 +61,7 @@ public class SliderQuizItemViewHolder extends ViewHolder<SliderQuizItem>
 
 		if (model.getRange() != null)
 		{
-			slider.setMax(model.getRange().getLength() - 1);
+			slider.setMax(model.getRange().getLength());
 			slider.setProgress(progress);
 
 			if (model.getTitle() != null)
