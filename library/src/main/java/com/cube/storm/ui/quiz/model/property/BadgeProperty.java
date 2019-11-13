@@ -46,6 +46,15 @@ public class BadgeProperty extends Property
 	 */
 	public boolean hasAchieved(Context context)
 	{
+		SharedPreferences badgePreferences = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
+		String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
+		long date = badgePreferences.getLong(badgePreferenceKey, -1);
+		long now = new Date().getTime();
+		if (date != -1)
+		{
+			return date < now; // Return true only if the badge has not expired
+		}
+
 		return context.getSharedPreferences("badges", Context.MODE_PRIVATE).getBoolean(getId(), false);
 	}
 
@@ -57,7 +66,7 @@ public class BadgeProperty extends Property
 	public void setAchieved(Context context, boolean isAchieved)
 	{
 		SharedPreferences badgePreferences = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
-		if (QuizSettings.getInstance().getBadgeExpiry())
+		if (isAchieved && QuizSettings.getInstance().getBadgeExpiry())
 		{
 			String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
 			badgePreferences.edit().putLong(badgePreferenceKey, new Date().getTime()).apply();
