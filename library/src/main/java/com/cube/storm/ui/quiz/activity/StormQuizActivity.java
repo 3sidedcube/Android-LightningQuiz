@@ -223,6 +223,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
 		finishIntent.putExtras(getIntent().getExtras());
 		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
+		// We pass the page so the answers array order matches up with the questions on the quiz lose screen
+		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_QUIZ_PAGE, page);
 		startActivity(finishIntent);
 	}
 
