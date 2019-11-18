@@ -48,11 +48,13 @@ public class BadgeProperty extends Property
 	{
 		SharedPreferences badgePreferences = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
 		String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
-		long date = badgePreferences.getLong(badgePreferenceKey, -1);
-		long now = new Date().getTime();
-		if (date != -1)
+		long badgeCompleteTime = badgePreferences.getLong(badgePreferenceKey, -1);
+		if (badgeCompleteTime != -1)
 		{
-			return date < now; // Return true only if the badge has not expired
+			long now = new Date().getTime();
+			long oneDay = 24 * 60 * 60 * 1000;
+			long expiresTime = badgeCompleteTime + (getValidFor() * oneDay);
+			return now < expiresTime; // Return true only if the badge has not expired
 		}
 
 		return context.getSharedPreferences("badges", Context.MODE_PRIVATE).getBoolean(getId(), false);
