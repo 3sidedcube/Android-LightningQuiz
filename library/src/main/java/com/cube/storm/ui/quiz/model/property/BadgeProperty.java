@@ -49,7 +49,7 @@ public class BadgeProperty extends Property
 		SharedPreferences badgePreferences = context.getSharedPreferences("badges", Context.MODE_PRIVATE);
 		String badgePreferenceKey = PREFERENCE_BADGE_COMPLETION_DATE + getId();
 		long badgeCompleteTime = badgePreferences.getLong(badgePreferenceKey, -1);
-		if (badgeCompleteTime != -1)
+		if (badgeCompleteTime != -1 && getValidFor() > 0)
 		{
 			long now = new Date().getTime();
 			long oneDay = 24 * 60 * 60 * 1000;
