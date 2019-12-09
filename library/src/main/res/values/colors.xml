@@ -18,4 +18,5 @@
 	<color name="buttonTextActive">#FFFFFF</color>
 	<color name="buttonTextInactive">#6D6D6D</color>
 	<color name="answersSelectedText">#6D6D6D</color>
+	<color name="quiz_progress_counter">#E71324</color>
 </resources>

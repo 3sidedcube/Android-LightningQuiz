@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:paddingLeft="16dp"
+	android:paddingRight="16dp"
+	android:paddingTop="22dp"
+	android:paddingBottom="22dp"
+>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/counter"
+		android:background="@drawable/quiz_progress_counter"
+		android:paddingStart="16dp"
+		android:paddingEnd="16dp"
+		android:textStyle="bold"
+		android:paddingBottom="4dp"
+		android:paddingTop="4dp"
+		android:textColor="#ffffff"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+	/>
+
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/label"
+		android:textStyle="bold"
+		android:textSize="18sp"
+		android:layout_centerVertical="true"
+	/>
+
+	<com.cube.storm.ui.view.TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/quiz_name"
+		android:layout_marginStart="12dp"
+		android:layout_marginLeft="12dp"
+		android:layout_marginRight="12dp"
+		android:textSize="16sp"
+		android:fontFamily="sans-serif-medium"
+		android:textColor="@color/black"
+		android:layout_toLeftOf="@id/counter"
+		android:layout_toRightOf="@id/label"
+		android:layout_centerVertical="true"
+	/>
+</RelativeLayout>
