@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.activity.StormActivity;
@@ -37,10 +38,11 @@ import com.cube.storm.ui.quiz.model.quiz.ItemQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.quiz.model.quiz.SliderQuizItem;
 import com.cube.storm.ui.view.TextView;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import lombok.Getter;
 
 /**
  * Storm quiz fragment used for displaying individual quiz questions. Use this class to display each
@@ -325,7 +327,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	private void updateAnswersSelectedLabel(QuizItem item)
+	protected void updateAnswersSelectedLabel(QuizItem item)
 	{
 		if (item instanceof ItemQuizItem)
 		{
@@ -365,7 +367,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	private void styleNextButton(boolean active)
+	protected void styleNextButton(boolean active)
 	{
 		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
 		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);
