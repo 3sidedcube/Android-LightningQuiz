@@ -24,6 +24,10 @@
 				[
 					{
 						"class": "Image",
+						"accessibilityLabel": {
+							"class": "Text",
+							"content": "123"
+						},
 						"src": {
 							"class": "InternalLink",
 							"destination": "assets://content/item.jpg"
@@ -37,6 +41,10 @@
 				[
 					{
 						"class": "Image",
+						"accessibilityLabel": {
+							"class": "Text",
+							"content": "234"
+						},
 						"src": {
 							"class": "InternalLink",
 							"destination": "assets://content/item.jpg"
@@ -50,6 +58,10 @@
 				[
 					{
 						"class": "Image",
+						"accessibilityLabel": {
+							"class": "Text",
+							"content": "345"
+						},
 						"src": {
 							"class": "InternalLink",
 							"destination": "assets://content/item.jpg"
@@ -63,6 +75,10 @@
 				[
 					{
 						"class": "Image",
+						"accessibilityLabel": {
+							"class": "Text",
+							"content": "456"
+						},
 						"src": {
 							"class": "InternalLink",
 							"destination": "assets://content/item.jpg"

@@ -1,12 +1,12 @@
 package com.cube.storm.ui.quiz.model.quiz;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * // TODO: Add class description
