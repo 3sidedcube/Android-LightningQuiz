@@ -158,6 +158,7 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 						for (QuizEventHook quizEventHook : QuizSettings.getInstance().getEventHooks())
 						{
 							quizEventHook.onQuizOptionSelected(v.getContext(), itemView, model, new float[]{model.getTouchCoordinate().getX(), model.getTouchCoordinate().getY()});
+							quizEventHook.onQuizItemAnswersChanged(v.getContext(), model);
 						}
 
 						return true;

@@ -1,14 +1,15 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 	@Getter protected QuizPage page;
 	@Getter protected TextView winTitle;
 	@Getter protected TextView winDescription;
-	@Getter protected Button home;
+	@Getter protected Button share;
 	@Getter protected ImageView badge;
 	@Getter protected ViewGroup embeddedLinksContainer;
 
@@ -52,11 +53,11 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 		winTitle = (TextView)v.findViewById(R.id.win_title);
 		winDescription = (TextView)v.findViewById(R.id.win_description);
-		home = (Button)v.findViewById(R.id.home_button);
+		share = (Button)v.findViewById(R.id.share_button);
 		badge = (ImageView)v.findViewById(R.id.badge_icon);
 		embeddedLinksContainer = (ViewGroup)v.findViewById(R.id.related_container);
 
-		home.setOnClickListener(this);
+		share.setOnClickListener(this);
 
 		return v;
 	}
@@ -81,30 +82,19 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
-		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.menu, menu);
+	}
 
-		BadgeProperty badge = BadgeManager.getInstance().getBadgeById(getPage().getBadgeId());
-
-		if (badge != null)
+	@Override public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if (item.getItemId() == R.id.menu_home)
 		{
-			String shareText = "";
-
-			if (badge.getShareMessage() != null)
+			if (getActivity() != null)
 			{
-				shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage());
+				getActivity().finish();
 			}
-
-			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("*/*");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-			shareIntent.putExtra(Intent.EXTRA_STREAM, saveBadgeToTemp(badge));
-
-			inflater.inflate(R.menu.menu_badge_share, menu);
-			MenuItem shareAction = menu.findItem(R.id.menu_item_share);
-
-			ShareActionProvider actionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(shareAction);
-			actionProvider.setShareIntent(shareIntent);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected Uri saveBadgeToTemp(BadgeProperty badgeProperty)
@@ -123,7 +113,7 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 		File tmpFile = null;
 		try
 		{
-			tmpFile = new File(getActivity().getExternalCacheDir(), "badge." + ((Object)badgeProperty).hashCode() + ".png");
+			tmpFile = new File(getActivity().getExternalCacheDir(), "badge-" + System.currentTimeMillis() + ".png");
 			FileOutputStream out = new FileOutputStream(tmpFile);
 
 			if (badgeBitmap != null)
@@ -133,14 +123,15 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 			out.close();
 
-			return Uri.fromFile(tmpFile);
+			return FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider", tmpFile);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			Log.d(getClass().getName(), "Failed to save the badge");
 		}
 
-		return null;
+		//Fallback to default app's icon
+		return Uri.parse("android.resource://"+getActivity().getPackageName()+"/drawable/ic_launcher");
 	}
 
 	public void loadBadge()
@@ -167,9 +158,40 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 
 	@Override public void onClick(View v)
 	{
-		if (v == home)
+		if (v == share)
 		{
-			getActivity().finish();
+			BadgeProperty badge = BadgeManager.getInstance().getBadgeById(getPage().getBadgeId());
+			Context context = v.getContext();
+
+			if (badge != null)
+			{
+				String badgeTitle = "a badge";
+
+				if (badge.getTitle() != null)
+				{
+					badgeTitle = UiSettings.getInstance().getTextProcessor().process(badge.getTitle());
+				}
+
+				String shareText = String.format("I've just earned %s on the %s app!", badgeTitle, getString(R.string.app_name));
+
+				if (badge.getShareMessage() != null)
+				{
+					shareText = UiSettings.getInstance().getTextProcessor().process(badge.getShareMessage());
+				}
+
+				Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("*/*");
+				shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+
+				Uri badgeUri = saveBadgeToTemp(badge);
+
+				if (badgeUri != null)
+				{
+					shareIntent.putExtra(Intent.EXTRA_STREAM, badgeUri);
+				}
+
+				startActivity(shareIntent);
+			}
 		}
 	}
 

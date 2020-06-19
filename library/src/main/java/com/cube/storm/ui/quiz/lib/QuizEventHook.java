@@ -38,6 +38,17 @@ public class QuizEventHook extends EventHook
 	}
 
 	/**
+	 * Called when a quiz item's answers have changed
+	 *
+	 * @param pageContext
+	 * @param item
+	 */
+	public void onQuizItemAnswersChanged(@NonNull Context pageContext, @NonNull QuizItem item)
+	{
+
+	}
+
+	/**
 	 * Called when a quiz failed
 	 *
 	 * @param pageContext The context of the activity
