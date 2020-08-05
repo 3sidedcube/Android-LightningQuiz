@@ -69,6 +69,11 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 			answers = getArguments().getBooleanArray(StormQuizResultsActivity.EXTRA_RESULTS);
 		}
 
+		if (getArguments().containsKey(StormQuizResultsActivity.EXTRA_QUIZ_PAGE))
+		{
+			page = (QuizPage) getArguments().getSerializable(StormQuizResultsActivity.EXTRA_QUIZ_PAGE);
+		}
+
 		if (getArguments().containsKey(StormActivity.EXTRA_URI))
 		{
 			String pageUri = getArguments().getString(StormActivity.EXTRA_URI);
@@ -129,7 +134,11 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 
 	@Override public void loadPage(String pageUri)
 	{
-		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+		if (page == null)
+		{
+			// Use the page from the intent bundle in onActivityCreated method as this has the correct question order.
+			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+		}
 
 		if (page != null)
 		{

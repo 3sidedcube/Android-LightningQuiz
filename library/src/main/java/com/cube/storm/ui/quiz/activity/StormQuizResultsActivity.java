@@ -16,6 +16,8 @@ import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 
 /**
@@ -42,6 +44,12 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 	 */
 	public static final String EXTRA_RESULTS = "storm_quiz.results";
 
+	/**
+	 * Results extra key for results from quiz questions. Must be a boolean array of true/false the
+	 * same length as the number of questions in the quiz.
+	 */
+	public static final String EXTRA_QUIZ_PAGE = "storm_quiz.page";
+
 	@Getter protected QuizPage page;
 	@Getter protected boolean[] results;
 
@@ -62,6 +70,11 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 			if (getIntent().getExtras().containsKey(EXTRA_RESULTS))
 			{
 				results = getIntent().getExtras().getBooleanArray(EXTRA_RESULTS);
+			}
+
+			if (getIntent().getExtras().containsKey(EXTRA_QUIZ_PAGE))
+			{
+				page = (QuizPage) getIntent().getExtras().getSerializable(EXTRA_QUIZ_PAGE);
 			}
 
 			loadResultsPage();
@@ -96,6 +109,7 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 
 			fragmentIntent.getArguments().putAll(getIntent().getExtras());
 			fragmentIntent.getArguments().putBooleanArray(EXTRA_RESULTS, results);
+			fragmentIntent.getArguments().putSerializable(EXTRA_QUIZ_PAGE, page);
 
 			Fragment fragment = Fragment.instantiate(this, fragmentIntent.getFragment().getName(), fragmentIntent.getArguments());
 			getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
@@ -126,7 +140,11 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 
 	@Override public void loadPage(String pageUri)
 	{
-		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+		if (page == null)
+		{
+			// Use the page from the intent bundle in onActivityCreated method as this has the correct question order.
+			page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+		}
 	}
 
 	@Override public void onLoadFail()

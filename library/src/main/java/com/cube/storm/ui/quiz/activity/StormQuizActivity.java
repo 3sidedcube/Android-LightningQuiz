@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.QuizSettings;
 import com.cube.storm.ui.activity.StormActivity;
@@ -37,10 +38,12 @@ import com.cube.storm.ui.quiz.model.quiz.ItemQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
 import com.cube.storm.ui.quiz.model.quiz.SliderQuizItem;
 import com.cube.storm.ui.view.TextView;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+
+import lombok.Getter;
 
 /**
  * Storm quiz fragment used for displaying individual quiz questions. Use this class to display each
@@ -288,6 +291,8 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
 		finishIntent.putExtras(getIntent().getExtras());
 		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
+		// We pass the page so the answers array order matches up with the questions on the quiz lose screen
+		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_QUIZ_PAGE, page);
 		startActivity(finishIntent);
 	}
 
@@ -299,6 +304,14 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Override public void loadPage(String pageUri)
 	{
 		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		// Randomise quiz questions
+		if (page != null && QuizSettings.getInstance().getRandomiseQuestionOrder())
+		{
+			ArrayList<QuizItem> quizChildren = new ArrayList<>(page.getChildren());
+			Collections.shuffle(quizChildren);
+			page.setChildren(quizChildren);
+		}
 
 		if (page != null)
 		{
@@ -325,7 +338,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	private void updateAnswersSelectedLabel(QuizItem item)
+	protected void updateAnswersSelectedLabel(QuizItem item)
 	{
 		if (item instanceof ItemQuizItem)
 		{
@@ -365,7 +378,7 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		}
 	}
 
-	private void styleNextButton(boolean active)
+	protected void styleNextButton(boolean active)
 	{
 		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
 		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);

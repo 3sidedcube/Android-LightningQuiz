@@ -23,6 +23,8 @@ public class MainApplication extends Application
 			.build();
 
 		QuizSettings quizSettings = new QuizSettings.Builder(uiSettings)
+			.randomiseQuestionOrder(true) // used for gdpc blended learning (badge expiry)
+			.useBadgeExpiryFeature(true) // used for gdpc blended learning (badge expiry)
 			.build();
 
 		// Loading app json
