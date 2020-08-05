@@ -1,6 +1,5 @@
 plugins {
 	id 'com.android.application'
-	id 'io.franzbecker.gradle-lombok' version '1.14'
 }
 
 android {
@@ -12,20 +11,6 @@ android {
 		targetSdkVersion rootProject.ext.targetSdkVersion
 	}
 
-	packagingOptions {
-		exclude 'META-INF/DEPENDENCIES.txt'
-		exclude 'META-INF/LICENSE.txt'
-		exclude 'META-INF/NOTICE.txt'
-		exclude 'META-INF/NOTICE'
-		exclude 'META-INF/LICENSE'
-		exclude 'META-INF/DEPENDENCIES'
-		exclude 'META-INF/notice.txt'
-		exclude 'META-INF/license.txt'
-		exclude 'META-INF/dependencies.txt'
-		exclude 'META-INF/LGPL2.1'
-		exclude 'LICENSE.txt'
-	}
-
 	lintOptions {
 		abortOnError false
 	}
@@ -35,9 +20,9 @@ dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(':library')
 
-	implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-	implementation 'com.3sidedcube.storm:ui:1.0.0'
+	implementation 'androidx.appcompat:appcompat:1.1.0'
+	implementation 'com.3sidedcube.storm:ui:1.4.0-SNAPSHOT'
 
-	compileOnly 'org.projectlombok:lombok:1.18.2'
-	annotationProcessor 'org.projectlombok:lombok:1.18.2'
+	compileOnly 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }

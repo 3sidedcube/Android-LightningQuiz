@@ -3,7 +3,7 @@ package com.cube.storm.ui.quiz.activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -15,8 +15,6 @@ import com.cube.storm.ui.data.FragmentIntent;
 import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
-
-import java.io.Serializable;
 
 import lombok.Getter;
 

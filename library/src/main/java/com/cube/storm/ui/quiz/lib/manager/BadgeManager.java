@@ -1,7 +1,7 @@
 package com.cube.storm.ui.quiz.lib.manager;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.quiz.model.property.BadgeProperty;
