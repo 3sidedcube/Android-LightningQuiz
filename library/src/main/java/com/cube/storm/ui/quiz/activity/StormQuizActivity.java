@@ -1,18 +1,24 @@
 package com.cube.storm.ui.quiz.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cube.storm.UiSettings;
@@ -27,10 +33,15 @@ import com.cube.storm.ui.quiz.fragment.StormQuizFragment;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.lib.adapter.StormQuizPageAdapter;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
+import com.cube.storm.ui.quiz.model.quiz.AreaQuizItem;
+import com.cube.storm.ui.quiz.model.quiz.ItemQuizItem;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+import com.cube.storm.ui.quiz.model.quiz.SliderQuizItem;
+import com.cube.storm.ui.view.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import lombok.Getter;
 
@@ -44,21 +55,40 @@ import lombok.Getter;
  * @author Callum Taylor
  * @project LightningQuiz
  */
-public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, OnClickListener, StormInterface
+public class StormQuizActivity extends AppCompatActivity implements OnPageChangeListener, StormInterface
 {
 	public static final String EXTRA_QUESTION = "stormquiz.question";
+
+	@Getter protected View customActionBar;
 
 	@Getter protected StormPageAdapter pageAdapter;
 	@Getter protected QuizPage page;
 	@Getter protected ViewPager viewPager;
-	@Getter protected Button previous;
 	@Getter protected Button next;
-	@Getter protected View progressFill;
-	@Getter protected View progressEmpty;
+	@Getter protected ProgressBar progressBar;
+	@Getter protected TextView progressText;
+	@Getter protected TextView answersSelected;
+
 
 	@Getter protected String pageUri;
 	@Getter protected int currentPage = 0;
 	@Getter protected boolean[] correctAnswers;
+
+	/**
+	 * Private event hook used to know when a quiz answer has changed
+	 */
+	protected QuizEventHook eventHook = new QuizEventHook()
+	{
+		@Override
+		public void onQuizItemAnswersChanged(
+			@NonNull Context pageContext,
+			@NonNull QuizItem item
+		)
+		{
+			super.onQuizItemAnswersChanged(pageContext, item);
+			updateAnswersSelectedLabel(item);
+		}
+	};
 
 	@Override protected void onCreate(Bundle savedInstanceState)
 	{
@@ -66,15 +96,33 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 		setContentView(getLayoutResource());
 
+		setCustomActionBar();
+
 		pageAdapter = new StormQuizPageAdapter(this, getSupportFragmentManager());
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
-		progressFill = findViewById(R.id.progress_fill);
-		progressEmpty = findViewById(R.id.progress_empty);
-		previous = (Button)findViewById(R.id.previous);
+		progressBar = customActionBar.findViewById(R.id.quiz_progress_bar);
+		progressText = customActionBar.findViewById(R.id.progress_text);
+		answersSelected = findViewById(R.id.answers_selected);
 		next = (Button)findViewById(R.id.next);
-		previous.setOnClickListener(this);
-		next.setOnClickListener(this);
+		next.setOnClickListener(new OnClickListener()
+		{
+			@Override public void onClick(View view)
+			{
+				if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
+				{
+					// force check last answer
+					checkAnswers(viewPager.getCurrentItem());
+					finishQuiz();
+					finish();
+				}
+				else
+				{
+					viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+				}
+			}
+		});
+
 
 		if (savedInstanceState == null)
 		{
@@ -101,6 +149,59 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	}
 
 	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		QuizSettings.getInstance().getEventHooks().add(eventHook);
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		QuizSettings.getInstance().getEventHooks().remove(eventHook);
+	}
+
+	private void setCustomActionBar()
+	{
+		if (getSupportActionBar() != null)
+		{
+			// Show custom logo toolbar
+			ActionBar actionBar = getSupportActionBar();
+			actionBar.setDisplayShowCustomEnabled(true);
+
+			customActionBar = LayoutInflater.from(actionBar.getThemedContext()).inflate(R.layout.quiz_view_progress_nav_bar, null);
+			actionBar.setCustomView(customActionBar, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+			ImageView backIcon = customActionBar.findViewById(R.id.quiz_back);
+			ImageView closeIcon = customActionBar.findViewById(R.id.quiz_close);
+
+			backIcon.setOnClickListener(new OnClickListener()
+			{
+				@Override public void onClick(View view)
+				{
+					if (viewPager.getCurrentItem() == 0)
+					{
+						finish();
+					}
+					else
+					{
+						viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+					}
+				}
+			});
+
+			closeIcon.setOnClickListener(new OnClickListener()
+			{
+				@Override public void onClick(View view)
+				{
+					finish();
+				}
+			});
+		}
+	}
+
+	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
@@ -112,16 +213,6 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 	protected void loadQuiz()
 	{
-		if (page.getTitle() != null)
-		{
-			String title = UiSettings.getInstance().getTextProcessor().process(page.getTitle());
-
-			if (!TextUtils.isEmpty(title))
-			{
-				setTitle(title);
-			}
-		}
-
 		Collection<FragmentPackage> fragmentPages = new ArrayList<FragmentPackage>();
 
 		for (QuizItem question : page.getChildren())
@@ -150,19 +241,19 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	 */
 	protected void updateProgress(int pageIndex)
 	{
-		LayoutParams fillParams = progressFill.getLayoutParams();
-		LayoutParams emptyParams = progressEmpty.getLayoutParams();
+		progressText.setText(String.format(getString(R.string.progress_string), pageIndex + 1, pageAdapter.getCount()));
+		int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
+		progressBar.setProgress(progress);
 
-		if (fillParams instanceof LinearLayout.LayoutParams && emptyParams instanceof LinearLayout.LayoutParams)
+		QuizItem quizItem = new ArrayList<>(page.getChildren()).get(pageIndex);
+		updateAnswersSelectedLabel(quizItem);
+
+		// Set screen reader focus back to first item on screen after changing page.
+		View navBackButton = customActionBar.findViewById(R.id.quiz_back);
+		if (navBackButton != null)
 		{
-			int progress = (int)(((pageIndex + 1d) / pageAdapter.getCount()) * 100);
-			((LinearLayout.LayoutParams)fillParams).weight = 100 - progress;
-			((LinearLayout.LayoutParams)emptyParams).weight = progress;
+			navBackButton.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
 		}
-
-		progressFill.requestLayout();
-		progressEmpty.requestLayout();
-		previous.setEnabled(pageIndex != 0);
 	}
 
 	@Override public void onPageScrolled(int i, float v, int i2)
@@ -195,33 +286,13 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 
 	}
 
-	@Override public void onClick(View view)
-	{
-		if (view == next)
-		{
-			if (viewPager.getCurrentItem() == pageAdapter.getCount() - 1)
-			{
-				// force check last answer
-				checkAnswers(viewPager.getCurrentItem());
-				finishQuiz();
-				finish();
-			}
-			else
-			{
-				viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-			}
-		}
-		else if (view == previous)
-		{
-			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-		}
-	}
-
 	public void finishQuiz()
 	{
 		Intent finishIntent = new Intent(this, StormQuizResultsActivity.class);
 		finishIntent.putExtras(getIntent().getExtras());
 		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_RESULTS, correctAnswers);
+		// We pass the page so the answers array order matches up with the questions on the quiz lose screen
+		finishIntent.putExtra(StormQuizResultsActivity.EXTRA_QUIZ_PAGE, page);
 		startActivity(finishIntent);
 	}
 
@@ -233,6 +304,14 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 	@Override public void loadPage(String pageUri)
 	{
 		page = (QuizPage)UiSettings.getInstance().getViewBuilder().buildPage(Uri.parse(pageUri));
+
+		// Randomise quiz questions
+		if (page != null && QuizSettings.getInstance().getRandomiseQuestionOrder())
+		{
+			ArrayList<QuizItem> quizChildren = new ArrayList<>(page.getChildren());
+			Collections.shuffle(quizChildren);
+			page.setChildren(quizChildren);
+		}
 
 		if (page != null)
 		{
@@ -257,5 +336,53 @@ public class StormQuizActivity extends AppCompatActivity implements OnPageChange
 		{
 			quizEventHook.onQuizStarted(this, page);
 		}
+	}
+
+	protected void updateAnswersSelectedLabel(QuizItem item)
+	{
+		if (item instanceof ItemQuizItem)
+		{
+			// Image or Text Quiz Item: show answers selected
+			ItemQuizItem model = (ItemQuizItem)item;
+			// set answers selected text
+			String selectedText = answersSelected.getResources().getString(
+				R.string.answers_selected, model.getSelectHistory().size(), model.getLimit());
+			answersSelected.setText(selectedText);
+			answersSelected.setVisibility(View.VISIBLE);
+			// Use active / inactive continue button style
+			styleNextButton(model.getSelectHistory().size() >= model.getLimit());
+		}
+		else
+		{
+			// Area or slider Item: hide answers selected view
+			answersSelected.setVisibility(View.GONE);
+			if (item instanceof SliderQuizItem)
+			{
+				SliderQuizItem model = (SliderQuizItem)item;
+				styleNextButton(model.isUserInteracted());
+			}
+			else if (item instanceof AreaQuizItem)
+			{
+				// ARCFA-247 mark true and skip AreaQuizItem question if talkback enabled
+				AccessibilityManager am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
+				if (am != null && am.isEnabled())
+				{
+					styleNextButton(true);
+				}
+				else
+				{
+					AreaQuizItem model = (AreaQuizItem) item;
+					styleNextButton(model.getTouchCoordinate() != null);
+				}
+			}
+		}
+	}
+
+	protected void styleNextButton(boolean active)
+	{
+		next.setTextAppearance(next.getContext(), active ? R.style.QuizNextButton : R.style.QuizNextButton_Inactive);
+		next.setBackgroundResource(active ? R.drawable.button_active : R.drawable.button_inactive);
+		// ARCFA-236 - Disable next button until user selects an answer. User can still scroll viewpager.
+		next.setEnabled(active);
 	}
 }

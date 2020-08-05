@@ -2,8 +2,8 @@
 
 buildscript {
 	repositories {
-		jcenter()
 		google()
+		jcenter()
 	}
 
 	dependencies {
@@ -20,8 +20,8 @@ ext {
 
 allprojects {
 	repositories {
-		jcenter()
 		google()
+		jcenter()
 
 		maven {
 			url 'http://oss.3sidedcube.com:8081/artifactory/internal'
@@ -34,5 +34,7 @@ allprojects {
 			}
 			url 'http://oss.3sidedcube.com:8081/artifactory/private'
 		}
+
+		maven { url "https://jitpack.io" }
 	}
 }
