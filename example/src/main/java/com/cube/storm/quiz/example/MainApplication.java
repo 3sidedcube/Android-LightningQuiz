@@ -20,6 +20,7 @@ public class MainApplication extends Application
 		// Initiate settings
 		UiSettings uiSettings = new UiSettings.Builder(this)
 			.registerType(new TypeToken<ArrayList<ImageProperty>>(){}.getType(), new LegacyImageViewProcessor())
+			.youtubeApiKey(null)
 			.build();
 
 		QuizSettings quizSettings = new QuizSettings.Builder(uiSettings)

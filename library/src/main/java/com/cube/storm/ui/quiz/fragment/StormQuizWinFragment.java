@@ -1,6 +1,5 @@
 package com.cube.storm.ui.quiz.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +19,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.activity.StormInterface;
@@ -31,12 +30,11 @@ import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.manager.BadgeManager;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.property.BadgeProperty;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import lombok.Getter;
 
 public class StormQuizWinFragment extends Fragment implements OnClickListener, StormInterface
 {

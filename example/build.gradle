@@ -11,6 +11,11 @@ android {
 		targetSdkVersion rootProject.ext.targetSdkVersion
 	}
 
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+
 	lintOptions {
 		abortOnError false
 	}
@@ -20,7 +25,7 @@ dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(':library')
 
-	implementation 'androidx.appcompat:appcompat:1.1.0'
+	implementation 'androidx.appcompat:appcompat:1.2.0'
 	implementation 'com.3sidedcube.storm:ui:1.4.0-SNAPSHOT'
 
 	compileOnly 'org.projectlombok:lombok:1.18.12'
