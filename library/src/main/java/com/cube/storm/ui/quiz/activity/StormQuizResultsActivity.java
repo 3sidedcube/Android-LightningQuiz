@@ -1,9 +1,7 @@
 package com.cube.storm.ui.quiz.activity;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -16,6 +14,8 @@ import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.lib.QuizEventHook;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import lombok.Getter;
 
 /**
@@ -109,8 +109,10 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 			fragmentIntent.getArguments().putBooleanArray(EXTRA_RESULTS, results);
 			fragmentIntent.getArguments().putSerializable(EXTRA_QUIZ_PAGE, page);
 
-			Fragment fragment = Fragment.instantiate(this, fragmentIntent.getFragment().getName(), fragmentIntent.getArguments());
-			getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
+			Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(this.getClassLoader(), fragmentIntent.getFragment().getName());
+			fragment.setArguments(fragmentIntent.getArguments());
+
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
 
 			if (!TextUtils.isEmpty(fragmentIntent.getTitle()))
 			{
