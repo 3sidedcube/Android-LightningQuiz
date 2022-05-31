@@ -29,7 +29,7 @@ dependencies {
 	implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
 	// Other Storm components
-	implementation 'com.3sidedcube.storm:ui:1.4.0-SNAPSHOT'
+	implementation 'com.3sidedcube.storm:ui:1.7.0'
 	implementation 'com.3sidedcube.storm:util:1.2.0'
 
 	// Lombok

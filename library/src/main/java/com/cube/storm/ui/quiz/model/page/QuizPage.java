@@ -1,6 +1,8 @@
 package com.cube.storm.ui.quiz.model.page;
 
 import android.os.Parcel;
+
+import com.cube.storm.ui.model.Model;
 import com.cube.storm.ui.model.page.Page;
 import com.cube.storm.ui.model.property.LinkProperty;
 import com.cube.storm.ui.model.property.TextProperty;
@@ -68,5 +70,10 @@ public class QuizPage extends Page
 	@Override public void writeToParcel(Parcel dest, int flags)
 	{
 
+	}
+	
+	@Override public Collection <? extends Model> getAudio()
+	{
+		return null;
 	}
 }
