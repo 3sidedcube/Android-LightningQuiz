@@ -9,6 +9,7 @@ android {
 		applicationId "com.cube.storm.ui.quiz.example"
 		minSdkVersion rootProject.ext.minSdkVersion
 		targetSdkVersion rootProject.ext.targetSdkVersion
+		multiDexEnabled true
 	}
 
 	compileOptions {
@@ -25,8 +26,8 @@ dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(':library')
 
-	implementation 'androidx.appcompat:appcompat:1.2.0'
-	implementation 'com.3sidedcube.storm:ui:1.4.0-SNAPSHOT'
+	implementation 'androidx.multidex:multidex:2.0.1'
+	implementation 'com.3sidedcube.storm:ui:1.7.0'
 
 	compileOnly 'org.projectlombok:lombok:1.18.12'
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
