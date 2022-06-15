@@ -1,7 +1,7 @@
 package com.cube.storm.ui.quiz.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.cube.storm.ui.activity.StormInterface;
 import com.cube.storm.ui.fragment.StormFragment;

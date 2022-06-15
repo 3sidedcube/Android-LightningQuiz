@@ -1,6 +1,6 @@
 package com.cube.storm.ui;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.lib.parser.ViewProcessor;
 import com.cube.storm.ui.lib.resolver.DefaultViewResolver;

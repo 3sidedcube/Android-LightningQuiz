@@ -1,6 +1,5 @@
 package com.cube.storm.quiz.example;
 
-import android.app.Application;
 import android.net.Uri;
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.QuizSettings;
@@ -11,7 +10,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-public class MainApplication extends Application
+import androidx.multidex.MultiDexApplication;
+
+public class MainApplication extends MultiDexApplication
 {
 	@Override public void onCreate()
 	{
@@ -20,6 +21,7 @@ public class MainApplication extends Application
 		// Initiate settings
 		UiSettings uiSettings = new UiSettings.Builder(this)
 			.registerType(new TypeToken<ArrayList<ImageProperty>>(){}.getType(), new LegacyImageViewProcessor())
+			.youtubeApiKey(null)
 			.build();
 
 		QuizSettings quizSettings = new QuizSettings.Builder(uiSettings)

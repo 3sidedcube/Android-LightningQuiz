@@ -1,6 +1,5 @@
 package com.cube.storm.ui.quiz.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.fragment.app.Fragment;
 import com.cube.storm.UiSettings;
 import com.cube.storm.ui.activity.StormActivity;
 import com.cube.storm.ui.activity.StormInterface;
@@ -24,11 +23,10 @@ import com.cube.storm.ui.quiz.R;
 import com.cube.storm.ui.quiz.activity.StormQuizResultsActivity;
 import com.cube.storm.ui.quiz.model.page.QuizPage;
 import com.cube.storm.ui.quiz.model.quiz.QuizItem;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Getter;
 
 public class StormQuizLoseFragment extends Fragment implements OnClickListener, StormInterface
 {
