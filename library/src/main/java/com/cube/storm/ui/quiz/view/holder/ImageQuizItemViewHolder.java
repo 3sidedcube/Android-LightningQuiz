@@ -131,7 +131,19 @@ public class ImageQuizItemViewHolder extends ViewHolder<ImageQuizItem>
 			textView.setBackgroundResource(selectAnswer ? R.drawable.quiz_image_label_selected_border : 0);
 		}
 
-		answerLayout.setContentDescription(textView.getText() + (selectAnswer ? " selected" : " not selected"));
+		// Update the content description based on the selected answer and label text
+		updateAnswerContentDescription(answerLayout, textView.getText(), selectAnswer);
+	}
+	
+	/**
+	 * Updates the view content description changes when an image answer is selected or unselected
+	 * @param answerLayout the layout container other views
+	 * @param baseText the base label text of the view
+	 * @param selectAnswer if answer is selected or unselected
+	 */
+	protected void updateAnswerContentDescription(View answerLayout, CharSequence baseText, boolean selectAnswer)
+	{
+		answerLayout.setContentDescription(baseText + (selectAnswer ? " selected" : " not selected"));
 	}
 
 	private class ModelClickListener implements OnClickListener
