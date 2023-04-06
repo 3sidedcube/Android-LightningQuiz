@@ -22,20 +22,19 @@ android {
 
 dependencies {
 	// Android components
-	implementation 'androidx.annotation:annotation:1.1.0'
+	implementation 'androidx.annotation:annotation:1.4.0'
 	implementation 'androidx.legacy:legacy-support-v13:1.0.0'
 	implementation 'androidx.cardview:cardview:1.0.0'
-	implementation 'androidx.appcompat:appcompat:1.4.0'
+	implementation 'androidx.appcompat:appcompat:1.5.1'
 	implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
 	// Other Storm components
-	implementation 'com.3sidedcube.storm:ui:1.7.0'
+	implementation 'com.3sidedcube.storm:ui:1.8.0'
 	implementation 'com.3sidedcube.storm:util:1.2.0'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.12'
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 
-//apply from: '../gradle/sonatype.gradle'
 apply from: '../gradle/artifactory.gradle'

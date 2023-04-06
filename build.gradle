@@ -7,14 +7,14 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:4.0.1'
+		classpath 'com.android.tools.build:gradle:7.0.4'
 	}
 }
 
 ext {
-	minSdkVersion = 16
-	compileSdkVersion = 31
-	targetSdkVersion = 31
+	minSdkVersion = 23
+	compileSdkVersion = 33
+	targetSdkVersion = 33
 }
 
 allprojects {
@@ -22,8 +22,11 @@ allprojects {
 		google()
 		mavenCentral()
 
+		maven { url "https://jitpack.io" }
+
 		maven {
 			url 'http://oss.3sidedcube.com:8081/artifactory/internal'
+			allowInsecureProtocol = true
 		}
 
 		maven {
@@ -32,8 +35,7 @@ allprojects {
 				password "$ARTIFACTORY_PASSWORD"
 			}
 			url 'http://oss.3sidedcube.com:8081/artifactory/private'
+			allowInsecureProtocol = true
 		}
-
-		maven { url "https://jitpack.io" }
 	}
 }
