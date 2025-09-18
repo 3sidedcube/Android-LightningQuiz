@@ -20,7 +20,7 @@ android {
 	lintOptions {
 		abortOnError false
 	}
-	namespace 'com.cube.storm.ui.quiz.example'
+	namespace 'com.cube.storm.quiz.example'
 }
 
 dependencies {

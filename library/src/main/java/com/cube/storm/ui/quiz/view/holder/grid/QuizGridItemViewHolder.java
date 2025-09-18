@@ -29,7 +29,7 @@ public class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements 
 	{
 		@Override public ViewHolder createViewHolder(ViewGroup parent)
 		{
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.standard_grid_cell_view, parent, false);
+			View view = LayoutInflater.from(parent.getContext()).inflate(com.cube.storm.ui.R.layout.standard_grid_cell_view, parent, false);
 			return new QuizGridItemViewHolder(view);
 		}
 	}
@@ -47,7 +47,7 @@ public class QuizGridItemViewHolder extends ViewHolder<QuizGridItem> implements 
 
 		image = (ImageView)view.findViewById(R.id.image);
 		title = (TextView)view.findViewById(R.id.title);
-		progress = (ProgressBar)view.findViewById(R.id.progress);
+		progress = (ProgressBar)view.findViewById(com.cube.storm.ui.R.id.progress);
 	}
 
 	@Override public void populateView(QuizGridItem model)

@@ -112,7 +112,7 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 			Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(this.getClassLoader(), fragmentIntent.getFragment().getName());
 			fragment.setArguments(fragmentIntent.getArguments());
 
-			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
+			getSupportFragmentManager().beginTransaction().replace(com.cube.storm.ui.R.id.fragment_holder, fragment).commit();
 
 			if (!TextUtils.isEmpty(fragmentIntent.getTitle()))
 			{
@@ -135,7 +135,7 @@ public class StormQuizResultsActivity extends AppCompatActivity implements Storm
 
 	@Override public int getLayoutResource()
 	{
-		return R.layout.activity_view;
+		return com.cube.storm.ui.R.layout.activity_view;
 	}
 
 	@Override public void loadPage(String pageUri)

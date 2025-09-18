@@ -223,10 +223,10 @@ public class StormQuizWinFragment extends Fragment implements OnClickListener, S
 				{
 					final LinkProperty property = link;
 
-					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
+					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(com.cube.storm.ui.R.layout.button_embedded_link, embeddedLinksContainer, false);
 					if (embeddedLinkView != null)
 					{
-						Button button = (Button)embeddedLinkView.findViewById(R.id.button);
+						Button button = (Button)embeddedLinkView.findViewById(com.cube.storm.ui.R.id.button);
 						button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
 
 						button.setOnClickListener(new View.OnClickListener()

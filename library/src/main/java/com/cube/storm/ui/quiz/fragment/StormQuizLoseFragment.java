@@ -114,7 +114,7 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 				}
 			}
 		}
-		else if (v.getId() == R.id.button)
+		else if (v.getId() == com.cube.storm.ui.R.id.button)
 		{
 			int index = (Integer)v.getTag();
 
@@ -157,11 +157,11 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 					View row = LayoutInflater.from(getActivity()).inflate(R.layout.quiz_remember_row, remember, false);
 					if (row != null && question != null)
 					{
-						((TextView)row.findViewById(R.id.annotation)).setText("" + (index + 1));
+						((TextView)row.findViewById(com.cube.storm.ui.R.id.annotation)).setText("" + (index + 1));
 
-						((TextView)row.findViewById(R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
-						((TextView)row.findViewById(R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(answers[index] ? question.getCompletion() : question.getFailure()));
-						row.findViewById(R.id.description).setVisibility(View.VISIBLE);
+						((TextView)row.findViewById(com.cube.storm.ui.R.id.title)).setText(UiSettings.getInstance().getTextProcessor().process(question.getTitle()));
+						((TextView)row.findViewById(com.cube.storm.ui.R.id.description)).setText(UiSettings.getInstance().getTextProcessor().process(answers[index] ? question.getCompletion() : question.getFailure()));
+						row.findViewById(com.cube.storm.ui.R.id.description).setVisibility(View.VISIBLE);
 
 						remember.addView(row);
 					}
@@ -183,10 +183,10 @@ public class StormQuizLoseFragment extends Fragment implements OnClickListener, 
 					}
 					final LinkProperty property = link;
 
-					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(R.layout.button_embedded_link, embeddedLinksContainer, false);
+					View embeddedLinkView = LayoutInflater.from(embeddedLinksContainer.getContext()).inflate(com.cube.storm.ui.R.layout.button_embedded_link, embeddedLinksContainer, false);
 					if (embeddedLinkView != null)
 					{
-						Button button = (Button)embeddedLinkView.findViewById(R.id.button);
+						Button button = (Button)embeddedLinkView.findViewById(com.cube.storm.ui.R.id.button);
 						button.setText(UiSettings.getInstance().getTextProcessor().process(property.getTitle()));
 
 						button.setOnClickListener(new View.OnClickListener()
