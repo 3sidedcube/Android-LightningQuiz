@@ -24,8 +24,6 @@ import com.cube.storm.ui.view.ImageView;
 import com.cube.storm.ui.view.TextView;
 import com.cube.storm.ui.view.holder.ViewHolder;
 import com.cube.storm.ui.view.holder.ViewHolderFactory;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * // TODO: Add class description
@@ -84,38 +82,17 @@ public class AreaQuizItemViewHolder extends ViewHolder<AreaQuizItem>
 
 		if (model.getImage() != null)
 		{
-			ImageHelper.displayImage(image, model.getImage(), new ImageLoadingListener()
-			{
-				@Override public void onLoadingStarted(String imageUri, View view)
+			image.addOnLayoutChangeListener((view, i, i1, i2, i3, i4, i5, i6, i7) -> {
+				canvas.setLayoutParams(new FrameLayout.LayoutParams(image.getMeasuredWidth(), image.getMeasuredHeight()));
+				canvas.measure(View.MeasureSpec.makeMeasureSpec(image.getMeasuredWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(image.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
+
+				if (model.getTouchCoordinate() != null)
 				{
+					drawTouchZone(canvas, model.getTouchCoordinate());
 				}
-
-				@Override public void onLoadingFailed(String imageUri, View view, FailReason failReason)
-				{
-				}
-
-				@Override public void onLoadingCancelled(String imageUri, View view)
-				{
-				}
-
-				@Override public void onLoadingComplete(String imageUri, final View view, final Bitmap loadedImage)
-				{
-					view.post(new Runnable()
-					{
-						@Override public void run()
-						{
-							canvas.setLayoutParams(new FrameLayout.LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight()));
-							canvas.measure(View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-
-							if (model.getTouchCoordinate() != null)
-							{
-								drawTouchZone(canvas, model.getTouchCoordinate());
-							}
-						}
-					});
-				}
-
 			});
+			ImageHelper.displayImage(image, model.getImage());
+
 			canvas.setOnTouchListener(new OnTouchListener()
 			{
 				private long downTime = 0;
