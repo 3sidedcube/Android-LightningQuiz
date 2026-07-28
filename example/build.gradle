@@ -28,7 +28,7 @@ dependencies {
 	implementation project(':library')
 
 	implementation 'androidx.multidex:multidex:2.0.1'
-	implementation 'com.3sidedcube.storm:ui:1.8.4'
+	implementation 'com.3sidedcube.storm:ui:2.0.0'
 
 	// GSON - for JSON parsing
 	implementation 'com.google.code.gson:gson:2.14.0'
